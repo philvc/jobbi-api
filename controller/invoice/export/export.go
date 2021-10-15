@@ -2,7 +2,7 @@ package invoice_export_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nightborn-be/invoice-backend/usecase"
+	"github.com/philvc/jobbi-api/usecase"
 )
 
 type ExportController struct {

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/nightborn-be/invoice-backend/contract"
+	"github.com/philvc/jobbi-api/contract"
 	"gorm.io/gorm"
 )
 
@@ -9,8 +9,10 @@ type Search struct {
 	gorm.Model
 	Description     string
 	Title 			string
-	Owner	string
-	Answers []Answer`gorm:"one2many:search_answers"`
+	Owner	uint
+	UserID uint
+	Answers []Answer`gorm:"foreignKey:SearchID"`
+	Friendships []Friendship`gorm:"foreignKey:SearchID"`
 }
 
 func ToSearchDTO(search Search) contract.SearchDTO {

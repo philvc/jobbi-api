@@ -1,4 +1,4 @@
-package user_organisation_router
+package search_router
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,7 +7,10 @@ import (
 )
 
 // Name of the endpoint
-const endpoint string = "organisation"
+const endpoint string = "searches"
+
+// Name of the parameter
+const parameter string = ":searchId"
 
 type RouterGroup struct {
 	controller controller.Controller
@@ -23,6 +26,9 @@ func Default(controller controller.Controller) RouterGroup {
 func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	child := parent.Group(endpoint)
-	child.POST("", middleware.Authorize(routerGroup.controller.UserOrganisationController.AddUserToOrganisation))
+	child.POST("", middleware.Authorize(routerGroup.controller.SearchController.AddSearch))
+
+	childParam := child.Group(parameter)
+	childParam.PUT("", middleware.Authorize(routerGroup.controller.SearchController.ModifySearch))
 
 }

@@ -4,12 +4,12 @@ import (
 	"log"
 	"os"
 
-	"github.com/nightborn-be/invoice-backend/config"
-	"github.com/nightborn-be/invoice-backend/controller"
-	"github.com/nightborn-be/invoice-backend/database"
-	"github.com/nightborn-be/invoice-backend/repository"
-	"github.com/nightborn-be/invoice-backend/router"
-	"github.com/nightborn-be/invoice-backend/usecase"
+	"github.com/philvc/jobbi-api/config"
+	"github.com/philvc/jobbi-api/controller"
+	"github.com/philvc/jobbi-api/database"
+	"github.com/philvc/jobbi-api/repository"
+	"github.com/philvc/jobbi-api/router"
+	"github.com/philvc/jobbi-api/usecase"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"

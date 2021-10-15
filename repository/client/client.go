@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	contract "github.com/nightborn-be/invoice-backend/contract"
-	"github.com/nightborn-be/invoice-backend/database/model"
+	contract "github.com/philvc/jobbi-api/contract"
+	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
 )
 

@@ -1,15 +1,16 @@
 package controller
 
 import (
-	client_controller "github.com/nightborn-be/invoice-backend/controller/client"
-	client_invoice_controller "github.com/nightborn-be/invoice-backend/controller/client/invoice"
-	invoice_controller "github.com/nightborn-be/invoice-backend/controller/invoice"
-	invoice_export_controller "github.com/nightborn-be/invoice-backend/controller/invoice/export"
-	organisation_controller "github.com/nightborn-be/invoice-backend/controller/organisation"
-	user_controller "github.com/nightborn-be/invoice-backend/controller/user"
-	user_organisation_controller "github.com/nightborn-be/invoice-backend/controller/user/organisation"
+	client_controller "github.com/philvc/jobbi-api/controller/client"
+	client_invoice_controller "github.com/philvc/jobbi-api/controller/client/invoice"
+	invoice_controller "github.com/philvc/jobbi-api/controller/invoice"
+	invoice_export_controller "github.com/philvc/jobbi-api/controller/invoice/export"
+	organisation_controller "github.com/philvc/jobbi-api/controller/organisation"
+	user_controller "github.com/philvc/jobbi-api/controller/user"
+	user_organisation_controller "github.com/philvc/jobbi-api/controller/user/organisation"
+	search_controller "github.com/philvc/jobbi-api/controller/search"
 
-	"github.com/nightborn-be/invoice-backend/usecase"
+	"github.com/philvc/jobbi-api/usecase"
 )
 
 type Controller struct {
@@ -20,6 +21,7 @@ type Controller struct {
 	OrganisationController     organisation_controller.OrganisationController
 	UserController             user_controller.UserController
 	UserOrganisationController user_organisation_controller.UserOrganisationController
+	SearchController           search_controller.SearchController
 }
 
 func Default(usecase usecase.Usecase) Controller {
@@ -31,5 +33,6 @@ func Default(usecase usecase.Usecase) Controller {
 		OrganisationController:     organisation_controller.Default(usecase),
 		UserController:             user_controller.Default(usecase),
 		UserOrganisationController: user_organisation_controller.Default(usecase),
+		SearchController:           search_controller.Default(usecase),
 	}
 }

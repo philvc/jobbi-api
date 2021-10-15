@@ -19,7 +19,7 @@ type SearchDTO struct {
 	// The owner
 	//
 	// required: true
-	Owner string `json:"ownerId"`
+	Owner uint `json:"ownerId"`
 	
 
 }

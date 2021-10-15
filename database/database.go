@@ -1,22 +1,23 @@
 package database
 
 import (
-	"github.com/nightborn-be/invoice-backend/config"
-	"github.com/nightborn-be/invoice-backend/database/model"
+	"github.com/philvc/jobbi-api/config"
+	"github.com/philvc/jobbi-api/database/model"
+	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func Default(config config.Config) *gorm.DB {
 
-	db, err := gorm.Open(sqlite.Open(config.Database.ConnectionString), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(config.Database.ConnectionString), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect database")
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&model.Client{}, &model.Invoice{}, &model.Organisation{}, &model.User{})
+	db.AutoMigrate(&model.User{}, &model.Friendship{}, &model.Answer{}, &model.Device{}, &model.Search{})
 
 	return db
 }
@@ -29,7 +30,7 @@ func TestDefault() *gorm.DB {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&model.Client{}, &model.Invoice{}, &model.Organisation{}, &model.User{})
+	db.AutoMigrate(&model.User{})
 
 	return db
 }

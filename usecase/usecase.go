@@ -1,12 +1,13 @@
 package usecase
 
 import (
-	"github.com/nightborn-be/invoice-backend/repository"
-	client_usecase "github.com/nightborn-be/invoice-backend/usecase/client"
-	invoice_usecase "github.com/nightborn-be/invoice-backend/usecase/invoice"
-	invoice_export_usecase "github.com/nightborn-be/invoice-backend/usecase/invoice/export"
-	organisation_usecase "github.com/nightborn-be/invoice-backend/usecase/organisation"
-	user_usecase "github.com/nightborn-be/invoice-backend/usecase/user"
+	"github.com/philvc/jobbi-api/repository"
+	client_usecase "github.com/philvc/jobbi-api/usecase/client"
+	invoice_usecase "github.com/philvc/jobbi-api/usecase/invoice"
+	invoice_export_usecase "github.com/philvc/jobbi-api/usecase/invoice/export"
+	organisation_usecase "github.com/philvc/jobbi-api/usecase/organisation"
+	user_usecase "github.com/philvc/jobbi-api/usecase/user"
+	search_usecase "github.com/philvc/jobbi-api/usecase/search"
 )
 
 type Usecase struct {
@@ -15,6 +16,7 @@ type Usecase struct {
 	ExportUsecase       invoice_export_usecase.ExportUsecase
 	OrganisationUsecase organisation_usecase.OrganisationUsecase
 	UserUsecase         user_usecase.UserUsecase
+	SearchUsecase 		search_usecase.SearchUseCase
 }
 
 func Default(repository repository.Repository) Usecase {
@@ -24,5 +26,6 @@ func Default(repository repository.Repository) Usecase {
 		ExportUsecase:       invoice_export_usecase.Default(repository),
 		OrganisationUsecase: organisation_usecase.Default(repository),
 		UserUsecase:         user_usecase.Default(repository),
+		SearchUsecase:        search_usecase.Default(repository),
 	}
 }

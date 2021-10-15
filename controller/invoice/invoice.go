@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nightborn-be/invoice-backend/usecase"
+	"github.com/philvc/jobbi-api/usecase"
 )
 
 type InvoiceController struct {

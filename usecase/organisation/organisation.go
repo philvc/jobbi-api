@@ -4,8 +4,8 @@ import (
 	"errors"
 	"log"
 
-	"github.com/nightborn-be/invoice-backend/contract"
-	"github.com/nightborn-be/invoice-backend/repository"
+	"github.com/philvc/jobbi-api/contract"
+	"github.com/philvc/jobbi-api/repository"
 )
 
 type OrganisationUsecase struct {

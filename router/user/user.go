@@ -2,9 +2,9 @@ package user_router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nightborn-be/invoice-backend/controller"
-	"github.com/nightborn-be/invoice-backend/middleware"
-	user_organisation_router "github.com/nightborn-be/invoice-backend/router/user/organisation"
+	"github.com/philvc/jobbi-api/controller"
+	"github.com/philvc/jobbi-api/middleware"
+	user_organisation_router "github.com/philvc/jobbi-api/router/user/organisation"
 )
 
 // Name of the endpoint
@@ -34,5 +34,5 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	organisationGroup := user_organisation_router.Default(routerGroup.controller)
 	organisationGroup.Initialise(childParam)
-
+	
 }

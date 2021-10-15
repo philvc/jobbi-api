@@ -1,4 +1,4 @@
-module github.com/nightborn-be/invoice-backend
+module github.com/philvc/jobbi-api
 
 go 1.17
 

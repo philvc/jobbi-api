@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nightborn-be/invoice-backend/contract"
-	"github.com/nightborn-be/invoice-backend/usecase"
+	"github.com/philvc/jobbi-api/contract"
+	"github.com/philvc/jobbi-api/usecase"
 )
 
 type UserController struct {

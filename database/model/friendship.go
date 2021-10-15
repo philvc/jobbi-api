@@ -1,15 +1,16 @@
 package model
 
 import (
-	"github.com/nightborn-be/invoice-backend/contract"
+	"github.com/philvc/jobbi-api/contract"
 	"gorm.io/gorm"
 )
 
 type Friendship struct {
 	gorm.Model
 	State     uint
-	User 	User`gorm:"many2one:friendship_user;"`
-	Answers []Answer`gorm:"one2many:friendship_answers;"`
+	UserID uint
+	SearchID uint
+	Answers []Answer`gorm:"foreignKey:FriendshipID"`
 }
 
 func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {

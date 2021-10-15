@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/nightborn-be/invoice-backend/contract"
+	"github.com/philvc/jobbi-api/contract"
 	"gorm.io/gorm"
 )
 
@@ -11,9 +11,9 @@ type User struct {
 	LastName      string
 	Email         string
 	ExternalId    string
-	Devices       []Device `gorm:"one2many:user_devices;"`
-	Friendships   []Friendship `gorm:"one2many:user_friendships;"`
-	Searches      []Search `gorm:"one2many:user_searches;"`
+	Searches []Search`gorm:"foreignKey:UserID"`
+	Devices []Device`gorm:"foreignKey:UserID"`
+	Friendships []Friendship`gorm:"foreignKey:UserID"`
 }
 
 func ToUserDTO(user User) contract.UserDTO {

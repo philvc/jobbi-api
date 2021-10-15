@@ -3,8 +3,8 @@ package invoice_usecase
 import (
 	"errors"
 
-	contract "github.com/nightborn-be/invoice-backend/contract"
-	"github.com/nightborn-be/invoice-backend/repository"
+	contract "github.com/philvc/jobbi-api/contract"
+	"github.com/philvc/jobbi-api/repository"
 )
 
 type InvoiceUsecase struct {

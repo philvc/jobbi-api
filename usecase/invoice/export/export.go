@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/nightborn-be/invoice-backend/repository"
+	"github.com/philvc/jobbi-api/repository"
 	"github.com/signintech/gopdf"
 )
 

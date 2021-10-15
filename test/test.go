@@ -2,9 +2,9 @@ package test
 
 import (
 	"github.com/brianvoe/gofakeit/v6"
-	"github.com/nightborn-be/invoice-backend/database"
-	"github.com/nightborn-be/invoice-backend/database/model"
-	"github.com/nightborn-be/invoice-backend/repository"
+	"github.com/philvc/jobbi-api/database"
+	"github.com/philvc/jobbi-api/database/model"
+	"github.com/philvc/jobbi-api/repository"
 	"gorm.io/gorm"
 )
 

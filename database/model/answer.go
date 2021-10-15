@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/nightborn-be/invoice-backend/contract"
+	"github.com/philvc/jobbi-api/contract"
 	"gorm.io/gorm"
 )
 
@@ -11,6 +11,8 @@ type Answer struct {
 	Description      string
 	Title         string
 	Link    string
+	SearchID uint
+	FriendshipID uint
 }
 
 func ToAnswerDTO(answer Answer) contract.AnswerDTO {

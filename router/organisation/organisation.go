@@ -2,10 +2,10 @@ package organisation_router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nightborn-be/invoice-backend/controller"
-	"github.com/nightborn-be/invoice-backend/middleware"
-	organisation_client_router "github.com/nightborn-be/invoice-backend/router/organisation/client"
-	organisation_invoice_router "github.com/nightborn-be/invoice-backend/router/organisation/invoice"
+	"github.com/philvc/jobbi-api/controller"
+	"github.com/philvc/jobbi-api/middleware"
+	organisation_client_router "github.com/philvc/jobbi-api/router/organisation/client"
+	organisation_invoice_router "github.com/philvc/jobbi-api/router/organisation/invoice"
 )
 
 // Name of the endpoint

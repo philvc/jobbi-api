@@ -3,11 +3,12 @@ package router
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/nightborn-be/invoice-backend/controller"
+	"github.com/philvc/jobbi-api/controller"
 
-	me_router "github.com/nightborn-be/invoice-backend/router/me"
-	organisation_router "github.com/nightborn-be/invoice-backend/router/organisation"
-	user_router "github.com/nightborn-be/invoice-backend/router/user"
+	me_router "github.com/philvc/jobbi-api/router/me"
+	organisation_router "github.com/philvc/jobbi-api/router/organisation"
+	user_router "github.com/philvc/jobbi-api/router/user"
+	search_router "github.com/philvc/jobbi-api/router/search"
 )
 
 type Router struct {
@@ -38,6 +39,7 @@ func (router Router) Initiliase() {
 	meRouter := me_router.Default(router.controller)
 	userRouter := user_router.Default(router.controller)
 	organisationRouter := organisation_router.Default(router.controller)
+	searchRouter := search_router.Default(router.controller)
 
 	// Creates the api-group
 	api := router.engine.Group("")
@@ -46,6 +48,7 @@ func (router Router) Initiliase() {
 	meRouter.Initialise(api)
 	userRouter.Initialise(api)
 	organisationRouter.Initialise(api)
+	searchRouter.Initialise(api)
 
 }
 

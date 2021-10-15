@@ -3,8 +3,8 @@ package client_usecase
 import (
 	"errors"
 
-	contract "github.com/nightborn-be/invoice-backend/contract"
-	repository "github.com/nightborn-be/invoice-backend/repository"
+	contract "github.com/philvc/jobbi-api/contract"
+	repository "github.com/philvc/jobbi-api/repository"
 )
 
 type ClientUsecase struct {

@@ -2,8 +2,8 @@ package organisation_client_invoice_router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nightborn-be/invoice-backend/controller"
-	"github.com/nightborn-be/invoice-backend/middleware"
+	"github.com/philvc/jobbi-api/controller"
+	"github.com/philvc/jobbi-api/middleware"
 )
 
 // Name of the endpoint

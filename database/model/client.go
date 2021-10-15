@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/nightborn-be/invoice-backend/contract"
+	"github.com/philvc/jobbi-api/contract"
 	"gorm.io/gorm"
 )
 
