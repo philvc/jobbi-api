@@ -7,8 +7,8 @@ import (
 
 	me_router "github.com/philvc/jobbi-api/router/me"
 	organisation_router "github.com/philvc/jobbi-api/router/organisation"
-	user_router "github.com/philvc/jobbi-api/router/user"
 	search_router "github.com/philvc/jobbi-api/router/search"
+	user_router "github.com/philvc/jobbi-api/router/user"
 )
 
 type Router struct {

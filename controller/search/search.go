@@ -1,7 +1,6 @@
 package search_controller
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,11 +18,31 @@ func Default(usecase usecase.Usecase) SearchController {
 	}
 }
 
+// swagger:operation GET /searches searches GetSearches
+// Get all searches.
+// Return all searches
+// ---
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: All the searches
+//         schema:
+//           type: array
+//           items:
+//             "$ref": "#/definitions/SearchDTO"
+//       400:
+//         description: Bad Request
+
 func (controller SearchController) GetSearches(c *gin.Context) {
 
 	sub := c.GetString("sub")
 
+	// Get My Searches - Searches by userId
 	searches, err := controller.usecase.SearchUsecase.GetSearchesByUserSub(sub)
+
+	// Get Searches where I am invited - Searches by friendshipId
+	searches, err := controller.usecase.SearchUsecase.GetSearchesByFriendshipId(sub)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())

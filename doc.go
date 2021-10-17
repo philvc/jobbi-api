@@ -1,6 +1,6 @@
-// Douby Back-end
+// Jobbi Back-end
 //
-// Swagger for Douby Back-end
+// Swagger for Jobbi Back-end
 //
 //	Schemes: [http, https]
 //	BasePath: /

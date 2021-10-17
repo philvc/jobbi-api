@@ -2,7 +2,6 @@ package search_usecase
 
 import (
 	"errors"
-	"log"
 	"github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/repository"
 )
@@ -29,6 +28,13 @@ func (usecase SearchUseCase) GetSearchesByUserSub(sub string) (*[]contract.Searc
 	searches, err := usecase.repository.SearchRepository.GetSearchesByUserId(user.Id)
 
 	return searches, err
+}
+
+func (usecase SearchUseCase) GetSearchesByFriendshipId(sub string) (*[]contract.SearchDTO, error){
+
+	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
+
+	friendship, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
 }
 
 func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTO, error) {

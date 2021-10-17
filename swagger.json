@@ -1,0 +1,319 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Swagger for Jobbi Back-end\n\nSchemes: [http, https]",
+    "title": "Jobbi Back-end",
+    "contact": {
+      "name": "Maxime Denuit",
+      "email": "maxime@nightborn.be"
+    },
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/searches": {
+      "get": {
+        "description": "Return all searches",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "summary": "Get all searches.",
+        "operationId": "GetSearches",
+        "responses": {
+          "200": {
+            "description": "All the searches",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SearchDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AnswerDTO": {
+      "description": "An answer",
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "link": {
+          "description": "The link",
+          "type": "string",
+          "x-go-name": "Link"
+        },
+        "title": {
+          "description": "The title",
+          "type": "string",
+          "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The type",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Type"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "ClientDTO": {
+      "description": "An user",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "format": "float",
+          "x-go-name": "Amount"
+        },
+        "clientId": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ClientId"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "Date"
+        },
+        "description": {
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "number": {
+          "description": "The first name",
+          "type": "string",
+          "x-go-name": "Number"
+        },
+        "subTotal": {
+          "type": "number",
+          "format": "float",
+          "x-go-name": "SubTotal"
+        },
+        "total": {
+          "type": "number",
+          "format": "float",
+          "x-go-name": "Total"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Type"
+        },
+        "vat": {
+          "type": "number",
+          "format": "float",
+          "x-go-name": "VAT"
+        }
+      },
+      "x-go-name": "InvoiceDTO",
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "DeviceDTO": {
+      "description": "An user",
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "token": {
+          "description": "The token",
+          "type": "string",
+          "x-go-name": "Token"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "FriendshipDTO": {
+      "description": "An friendship",
+      "type": "object",
+      "required": [
+        "id",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "state": {
+          "description": "The state",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "State"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "OrganisationDTO": {
+      "description": "An user",
+      "type": "object",
+      "properties": {
+        "address": {
+          "description": "The address",
+          "type": "string",
+          "x-go-name": "Address"
+        },
+        "bankAccount": {
+          "type": "string",
+          "x-go-name": "BankAccount"
+        },
+        "companyColor": {
+          "type": "string",
+          "x-go-name": "CompanyColor"
+        },
+        "contactEmail": {
+          "type": "string",
+          "x-go-name": "ContactEmail"
+        },
+        "contactPhoneNumber": {
+          "type": "string",
+          "x-go-name": "ContactPhoneNumber"
+        },
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "name": {
+          "description": "The name",
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "slug": {
+          "description": "The slug",
+          "type": "string",
+          "x-go-name": "Slug"
+        },
+        "swift": {
+          "type": "string",
+          "x-go-name": "Swift"
+        },
+        "userId": {
+          "description": "The owner Id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Owner"
+        },
+        "vatNumber": {
+          "description": "The VAT Number",
+          "type": "string",
+          "x-go-name": "VATNumber"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "SearchDTO": {
+      "description": "An search",
+      "type": "object",
+      "required": [
+        "id",
+        "description",
+        "title"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "title": {
+          "description": "The title",
+          "type": "string",
+          "x-go-name": "Title"
+        },
+        "userId": {
+          "description": "UserId",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "UserDTO": {
+      "description": "An user",
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "email": {
+          "description": "The email",
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "externalId": {
+          "description": "The externalId",
+          "type": "string",
+          "x-go-name": "ExternalId"
+        },
+        "firstName": {
+          "description": "The firstName",
+          "type": "string",
+          "x-go-name": "FirstName"
+        },
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "lastName": {
+          "description": "The lastName",
+          "type": "string",
+          "x-go-name": "LastName"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    }
+  }
+}

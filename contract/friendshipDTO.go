@@ -12,5 +12,6 @@ type FriendshipDTO struct {
 	//
 	// required: true
 	State uint `json:"state"`
+	// The 
 
 }
