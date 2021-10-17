@@ -1,7 +1,9 @@
 package search_controller
 
 import (
+	"log"
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/usecase"
@@ -55,13 +57,12 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 
 	sub := c.GetString("sub")
 	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
-
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	search.Owner = userDTO.Id
+	search.UserID = userDTO.Id
 
 	searchDTO, err := controller.usecase.SearchUsecase.AddSearch(search)
 

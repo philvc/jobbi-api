@@ -7,20 +7,19 @@ import (
 
 type Search struct {
 	gorm.Model
-	Description     string
-	Title 			string
-	Owner	uint
-	UserID uint
-	Answers []Answer`gorm:"foreignKey:SearchID"`
-	Friendships []Friendship`gorm:"foreignKey:SearchID"`
+	Description string
+	Title       string
+	UserID		uint
+	Answers     []Answer     `gorm:"foreignKey:SearchID"`
+	Friendships []Friendship `gorm:"foreignKey:SearchID"`
 }
 
 func ToSearchDTO(search Search) contract.SearchDTO {
 	return contract.SearchDTO{
-		Id:         search.ID,
-		Description:  search.Description,
-		Title: search.Title,
-		Owner: search.Owner,
+		Id:          search.ID,
+		Description: search.Description,
+		Title:       search.Title,
+		UserID: 	search.UserID,
 	}
 }
 
@@ -29,9 +28,9 @@ func ToSearch(searchDTO contract.SearchDTO) Search {
 		Model: gorm.Model{
 			ID: searchDTO.Id,
 		},
-		Description:  searchDTO.Description,
-		Title: searchDTO.Title,
-		Owner: searchDTO.Owner,
+		Description: searchDTO.Description,
+		Title:       searchDTO.Title,
+		UserID: 	searchDTO.UserID,
 	}
 }
 

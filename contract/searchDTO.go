@@ -16,10 +16,9 @@ type SearchDTO struct {
 	//
 	// required: true
 	Title string `json:"title"`
-	// The owner
+	// UserId
 	//
-	// required: true
-	Owner uint `json:"ownerId"`
-	
+	// required: false
+	UserID uint `json:"userId"`
 
 }

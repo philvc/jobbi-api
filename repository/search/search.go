@@ -65,7 +65,7 @@ func (repository SearchRepository) ModifySearch(SearchDTO contract.SearchDTO) (*
 	search := model.ToSearch(SearchDTO)
 
 	repository.database.Model(&search).Where("id = ?", search.ID).Updates(map[string]interface{}{"title": search.Title,
-		"description": search.Description, "owner": search.Owner})
+		"description": search.Description})
 
 	searchDTO := model.ToSearchDTO(search)
 

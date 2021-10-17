@@ -45,7 +45,6 @@ func (usecase SearchUseCase) AddSearch(searchDTO contract.SearchDTO) (*contract.
 	if searchDTO.Description == "" {
 		return nil, errors.New("missing description")
 	}
-	log.Default().Println(searchDTO)
 	search, err := usecase.repository.SearchRepository.AddSearch(searchDTO)
 	return search, err
 }
