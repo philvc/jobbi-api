@@ -9,9 +9,10 @@ type Search struct {
 	gorm.Model
 	Description string
 	Title       string
-	UserID		uint
+	UserID      uint
 	Answers     []Answer     `gorm:"foreignKey:SearchID"`
 	Friendships []Friendship `gorm:"foreignKey:SearchID"`
+	Offers      []Offer      `gorm:"foreignKey:SearchID"`
 }
 
 func ToSearchDTO(search Search) contract.SearchDTO {
@@ -19,7 +20,7 @@ func ToSearchDTO(search Search) contract.SearchDTO {
 		Id:          search.ID,
 		Description: search.Description,
 		Title:       search.Title,
-		UserID: 	search.UserID,
+		UserID:      search.UserID,
 	}
 }
 
@@ -30,7 +31,7 @@ func ToSearch(searchDTO contract.SearchDTO) Search {
 		},
 		Description: searchDTO.Description,
 		Title:       searchDTO.Title,
-		UserID: 	searchDTO.UserID,
+		UserID:      searchDTO.UserID,
 	}
 }
 

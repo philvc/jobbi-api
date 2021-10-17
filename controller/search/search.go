@@ -42,7 +42,7 @@ func (controller SearchController) GetSearches(c *gin.Context) {
 	searches, err := controller.usecase.SearchUsecase.GetSearchesByUserSub(sub)
 
 	// Get Searches where I am invited - Searches by friendshipId
-	searches, err := controller.usecase.SearchUsecase.GetSearchesByFriendshipId(sub)
+	// searches, err := controller.usecase.SearchUsecase.GetSearchesByFriendshipId(sub)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -52,18 +52,60 @@ func (controller SearchController) GetSearches(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, searches)
 }
 
+// swagger:operation GET /searches/{searchId} search GetSearchById
+// type id struct
+// Get search by id.
+// Return search
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/SearchDTO"
+//       400:
+//         description: Bad Request
+
 func (controller SearchController) GetSearchById(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 
-	search, error := controller.usecase.SearchUsecase.GetSearchById(searchId)
+	search, err := controller.usecase.SearchUsecase.GetSearchById(searchId)
 
-	if error != nil {
-		c.IndentedJSON(http.StatusBadRequest, error)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	c.IndentedJSON(http.StatusOK, search)
 }
+
+// swagger:operation POST /searches search AddSearch
+// type id struct
+// Create search.
+// Return search
+// ---
+//     Parameters:
+//       - name: search
+//         in: body
+//         schema:
+//            $ref: "#/definitions/SearchDTO"
+//         description: search
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/SearchDTO"
+//       400:
+//         description: Bad Request
 
 func (controller SearchController) AddSearch(c *gin.Context) {
 

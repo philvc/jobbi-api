@@ -42,6 +42,69 @@
             "description": "Bad Request"
           }
         }
+      },
+      "post": {
+        "description": "type id struct\nCreate search.\nReturn search",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "search"
+        ],
+        "operationId": "AddSearch",
+        "parameters": [
+          {
+            "description": "search",
+            "name": "search",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/SearchDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SearchDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/searches/{searchId}": {
+      "get": {
+        "description": "type id struct\nGet search by id.\nReturn search",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "search"
+        ],
+        "operationId": "GetSearchById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SearchDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       }
     }
   },
@@ -88,24 +151,14 @@
       "description": "An user",
       "type": "object",
       "properties": {
-        "amount": {
-          "type": "number",
-          "format": "float",
-          "x-go-name": "Amount"
-        },
-        "clientId": {
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "ClientId"
-        },
-        "date": {
+        "address": {
           "type": "string",
-          "format": "date-time",
-          "x-go-name": "Date"
+          "x-go-name": "Address"
         },
-        "description": {
+        "email": {
+          "description": "The e-mail",
           "type": "string",
-          "x-go-name": "Description"
+          "x-go-name": "Email"
         },
         "id": {
           "description": "The id",
@@ -113,30 +166,23 @@
           "format": "uint64",
           "x-go-name": "Id"
         },
-        "number": {
-          "description": "The first name",
+        "name": {
+          "description": "The name",
           "type": "string",
-          "x-go-name": "Number"
+          "x-go-name": "Name"
         },
-        "subTotal": {
-          "type": "number",
-          "format": "float",
-          "x-go-name": "SubTotal"
-        },
-        "total": {
-          "type": "number",
-          "format": "float",
-          "x-go-name": "Total"
-        },
-        "type": {
+        "organisationdid": {
           "type": "integer",
-          "format": "int64",
-          "x-go-name": "Type"
+          "format": "uint64",
+          "x-go-name": "OrganisationId"
         },
-        "vat": {
-          "type": "number",
-          "format": "float",
-          "x-go-name": "VAT"
+        "vatIncluded": {
+          "type": "boolean",
+          "x-go-name": "VATIncluded"
+        },
+        "vatNumber": {
+          "type": "string",
+          "x-go-name": "VATNumber"
         }
       },
       "x-go-name": "InvoiceDTO",

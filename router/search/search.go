@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/controller"
 	"github.com/philvc/jobbi-api/middleware"
+	search_offer_router "github.com/philvc/jobbi-api/router/search/offer"
 )
 
 // Name of the endpoint
@@ -30,5 +31,8 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	child.POST("", middleware.Authorize(routerGroup.controller.SearchController.AddSearch))
 	childParam := child.Group(parameter)
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.SearchController.ModifySearch))
-	childParam.GET("",  middleware.Authorize(routerGroup.controller.SearchController.GetSearchById))
+	childParam.GET("", middleware.Authorize(routerGroup.controller.SearchController.GetSearchById))
+
+	offerGroup := search_offer_router.Default(routerGroup.controller)
+	offerGroup.Initialise(childParam)
 }

@@ -17,7 +17,7 @@ func Default(config config.Config) *gorm.DB {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&model.User{}, &model.Friendship{}, &model.Answer{}, &model.Device{}, &model.Search{})
+	db.AutoMigrate(&model.User{}, &model.Friendship{}, &model.Answer{}, &model.Device{}, &model.Search{}, &model.Offer{})
 
 	return db
 }

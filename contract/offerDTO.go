@@ -1,9 +1,9 @@
 package contract
 
-// An search
+// An offer
 //
-// swagger:model SearchDTO
-type SearchDTO struct {
+// swagger:model OfferDTO
+type OfferDTO struct {
 	// The id
 	//
 	// required: true
@@ -16,8 +16,16 @@ type SearchDTO struct {
 	//
 	// required: true
 	Title string `json:"title"`
-	// UserId
+	// The link
 	//
-	// required: false
+	// required: true
+	Link string `json:"link"`
+	// the search id
+	//
+	// required: true
+	SearchID uint `json:"searchId"`
+	// the user id
+	//
+	// required: true
 	UserID uint `json:"userId"`
 }
