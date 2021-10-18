@@ -4,13 +4,14 @@ import (
 	"github.com/philvc/jobbi-api/repository"
 	client_usecase "github.com/philvc/jobbi-api/usecase/client"
 	company_usecase "github.com/philvc/jobbi-api/usecase/company"
+	friendship_usecase "github.com/philvc/jobbi-api/usecase/friendship"
 	invoice_usecase "github.com/philvc/jobbi-api/usecase/invoice"
 	invoice_export_usecase "github.com/philvc/jobbi-api/usecase/invoice/export"
+	network_usecase "github.com/philvc/jobbi-api/usecase/network"
 	offer_usecase "github.com/philvc/jobbi-api/usecase/offer"
 	organisation_usecase "github.com/philvc/jobbi-api/usecase/organisation"
 	search_usecase "github.com/philvc/jobbi-api/usecase/search"
 	user_usecase "github.com/philvc/jobbi-api/usecase/user"
-	network_usecase "github.com/philvc/jobbi-api/usecase/network"
 )
 
 type Usecase struct {
@@ -23,6 +24,7 @@ type Usecase struct {
 	OfferUsecase        offer_usecase.OfferUseCase
 	CompanyUsecase      company_usecase.CompanyUseCase
 	NetworkUsecase      network_usecase.NetworkUseCase
+	FriendshipUsecase   friendship_usecase.FriendshipUseCase
 }
 
 func Default(repository repository.Repository) Usecase {
@@ -36,5 +38,6 @@ func Default(repository repository.Repository) Usecase {
 		OfferUsecase:        offer_usecase.Default(repository),
 		CompanyUsecase:      company_usecase.Default(repository),
 		NetworkUsecase:      network_usecase.Default(repository),
+		FriendshipUsecase:   friendship_usecase.Default(repository),
 	}
 }

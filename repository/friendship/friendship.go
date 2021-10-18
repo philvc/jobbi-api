@@ -18,22 +18,6 @@ func Default(db *gorm.DB) FriendshipRepository {
 	}
 }
 
-func (repository FriendshipRepository) GetFriendshipsByState(userId uint, state uint ) (*[]contract.FriendshipDTO, error){
-	var friendships []model.Friendship
-	var user model.User
-
-	if err := repository.database.Where("id = ?", userId).First(&user).Error; err != nil {
-		return nil, errors.New(err.Error())
-	}
-
-	if err := repository.database.Where("State = ? AND UserID = ?", state, userId).Find(&friendships).Error; err != nil {
-		return nil, errors.New(err.Error())
-	}
-
-	friendshipDTOs := model.ToFriendshipDTOs(friendships)
-
-	return &friendshipDTOs, nil
-}
 func (repository FriendshipRepository) GetFriendshipsBySearchId(searchId uint) (*[]contract.FriendshipDTO, error){
 	var friendships []model.Friendship
 	var search model.Search
@@ -42,7 +26,23 @@ func (repository FriendshipRepository) GetFriendshipsBySearchId(searchId uint) (
 		return nil, errors.New(err.Error())
 	}
 
-	if err := repository.database.Where("State = ? AND SearchID = ?", 1, searchId).Find(&friendships).Error; err != nil {
+	if err := repository.database.Where("SearchID = ?",searchId).Find(&friendships).Error; err != nil {
+		return nil, errors.New(err.Error())
+	}
+
+	friendshipDTOs := model.ToFriendshipDTOs(friendships)
+
+	return &friendshipDTOs, nil
+}
+func (repository FriendshipRepository) GetFriendshipsByUserID(userId uint) (*[]contract.FriendshipDTO, error){
+	var friendships []model.Friendship
+	var user model.User
+
+	if err := repository.database.Where("id = ?", userId).First(&user).Error; err != nil {
+		return nil, errors.New(err.Error())
+	}
+
+	if err := repository.database.Where("UserID = ?",userId).Find(&friendships).Error; err != nil {
 		return nil, errors.New(err.Error())
 	}
 
@@ -69,7 +69,7 @@ func (repository FriendshipRepository) ModifyFriendship(friendshipDTO contract.F
 
 	friendship := model.ToFriendship(friendshipDTO)
 
-	repository.database.Model(&friendship).Where("id = ?", friendship.ID).Updates(map[string]interface{}{"State": friendship.State})
+	repository.database.Model(&friendship).Where("id = ?", friendship.ID).Updates(map[string]interface{}{"state": friendship.State, "first_name": friendship.FirstName, "last_name": friendship.LastName, "email": friendship.Email})
 
 	friendshipDTO = model.ToFriendshipDTO(friendship)
 

@@ -10,8 +10,19 @@ type FriendshipDTO struct {
 	Id uint `json:"id"`
 	// The state
 	//
-	// required: true
+	// required: false
 	State uint `json:"state"`
-	// The 
+	// The firstName
+	// 
+	// required: false
+	FirstName string `json:"firstName"`
+	// The lastName
+	//
+	// required: true
+	LastName string `json:"lastName"`
+	// The email
+	//
+	// required: true
+	Email string `json:"email"`
 
 }
