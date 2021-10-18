@@ -3,14 +3,15 @@ package controller
 import (
 	client_controller "github.com/philvc/jobbi-api/controller/client"
 	client_invoice_controller "github.com/philvc/jobbi-api/controller/client/invoice"
+	company_controller "github.com/philvc/jobbi-api/controller/company"
 	invoice_controller "github.com/philvc/jobbi-api/controller/invoice"
 	invoice_export_controller "github.com/philvc/jobbi-api/controller/invoice/export"
+	network_controller "github.com/philvc/jobbi-api/controller/network"
+	offer_controller "github.com/philvc/jobbi-api/controller/offer"
 	organisation_controller "github.com/philvc/jobbi-api/controller/organisation"
+	search_controller "github.com/philvc/jobbi-api/controller/search"
 	user_controller "github.com/philvc/jobbi-api/controller/user"
 	user_organisation_controller "github.com/philvc/jobbi-api/controller/user/organisation"
-	search_controller "github.com/philvc/jobbi-api/controller/search"
-	offer_controller "github.com/philvc/jobbi-api/controller/offer"
-	company_controller "github.com/philvc/jobbi-api/controller/company"
 
 	"github.com/philvc/jobbi-api/usecase"
 )
@@ -25,7 +26,8 @@ type Controller struct {
 	UserOrganisationController user_organisation_controller.UserOrganisationController
 	SearchController           search_controller.SearchController
 	OfferController            offer_controller.OfferController
-	CompanyController company_controller.CompanyController
+	CompanyController          company_controller.CompanyController
+	NetworkController          network_controller.NetworkController
 }
 
 func Default(usecase usecase.Usecase) Controller {
@@ -38,7 +40,8 @@ func Default(usecase usecase.Usecase) Controller {
 		UserController:             user_controller.Default(usecase),
 		UserOrganisationController: user_organisation_controller.Default(usecase),
 		SearchController:           search_controller.Default(usecase),
-		OfferController: 			offer_controller.Default(usecase),
-		CompanyController:  company_controller.Default(usecase),
+		OfferController:            offer_controller.Default(usecase),
+		CompanyController:          company_controller.Default(usecase),
+		NetworkController:          network_controller.Default(usecase),
 	}
 }

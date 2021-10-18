@@ -6,6 +6,7 @@ import (
 	"github.com/philvc/jobbi-api/middleware"
 	search_offer_router "github.com/philvc/jobbi-api/router/search/offer"
 	search_company_router "github.com/philvc/jobbi-api/router/search/company"
+	search_network_router "github.com/philvc/jobbi-api/router/search/network"
 
 )
 
@@ -40,4 +41,7 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	companyGroup := search_company_router.Default(routerGroup.controller)
 	companyGroup.Initialise(childParam)
+	
+	networkGroup := search_network_router.Default(routerGroup.controller)
+	networkGroup.Initialise(childParam)
 }
