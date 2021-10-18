@@ -18,6 +18,27 @@ func Default(usecase usecase.Usecase) OfferController {
 	}
 }
 
+// swagger:operation GET /searches/{searchId}/offers offer GetOffersBySearchId
+// type id struct
+// Get offers by searchId.
+// Return offer
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/OfferDTO"
+//       400:
+//         description: Bad Request
+
 func (controller OfferController) GetOffersBySearchId(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 

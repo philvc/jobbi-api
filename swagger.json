@@ -106,6 +106,70 @@
           }
         }
       }
+    },
+    "/searches/{searchId}/companies": {
+      "get": {
+        "description": "type id struct\nGet Companies by searchId.\nReturn company",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "company"
+        ],
+        "operationId": "GetCompaniesBySearchId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CompanyDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/searches/{searchId}/offers": {
+      "get": {
+        "description": "type id struct\nGet offers by searchId.\nReturn offer",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "offer"
+        ],
+        "operationId": "GetOffersBySearchId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OfferDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -228,6 +292,54 @@
           "type": "integer",
           "format": "uint64",
           "x-go-name": "State"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "OfferDTO": {
+      "description": "An offer",
+      "type": "object",
+      "required": [
+        "id",
+        "description",
+        "title",
+        "link",
+        "searchId",
+        "userId"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "link": {
+          "description": "The link",
+          "type": "string",
+          "x-go-name": "Link"
+        },
+        "searchId": {
+          "description": "the search id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "SearchID"
+        },
+        "title": {
+          "description": "The title",
+          "type": "string",
+          "x-go-name": "Title"
+        },
+        "userId": {
+          "description": "the user id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "UserID"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"

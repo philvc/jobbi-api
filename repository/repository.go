@@ -7,6 +7,7 @@ import (
 	organisation_repository "github.com/philvc/jobbi-api/repository/organisation"
 	search_repository "github.com/philvc/jobbi-api/repository/search"
 	user_repository "github.com/philvc/jobbi-api/repository/user"
+	company_repository "github.com/philvc/jobbi-api/repository/company"
 	"gorm.io/gorm"
 )
 
@@ -17,6 +18,7 @@ type Repository struct {
 	OrganisationRepository organisation_repository.OrganisationRepository
 	SearchRepository       search_repository.SearchRepository
 	OfferRepository        offer_repository.OfferRepository
+	CompanyRepository company_repository.CompanyRepository
 }
 
 func Default(database *gorm.DB) Repository {
@@ -27,5 +29,6 @@ func Default(database *gorm.DB) Repository {
 		OrganisationRepository: organisation_repository.Default(database),
 		SearchRepository:       search_repository.Default(database),
 		OfferRepository:        offer_repository.Default(database),
+		CompanyRepository: company_repository.Default(database),
 	}
 }

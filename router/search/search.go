@@ -5,6 +5,8 @@ import (
 	"github.com/philvc/jobbi-api/controller"
 	"github.com/philvc/jobbi-api/middleware"
 	search_offer_router "github.com/philvc/jobbi-api/router/search/offer"
+	search_company_router "github.com/philvc/jobbi-api/router/search/company"
+
 )
 
 // Name of the endpoint
@@ -35,4 +37,7 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	offerGroup := search_offer_router.Default(routerGroup.controller)
 	offerGroup.Initialise(childParam)
+
+	companyGroup := search_company_router.Default(routerGroup.controller)
+	companyGroup.Initialise(childParam)
 }

@@ -3,14 +3,14 @@ package usecase
 import (
 	"github.com/philvc/jobbi-api/repository"
 	client_usecase "github.com/philvc/jobbi-api/usecase/client"
+	company_usecase "github.com/philvc/jobbi-api/usecase/company"
 	invoice_usecase "github.com/philvc/jobbi-api/usecase/invoice"
 	invoice_export_usecase "github.com/philvc/jobbi-api/usecase/invoice/export"
-	organisation_usecase "github.com/philvc/jobbi-api/usecase/organisation"
-	user_usecase "github.com/philvc/jobbi-api/usecase/user"
-	search_usecase "github.com/philvc/jobbi-api/usecase/search"
 	offer_usecase "github.com/philvc/jobbi-api/usecase/offer"
+	organisation_usecase "github.com/philvc/jobbi-api/usecase/organisation"
+	search_usecase "github.com/philvc/jobbi-api/usecase/search"
+	user_usecase "github.com/philvc/jobbi-api/usecase/user"
 )
-
 
 type Usecase struct {
 	ClientUsecase       client_usecase.ClientUsecase
@@ -18,8 +18,9 @@ type Usecase struct {
 	ExportUsecase       invoice_export_usecase.ExportUsecase
 	OrganisationUsecase organisation_usecase.OrganisationUsecase
 	UserUsecase         user_usecase.UserUsecase
-	SearchUsecase 		search_usecase.SearchUseCase
+	SearchUsecase       search_usecase.SearchUseCase
 	OfferUsecase        offer_usecase.OfferUseCase
+	CompanyUsecase      company_usecase.CompanyUseCase
 }
 
 func Default(repository repository.Repository) Usecase {
@@ -29,7 +30,8 @@ func Default(repository repository.Repository) Usecase {
 		ExportUsecase:       invoice_export_usecase.Default(repository),
 		OrganisationUsecase: organisation_usecase.Default(repository),
 		UserUsecase:         user_usecase.Default(repository),
-		SearchUsecase:        search_usecase.Default(repository),
-		OfferUsecase:         offer_usecase.Default(repository),
+		SearchUsecase:       search_usecase.Default(repository),
+		OfferUsecase:        offer_usecase.Default(repository),
+		CompanyUsecase:      company_usecase.Default(repository),
 	}
 }

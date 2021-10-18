@@ -15,6 +15,7 @@ type User struct {
 	Devices []Device`gorm:"foreignKey:UserID"`
 	Friendships []Friendship`gorm:"foreignKey:UserID"`
 	Offers []Offer`gorm:"foreignKey:UserID"`
+	Companies []Company`gorm:"foreignKey:UserID"`
 }
 
 func ToUserDTO(user User) contract.UserDTO {

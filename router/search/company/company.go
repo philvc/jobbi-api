@@ -1,4 +1,4 @@
-package search_offer_router
+package search_company_router
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,10 +7,10 @@ import (
 )
 
 // Name of the endpoint
-const endpoint string = "offers"
+const endpoint string = "companies"
 
 // Name of the parameter
-const parameter string = ":offerId"
+const parameter string = ":companyId"
 
 type RouterGroup struct {
 	controller controller.Controller
@@ -26,10 +26,10 @@ func Default(controller controller.Controller) RouterGroup {
 func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	child := parent.Group(endpoint)
-	child.GET("", middleware.Authorize(routerGroup.controller.OfferController.GetOffersBySearchId))
-	child.POST("", middleware.Authorize(routerGroup.controller.OfferController.AddOffer))
+	child.GET("", middleware.Authorize(routerGroup.controller.CompanyController.GetCompaniesBySearchId))
+	child.POST("", middleware.Authorize(routerGroup.controller.CompanyController.AddCompany))
 
 	childParam := child.Group(parameter)
-	childParam.GET("", middleware.Authorize(routerGroup.controller.OfferController.GetOfferById))
-	childParam.PUT("", middleware.Authorize(routerGroup.controller.OfferController.ModifyOffer))
+	childParam.GET("", middleware.Authorize(routerGroup.controller.CompanyController.GetCompanyById))
+	childParam.PUT("", middleware.Authorize(routerGroup.controller.CompanyController.ModifyCompany))
 }

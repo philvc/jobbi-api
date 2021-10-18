@@ -10,6 +10,7 @@ import (
 	user_organisation_controller "github.com/philvc/jobbi-api/controller/user/organisation"
 	search_controller "github.com/philvc/jobbi-api/controller/search"
 	offer_controller "github.com/philvc/jobbi-api/controller/offer"
+	company_controller "github.com/philvc/jobbi-api/controller/company"
 
 	"github.com/philvc/jobbi-api/usecase"
 )
@@ -24,6 +25,7 @@ type Controller struct {
 	UserOrganisationController user_organisation_controller.UserOrganisationController
 	SearchController           search_controller.SearchController
 	OfferController            offer_controller.OfferController
+	CompanyController company_controller.CompanyController
 }
 
 func Default(usecase usecase.Usecase) Controller {
@@ -37,5 +39,6 @@ func Default(usecase usecase.Usecase) Controller {
 		UserOrganisationController: user_organisation_controller.Default(usecase),
 		SearchController:           search_controller.Default(usecase),
 		OfferController: 			offer_controller.Default(usecase),
+		CompanyController:  company_controller.Default(usecase),
 	}
 }
