@@ -2,6 +2,7 @@ package network_controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -91,7 +92,6 @@ func (controller NetworkController) GetNetworkById(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, Network)
 }
-
 
 // swagger:operation POST /searches/{searchId}/networks networks AddNetwork
 // type id struct
@@ -186,19 +186,26 @@ func (controller NetworkController) AddNetwork(c *gin.Context) {
 //       400:
 //         description: Bad Request
 func (controller NetworkController) ModifyNetwork(c *gin.Context) {
-	var Network contract.NetworkDTO
 
-	if err := c.BindJSON(&Network); err != nil {
+	networkId := c.Params.ByName(("networkId"))
+
+	var network contract.NetworkDTO
+
+	parsedId, _ := strconv.ParseUint(networkId, 10, 32)
+
+	network.Id = uint(parsedId)
+
+	if err := c.BindJSON(&network); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
-
-	NetworkDTO, error := controller.usecase.NetworkUsecase.ModifyNetwork(Network)
+	
+	networkDTO, error := controller.usecase.NetworkUsecase.ModifyNetwork(network)
 
 	if error != nil {
 		c.IndentedJSON(http.StatusBadRequest, error.Error())
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, NetworkDTO)
+	c.IndentedJSON(http.StatusOK, networkDTO)
 }

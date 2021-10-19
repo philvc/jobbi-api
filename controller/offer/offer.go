@@ -2,6 +2,7 @@ package offer_controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -36,7 +37,7 @@ func Default(usecase usecase.Usecase) OfferController {
 //         description: Success
 //         schema:
 //           type: array
-//           items: 
+//           items:
 //             $ref: "#/definitions/OfferDTO"
 //       400:
 //         description: Bad Request
@@ -53,7 +54,6 @@ func (controller OfferController) GetOffersBySearchId(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, offers)
 }
-
 
 // swagger:operation GET /searches/{searchId}/offers/{offerId} offers GetOfferById
 // type id struct
@@ -151,6 +151,7 @@ func (controller OfferController) AddOffer(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, offerDTO)
 }
+
 // swagger:operation PUT /searches/{searchId}/offers/{offerId} offers ModifyOffer
 // type id struct
 // Modify offer.
@@ -182,12 +183,18 @@ func (controller OfferController) AddOffer(c *gin.Context) {
 //       400:
 //         description: Bad Request
 func (controller OfferController) ModifyOffer(c *gin.Context) {
+
+	offerId := c.Params.ByName(("offerId"))
+
 	var offer contract.OfferDTO
 
 	if err := c.BindJSON(&offer); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
+
+	parsedId, _ := strconv.ParseUint(offerId, 10, 32)
+	offer.Id = uint(parsedId)
 
 	offerDTO, error := controller.usecase.OfferUsecase.ModifyOffer(offer)
 

@@ -8,26 +8,26 @@ import (
 type Network struct {
 	gorm.Model
 	Description string
-	LastName       string
-	FirstName       string
+	LastName    string
+	FirstName   string
 	Email       string
-	PhoneNumber       string
-	Link 		string
-	SearchID		uint
-	UserID uint
+	PhoneNumber string
+	Link        string
+	SearchID    uint
+	UserID      uint
 }
 
 func ToNetworkDTO(Network Network) contract.NetworkDTO {
 	return contract.NetworkDTO{
 		Id:          Network.ID,
 		Description: Network.Description,
-		FirstName:       Network.FirstName,
-		LastName:       Network.LastName,
-		PhoneNumber:       Network.PhoneNumber,
+		FirstName:   Network.FirstName,
+		LastName:    Network.LastName,
+		PhoneNumber: Network.PhoneNumber,
 		Email:       Network.Email,
-		Link: 		Network.Link,
-		SearchID: 	Network.SearchID,
-		UserID: Network.UserID,
+		Link:        Network.Link,
+		SearchID:    Network.SearchID,
+		UserID:      Network.UserID,
 	}
 }
 
@@ -36,14 +36,14 @@ func ToNetwork(NetworkDTO contract.NetworkDTO) Network {
 		Model: gorm.Model{
 			ID: NetworkDTO.Id,
 		},
-		Link: NetworkDTO.Link,
+		Link:        NetworkDTO.Link,
 		Description: NetworkDTO.Description,
-		LastName:       NetworkDTO.LastName,
-		FirstName:       NetworkDTO.FirstName,
-		PhoneNumber:       NetworkDTO.PhoneNumber,
+		LastName:    NetworkDTO.LastName,
+		FirstName:   NetworkDTO.FirstName,
+		PhoneNumber: NetworkDTO.PhoneNumber,
 		Email:       NetworkDTO.Email,
-		SearchID: 	NetworkDTO.SearchID,
-		UserID: NetworkDTO.UserID,
+		SearchID:    NetworkDTO.SearchID,
+		UserID:      NetworkDTO.UserID,
 	}
 }
 

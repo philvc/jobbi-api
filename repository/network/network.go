@@ -66,7 +66,7 @@ func (repository NetworkRepository) ModifyNetwork(NetworkDTO contract.NetworkDTO
 
 	repository.database.Model(&Network).Where("id = ?", Network.ID).Updates(map[string]interface{}{
 		"link": Network.Link, "description": Network.Description, "first_name": Network.FirstName, "last_name": Network.LastName, "email": Network.Email, "phone_number": Network.PhoneNumber})
-
+	
 	NetworkDTO = model.ToNetworkDTO(Network)
 
 	return &NetworkDTO, nil

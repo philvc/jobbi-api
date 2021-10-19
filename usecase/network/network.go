@@ -18,7 +18,6 @@ func Default(repository repository.Repository) NetworkUseCase {
 	}
 }
 
-
 func (usecase NetworkUseCase) GetNetworksBySearchId(searchId string) (*[]contract.NetworkDTO, error) {
 	Networks, err := usecase.repository.NetworkRepository.GetNetworksBySearchId(searchId)
 	return Networks, err

@@ -2,6 +2,7 @@ package company_controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -132,6 +133,12 @@ func (controller CompanyController) AddCompany(c *gin.Context) {
 	}
 
 	searchDTO, err := controller.usecase.SearchUsecase.GetSearchById(searchId)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
 	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
 
 	if err != nil {
@@ -183,19 +190,26 @@ func (controller CompanyController) AddCompany(c *gin.Context) {
 //       400:
 //         description: Bad Request
 func (controller CompanyController) ModifyCompany(c *gin.Context) {
-	var Company contract.CompanyDTO
 
-	if err := c.BindJSON(&Company); err != nil {
+	companyId := c.Params.ByName(("companyId"))
+
+	var company contract.CompanyDTO
+
+	if err := c.BindJSON(&company); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	CompanyDTO, error := controller.usecase.CompanyUsecase.ModifyCompany(Company)
+	parsedId, _ := strconv.ParseUint(companyId, 10, 32)
 
-	if error != nil {
-		c.IndentedJSON(http.StatusBadRequest, error.Error())
+	company.Id = uint(parsedId)
+
+	companyDTO, err := controller.usecase.CompanyUsecase.ModifyCompany(company)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, CompanyDTO)
+	c.IndentedJSON(http.StatusOK, companyDTO)
 }
