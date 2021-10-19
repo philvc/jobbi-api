@@ -30,6 +30,7 @@ func (repository UserRepository) GetUserBySub(sub string) (*contract.UserDTO, er
 	return &userDTO, nil
 }
 
+
 func (repository UserRepository) AddUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
 
 	user := model.ToUser(userDTO)

@@ -18,25 +18,27 @@ func Default(repository repository.Repository) FriendshipUseCase {
 	}
 }
 
-
 func (usecase FriendshipUseCase) GetFriendshipsBySearchId(searchId string) (*[]contract.FriendshipDTO, error) {
 	Friendships, err := usecase.repository.FriendshipRepository.GetFriendshipsBySearchId(searchId)
 	return Friendships, err
 }
 
-func (usecase FriendshipUseCase) GetFriendshipById(FriendshipId string) (*contract.FriendshipDTO, error) {
-	Friendship, err := usecase.repository.FriendshipRepository.GetFriendshipById(FriendshipId)
-	return Friendship, err
+func (usecase FriendshipUseCase) GetFriendshipsBySub(sub string) (*[]contract.FriendshipDTO, error) {
+	
+	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
+
+	if err != nil {
+		return nil, err
+	}
+
+	Friendships, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
+	return Friendships, err
 }
 
 func (usecase FriendshipUseCase) AddFriendship(FriendshipDTO contract.FriendshipDTO) (*contract.FriendshipDTO, error) {
 
-	if FriendshipDTO.FirstName == "" {
-		return nil, errors.New("missing firstName")
-	}
-
-	if FriendshipDTO.Description == "" {
-		return nil, errors.New("missing description")
+	if FriendshipDTO.Email == "" {
+		return nil, errors.New("missing email")
 	}
 
 	Friendship, err := usecase.repository.FriendshipRepository.AddFriendship(FriendshipDTO)

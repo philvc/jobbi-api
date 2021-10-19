@@ -18,7 +18,7 @@ func Default(db *gorm.DB) FriendshipRepository {
 	}
 }
 
-func (repository FriendshipRepository) GetFriendshipsBySearchId(searchId uint) (*[]contract.FriendshipDTO, error){
+func (repository FriendshipRepository) GetFriendshipsBySearchId(searchId string) (*[]contract.FriendshipDTO, error){
 	var friendships []model.Friendship
 	var search model.Search
 
@@ -34,7 +34,7 @@ func (repository FriendshipRepository) GetFriendshipsBySearchId(searchId uint) (
 
 	return &friendshipDTOs, nil
 }
-func (repository FriendshipRepository) GetFriendshipsByUserID(userId uint) (*[]contract.FriendshipDTO, error){
+func (repository FriendshipRepository) GetFriendshipsByUserId(userId uint) (*[]contract.FriendshipDTO, error){
 	var friendships []model.Friendship
 	var user model.User
 
@@ -69,7 +69,8 @@ func (repository FriendshipRepository) ModifyFriendship(friendshipDTO contract.F
 
 	friendship := model.ToFriendship(friendshipDTO)
 
-	repository.database.Model(&friendship).Where("id = ?", friendship.ID).Updates(map[string]interface{}{"state": friendship.State, "first_name": friendship.FirstName, "last_name": friendship.LastName, "email": friendship.Email})
+	repository.database.Model(&friendship).Where("id = ?", friendship.ID).Updates(map[string]interface{}{"state": friendship.State, 
+	"first_name": friendship.FirstName, "last_name": friendship.LastName, "email": friendship.Email, "user_id": friendship.UserID, "search_id": friendship.SearchID})
 
 	friendshipDTO = model.ToFriendshipDTO(friendship)
 

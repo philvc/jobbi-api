@@ -24,5 +24,13 @@ type FriendshipDTO struct {
 	//
 	// required: true
 	Email string `json:"email"`
+	// The userId
+	//
+	// required: false
+	UserId uint `json:"userId"`
+	// The searchId
+	//
+	// required: true
+	SearchId uint `json:"searchId"`
 
 }
