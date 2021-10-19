@@ -1,9 +1,7 @@
 package test
 
 import (
-	"github.com/brianvoe/gofakeit/v6"
 	"github.com/philvc/jobbi-api/database"
-	"github.com/philvc/jobbi-api/database/model"
 	"github.com/philvc/jobbi-api/repository"
 	"gorm.io/gorm"
 )
@@ -27,7 +25,6 @@ func Default() TestEnvironment {
 func (testEnvironment TestEnvironment) Initialise() {
 	createAddresses(testEnvironment.Database)
 	createUsers(testEnvironment.Database)
-	createClients(testEnvironment.Database)
 }
 
 // Fills database with Addresses
@@ -40,10 +37,4 @@ func createUsers(database *gorm.DB) {
 
 }
 
-// Fills database with Clients
-func createClients(database *gorm.DB) {
-	client := model.Client{
-		Name: gofakeit.Person().FirstName,
-	}
-	database.Create(&client)
-}
+

@@ -151,7 +151,7 @@ func (controller OfferController) AddOffer(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, offerDTO)
 }
-// swagger:operation PUT /searches/{searchId}/offers/{offerId} offers ModifyCompany
+// swagger:operation PUT /searches/{searchId}/offers/{offerId} offers ModifyOffer
 // type id struct
 // Modify offer.
 // Return offer

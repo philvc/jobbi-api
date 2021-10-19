@@ -6,7 +6,7 @@ package contract
 type OfferDTO struct {
 	// The id
 	//
-	// required: true
+	// required: false
 	Id uint `json:"id"`
 	// The description
 	//
@@ -26,6 +26,6 @@ type OfferDTO struct {
 	SearchID uint `json:"searchId"`
 	// the user id
 	//
-	// required: true
+	// required: false
 	UserID uint `json:"userId"`
 }

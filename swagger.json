@@ -580,7 +580,7 @@
         "tags": [
           "offers"
         ],
-        "operationId": "ModifyCompany",
+        "operationId": "ModifyOffer",
         "parameters": [
           {
             "type": "string",
@@ -661,9 +661,6 @@
     "CompanyDTO": {
       "description": "An company",
       "type": "object",
-      "required": [
-        "id"
-      ],
       "properties": {
         "description": {
           "description": "The description",
@@ -778,9 +775,6 @@
       "description": "An network",
       "type": "object",
       "required": [
-        "id",
-        "firstName",
-        "lastName",
         "searchId"
       ],
       "properties": {
@@ -839,9 +833,7 @@
       "description": "An offer",
       "type": "object",
       "required": [
-        "id",
-        "searchId",
-        "userId"
+        "searchId"
       ],
       "properties": {
         "description": {

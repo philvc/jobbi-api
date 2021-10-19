@@ -6,7 +6,6 @@ import (
 	"github.com/philvc/jobbi-api/controller"
 
 	me_router "github.com/philvc/jobbi-api/router/me"
-	organisation_router "github.com/philvc/jobbi-api/router/organisation"
 	search_router "github.com/philvc/jobbi-api/router/search"
 	user_router "github.com/philvc/jobbi-api/router/user"
 )
@@ -38,7 +37,6 @@ func (router Router) Initiliase() {
 	// Creates all the routers
 	meRouter := me_router.Default(router.controller)
 	userRouter := user_router.Default(router.controller)
-	organisationRouter := organisation_router.Default(router.controller)
 	searchRouter := search_router.Default(router.controller)
 
 	// Creates the api-group
@@ -47,7 +45,6 @@ func (router Router) Initiliase() {
 	// Initialises all the routers
 	meRouter.Initialise(api)
 	userRouter.Initialise(api)
-	organisationRouter.Initialise(api)
 	searchRouter.Initialise(api)
 
 }

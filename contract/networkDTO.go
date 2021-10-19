@@ -6,7 +6,7 @@ package contract
 type NetworkDTO struct {
 	// The id
 	//
-	// required: true
+	// required: false
 	Id uint `json:"id"`
 	// The description
 	//
@@ -14,11 +14,11 @@ type NetworkDTO struct {
 	Description string `json:"description"`
 	// The firstName
 	//
-	// required: true
+	// required: false
 	FirstName string `json:"firstName"`
 	// The lastName
 	//
-	// required: true
+	// required: false
 	LastName string `json:"lastName"`
 	// The email
 	//

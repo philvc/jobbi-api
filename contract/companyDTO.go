@@ -6,7 +6,7 @@ package contract
 type CompanyDTO struct {
 	// The id
 	//
-	// required: true
+	// required: false
 	Id uint `json:"id"`
 	// The link
 	//

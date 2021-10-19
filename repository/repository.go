@@ -1,10 +1,8 @@
 package repository
 
 import (
-	client_repository "github.com/philvc/jobbi-api/repository/client"
 	company_repository "github.com/philvc/jobbi-api/repository/company"
 	friendship_repository "github.com/philvc/jobbi-api/repository/friendship"
-	invoice_repository "github.com/philvc/jobbi-api/repository/invoice"
 	network_repository "github.com/philvc/jobbi-api/repository/network"
 	offer_repository "github.com/philvc/jobbi-api/repository/offer"
 	organisation_repository "github.com/philvc/jobbi-api/repository/organisation"
@@ -15,8 +13,6 @@ import (
 
 type Repository struct {
 	UserRepository         user_repository.UserRepository
-	ClientRepository       client_repository.ClientRepository
-	InvoiceRepository      invoice_repository.InvoiceRepository
 	OrganisationRepository organisation_repository.OrganisationRepository
 	SearchRepository       search_repository.SearchRepository
 	OfferRepository        offer_repository.OfferRepository
@@ -28,8 +24,6 @@ type Repository struct {
 func Default(database *gorm.DB) Repository {
 	return Repository{
 		UserRepository:         user_repository.Default(database),
-		ClientRepository:       client_repository.Default(database),
-		InvoiceRepository:      invoice_repository.Default(database),
 		OrganisationRepository: organisation_repository.Default(database),
 		SearchRepository:       search_repository.Default(database),
 		OfferRepository:        offer_repository.Default(database),
