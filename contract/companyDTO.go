@@ -2,30 +2,30 @@ package contract
 
 // An company
 //
-// swagger:model CompanyDTO 
+// swagger:model CompanyDTO
 type CompanyDTO struct {
 	// The id
 	//
 	// required: true
 	Id uint `json:"id"`
+	// The link
+	//
+	// required: false
+	Link string `json:"link"`
 	// The description
 	//
-	// required: true
+	// required: false
 	Description string `json:"description"`
 	// The title
 	//
-	// required: true
+	// required: false
 	Title string `json:"title"`
-	// The link
+	// The UserID
 	//
-	// required: true
-	Link string `json:"link"`
-	// the search id
-	//
-	// required: true
-	SearchID uint `json:"searchId"`
-	// the user id
-	//
-	// required: true
+	// required: false
 	UserID uint `json:"userId"`
+	// The SearchID
+	//
+	// required: false
+	SearchID uint `json:"searchId"`
 }

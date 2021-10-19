@@ -49,7 +49,7 @@
           "application/json"
         ],
         "tags": [
-          "search"
+          "searches"
         ],
         "operationId": "AddSearch",
         "parameters": [
@@ -82,7 +82,7 @@
           "application/json"
         ],
         "tags": [
-          "search"
+          "searches"
         ],
         "operationId": "GetSearchById",
         "parameters": [
@@ -105,6 +105,44 @@
             "description": "Bad Request"
           }
         }
+      },
+      "put": {
+        "description": "type id struct\nCreate search.\nReturn search",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "ModifySearch",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "search",
+            "name": "search",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/SearchDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SearchDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       }
     },
     "/searches/{searchId}/companies": {
@@ -114,7 +152,7 @@
           "application/json"
         ],
         "tags": [
-          "company"
+          "companies"
         ],
         "operationId": "GetCompaniesBySearchId",
         "parameters": [
@@ -124,6 +162,47 @@
             "name": "searchId",
             "in": "path",
             "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All the companies",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CompanyDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "description": "type id struct\nCreate company.\nReturn company",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "companies"
+        ],
+        "operationId": "AddCompany",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "company",
+            "name": "company",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CompanyDTO"
+            }
           }
         ],
         "responses": {
@@ -139,6 +218,249 @@
         }
       }
     },
+    "/searches/{searchId}/companies/{companyId}": {
+      "get": {
+        "description": "type id struct\nGet company by id.\nReturn company",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "companies"
+        ],
+        "operationId": "GetCompanyById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "companyId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CompanyDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "description": "type id struct\nModify company.\nReturn company",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "companies"
+        ],
+        "operationId": "ModifyCompany",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "companyId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "company",
+            "name": "company",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CompanyDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CompanyDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/searches/{searchId}/networks": {
+      "get": {
+        "description": "type id struct\nGet networks by searchId.\nReturn network",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "networks"
+        ],
+        "operationId": "GetNetworksBySearchId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/NetworkDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "description": "type id struct\nPost  network.\nReturn  network",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "networks"
+        ],
+        "operationId": "AddNetwork",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "test",
+            "name": "network",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NetworkDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/searches/{searchId}/networks/{networkId}": {
+      "get": {
+        "description": "type id struct\nGet  network by id.\nReturn  network",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "networks"
+        ],
+        "operationId": "GetNetworkById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "networkId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "description": "type id struct\nPut  network.\nReturn  network",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "networks"
+        ],
+        "operationId": "ModifyNetwork",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "networkId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "test",
+            "name": "network",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NetworkDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches/{searchId}/offers": {
       "get": {
         "description": "type id struct\nGet offers by searchId.\nReturn offer",
@@ -146,7 +468,7 @@
           "application/json"
         ],
         "tags": [
-          "offer"
+          "offers"
         ],
         "operationId": "GetOffersBySearchId",
         "parameters": [
@@ -156,6 +478,131 @@
             "name": "searchId",
             "in": "path",
             "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OfferDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "description": "type id struct\nCreate offer.\nReturn offer",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "offers"
+        ],
+        "operationId": "AddOffer",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "offer",
+            "name": "offer",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/OfferDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OfferDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/searches/{searchId}/offers/{offerId}": {
+      "get": {
+        "description": "type id struct\nGet offer by id.\nReturn offer",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "offers"
+        ],
+        "operationId": "GetOfferById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "offerId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OfferDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "description": "type id struct\nModify offer.\nReturn offer",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "offers"
+        ],
+        "operationId": "ModifyCompany",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "offerId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "offer",
+            "name": "offer",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/OfferDTO"
+            }
           }
         ],
         "responses": {
@@ -211,18 +658,17 @@
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
     },
-    "ClientDTO": {
-      "description": "An user",
+    "CompanyDTO": {
+      "description": "An company",
       "type": "object",
+      "required": [
+        "id"
+      ],
       "properties": {
-        "address": {
+        "description": {
+          "description": "The description",
           "type": "string",
-          "x-go-name": "Address"
-        },
-        "email": {
-          "description": "The e-mail",
-          "type": "string",
-          "x-go-name": "Email"
+          "x-go-name": "Description"
         },
         "id": {
           "description": "The id",
@@ -230,26 +676,29 @@
           "format": "uint64",
           "x-go-name": "Id"
         },
-        "name": {
-          "description": "The name",
+        "link": {
+          "description": "The link",
           "type": "string",
-          "x-go-name": "Name"
+          "x-go-name": "Link"
         },
-        "organisationdid": {
+        "searchId": {
+          "description": "The SearchID",
           "type": "integer",
           "format": "uint64",
-          "x-go-name": "OrganisationId"
+          "x-go-name": "SearchID"
         },
-        "vatIncluded": {
-          "type": "boolean",
-          "x-go-name": "VATIncluded"
-        },
-        "vatNumber": {
+        "title": {
+          "description": "The title",
           "type": "string",
-          "x-go-name": "VATNumber"
+          "x-go-name": "Title"
+        },
+        "userId": {
+          "description": "The UserID",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "UserID"
         }
       },
-      "x-go-name": "InvoiceDTO",
       "x-go-package": "github.com/philvc/jobbi-api/contract"
     },
     "DeviceDTO": {
@@ -278,20 +727,110 @@
       "type": "object",
       "required": [
         "id",
-        "state"
+        "lastName",
+        "email",
+        "searchId"
       ],
       "properties": {
+        "email": {
+          "description": "The email",
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "firstName": {
+          "description": "The firstName",
+          "type": "string",
+          "x-go-name": "FirstName"
+        },
         "id": {
           "description": "The id",
           "type": "integer",
           "format": "uint64",
           "x-go-name": "Id"
         },
+        "lastName": {
+          "description": "The lastName",
+          "type": "string",
+          "x-go-name": "LastName"
+        },
+        "searchId": {
+          "description": "The searchId",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "SearchId"
+        },
         "state": {
           "description": "The state",
           "type": "integer",
           "format": "uint64",
           "x-go-name": "State"
+        },
+        "userId": {
+          "description": "The userId",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "UserId"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "NetworkDTO": {
+      "description": "An network",
+      "type": "object",
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "searchId"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "email": {
+          "description": "The email",
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "firstName": {
+          "description": "The firstName",
+          "type": "string",
+          "x-go-name": "FirstName"
+        },
+        "id": {
+          "description": "The id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Id"
+        },
+        "lastName": {
+          "description": "The lastName",
+          "type": "string",
+          "x-go-name": "LastName"
+        },
+        "link": {
+          "description": "The link",
+          "type": "string",
+          "x-go-name": "Link"
+        },
+        "phoneNumber": {
+          "description": "The phoneNumber",
+          "type": "string",
+          "x-go-name": "PhoneNumber"
+        },
+        "searchId": {
+          "description": "The search id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "SearchID"
+        },
+        "userId": {
+          "description": "The user id",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "UserID"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
@@ -301,9 +840,6 @@
       "type": "object",
       "required": [
         "id",
-        "description",
-        "title",
-        "link",
         "searchId",
         "userId"
       ],

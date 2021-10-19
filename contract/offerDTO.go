@@ -10,15 +10,15 @@ type OfferDTO struct {
 	Id uint `json:"id"`
 	// The description
 	//
-	// required: true
+	// required: false
 	Description string `json:"description"`
 	// The title
 	//
-	// required: true
+	// required: false
 	Title string `json:"title"`
 	// The link
 	//
-	// required: true
+	// required: false
 	Link string `json:"link"`
 	// the search id
 	//

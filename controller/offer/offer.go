@@ -18,7 +18,7 @@ func Default(usecase usecase.Usecase) OfferController {
 	}
 }
 
-// swagger:operation GET /searches/{searchId}/offers offer GetOffersBySearchId
+// swagger:operation GET /searches/{searchId}/offers offers GetOffersBySearchId
 // type id struct
 // Get offers by searchId.
 // Return offer
@@ -35,7 +35,9 @@ func Default(usecase usecase.Usecase) OfferController {
 //       200:
 //         description: Success
 //         schema:
-//            $ref: "#/definitions/OfferDTO"
+//           type: array
+//           items: 
+//             $ref: "#/definitions/OfferDTO"
 //       400:
 //         description: Bad Request
 
@@ -52,6 +54,32 @@ func (controller OfferController) GetOffersBySearchId(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, offers)
 }
 
+
+// swagger:operation GET /searches/{searchId}/offers/{offerId} offers GetOfferById
+// type id struct
+// Get offer by id.
+// Return offer
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: offerId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/OfferDTO"
+//       400:
+//         description: Bad Request
 func (controller OfferController) GetOfferById(c *gin.Context) {
 
 	offerId := c.Params.ByName("offerId")
@@ -66,6 +94,31 @@ func (controller OfferController) GetOfferById(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, offer)
 }
 
+// swagger:operation POST /searches/{searchId}/offers offers AddOffer
+// type id struct
+// Create offer.
+// Return offer
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: offer
+//         in: body
+//         schema:
+//            $ref: "#/definitions/OfferDTO"
+//         description: offer
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/OfferDTO"
+//       400:
+//         description: Bad Request
 func (controller OfferController) AddOffer(c *gin.Context) {
 
 	searchId := c.Params.ByName("searchId")
@@ -98,7 +151,36 @@ func (controller OfferController) AddOffer(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, offerDTO)
 }
-
+// swagger:operation PUT /searches/{searchId}/offers/{offerId} offers ModifyCompany
+// type id struct
+// Modify offer.
+// Return offer
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: offerId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: offer
+//         in: body
+//         schema:
+//            $ref: "#/definitions/OfferDTO"
+//         description: offer
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/OfferDTO"
+//       400:
+//         description: Bad Request
 func (controller OfferController) ModifyOffer(c *gin.Context) {
 	var offer contract.OfferDTO
 

@@ -2,7 +2,7 @@ package contract
 
 // An network
 //
-// swagger:model NetworkDTO 
+// swagger:model NetworkDTO
 type NetworkDTO struct {
 	// The id
 	//
@@ -10,7 +10,7 @@ type NetworkDTO struct {
 	Id uint `json:"id"`
 	// The description
 	//
-	// required: true
+	// required: false
 	Description string `json:"description"`
 	// The firstName
 	//
@@ -22,22 +22,22 @@ type NetworkDTO struct {
 	LastName string `json:"lastName"`
 	// The email
 	//
-	// required: true
+	// required: false
 	Email string `json:"email"`
 	// The phoneNumber
 	//
-	// required: true
+	// required: false
 	PhoneNumber string `json:"phoneNumber"`
 	// The link
 	//
-	// required: true
+	// required: false
 	Link string `json:"link"`
-	// the search id
+	// The search id
 	//
 	// required: true
 	SearchID uint `json:"searchId"`
-	// the user id
+	// The user id
 	//
-	// required: true
+	// required: false
 	UserID uint `json:"userId"`
 }

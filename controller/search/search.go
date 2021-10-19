@@ -33,7 +33,6 @@ func Default(usecase usecase.Usecase) SearchController {
 //             "$ref": "#/definitions/SearchDTO"
 //       400:
 //         description: Bad Request
-
 func (controller SearchController) GetSearches(c *gin.Context) {
 
 	sub := c.GetString("sub")
@@ -52,7 +51,7 @@ func (controller SearchController) GetSearches(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, searches)
 }
 
-// swagger:operation GET /searches/{searchId} search GetSearchById
+// swagger:operation GET /searches/{searchId} searches GetSearchById
 // type id struct
 // Get search by id.
 // Return search
@@ -86,7 +85,7 @@ func (controller SearchController) GetSearchById(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, search)
 }
 
-// swagger:operation POST /searches search AddSearch
+// swagger:operation POST /searches searches AddSearch
 // type id struct
 // Create search.
 // Return search
@@ -134,6 +133,32 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, searchDTO)
 }
+
+// swagger:operation PUT /searches/{searchId} searches ModifySearch
+// type id struct
+// Create search.
+// Return search
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: search
+//         in: body
+//         schema:
+//            $ref: "#/definitions/SearchDTO"
+//         description: search
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/SearchDTO"
+//       400:
+//         description: Bad Request
 
 func (controller SearchController) ModifySearch(c *gin.Context) {
 	var search contract.SearchDTO

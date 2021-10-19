@@ -18,7 +18,7 @@ func Default(usecase usecase.Usecase) NetworkController {
 	}
 }
 
-// swagger:operation GET /searches/{searchId}/networks network GetNetworksBySearchId
+// swagger:operation GET /searches/{searchId}/networks networks GetNetworksBySearchId
 // type id struct
 // Get networks by searchId.
 // Return network
@@ -35,10 +35,11 @@ func Default(usecase usecase.Usecase) NetworkController {
 //       200:
 //         description: Success
 //         schema:
-//            $ref: "#/definitions/NetworkDTO"
+//           type: array
+//           items:
+//             $ref: "#/definitions/NetworkDTO"
 //       400:
 //         description: Bad Request
-
 func (controller NetworkController) GetNetworksBySearchId(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 
@@ -52,6 +53,31 @@ func (controller NetworkController) GetNetworksBySearchId(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, Networks)
 }
 
+// swagger:operation GET /searches/{searchId}/networks/{networkId} networks GetNetworkById
+// type id struct
+// Get  network by id.
+// Return  network
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name:  networkId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/NetworkDTO"
+//       400:
+//         description: Bad Request
 func (controller NetworkController) GetNetworkById(c *gin.Context) {
 
 	NetworkId := c.Params.ByName("networkId")
@@ -66,6 +92,34 @@ func (controller NetworkController) GetNetworkById(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, Network)
 }
 
+
+// swagger:operation POST /searches/{searchId}/networks networks AddNetwork
+// type id struct
+// Post  network.
+// Return  network
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name:  network
+//         in: body
+//         schema:
+//            $ref: "#/definitions/NetworkDTO"
+//         description: offer
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/NetworkDTO"
+//       400:
+//         description: Bad Request
 func (controller NetworkController) AddNetwork(c *gin.Context) {
 
 	searchId := c.Params.ByName("searchId")
@@ -99,6 +153,38 @@ func (controller NetworkController) AddNetwork(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, NetworkDTO)
 }
 
+// swagger:operation PUT /searches/{searchId}/networks/{networkId} networks ModifyNetwork
+// type id struct
+// Put  network.
+// Return  network
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: networkId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name:  network
+//         in: body
+//         schema:
+//            $ref: "#/definitions/NetworkDTO"
+//         description: network
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/NetworkDTO"
+//       400:
+//         description: Bad Request
 func (controller NetworkController) ModifyNetwork(c *gin.Context) {
 	var Network contract.NetworkDTO
 

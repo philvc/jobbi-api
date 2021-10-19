@@ -18,7 +18,7 @@ func Default(usecase usecase.Usecase) CompanyController {
 	}
 }
 
-// swagger:operation GET /searches/{searchId}/companies company GetCompaniesBySearchId
+// swagger:operation GET /searches/{searchId}/companies companies GetCompaniesBySearchId
 // type id struct
 // Get Companies by searchId.
 // Return company
@@ -33,9 +33,11 @@ func Default(usecase usecase.Usecase) CompanyController {
 //       - application/json
 //     Responses:
 //       200:
-//         description: Success
+//         description: All the companies
 //         schema:
-//            $ref: "#/definitions/CompanyDTO"
+//           type: array
+//           items:
+//             $ref: "#/definitions/CompanyDTO"
 //       400:
 //         description: Bad Request
 
@@ -52,6 +54,31 @@ func (controller CompanyController) GetCompaniesBySearchId(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, Companies)
 }
 
+// swagger:operation GET /searches/{searchId}/companies/{companyId} companies GetCompanyById
+// type id struct
+// Get company by id.
+// Return company
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: companyId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/CompanyDTO"
+//       400:
+//         description: Bad Request
 func (controller CompanyController) GetCompanyById(c *gin.Context) {
 
 	companyId := c.Params.ByName("companyId")
@@ -65,6 +92,32 @@ func (controller CompanyController) GetCompanyById(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, Company)
 }
+
+// swagger:operation POST /searches/{searchId}/companies companies AddCompany
+// type id struct
+// Create company.
+// Return company
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: company
+//         in: body
+//         schema:
+//            $ref: "#/definitions/CompanyDTO"
+//         description: company
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/CompanyDTO"
+//       400:
+//         description: Bad Request
 
 func (controller CompanyController) AddCompany(c *gin.Context) {
 
@@ -99,6 +152,36 @@ func (controller CompanyController) AddCompany(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, CompanyDTO)
 }
 
+// swagger:operation PUT /searches/{searchId}/companies/{companyId} companies ModifyCompany
+// type id struct
+// Modify company.
+// Return company
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: companyId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: company
+//         in: body
+//         schema:
+//            $ref: "#/definitions/CompanyDTO"
+//         description: company
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/CompanyDTO"
+//       400:
+//         description: Bad Request
 func (controller CompanyController) ModifyCompany(c *gin.Context) {
 	var Company contract.CompanyDTO
 
