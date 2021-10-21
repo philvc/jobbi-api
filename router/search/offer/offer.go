@@ -32,4 +32,5 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	childParam := child.Group(parameter)
 	childParam.GET("", middleware.Authorize(routerGroup.controller.OfferController.GetOfferById))
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.OfferController.ModifyOffer))
+	childParam.DELETE("", middleware.Authorize(routerGroup.controller.OfferController.DeleteOffer))
 }

@@ -205,3 +205,49 @@ func (controller OfferController) ModifyOffer(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, offerDTO)
 }
+
+// swagger:operation DELETE /searches/{searchId}/offers/{offerId} offers DeleteOffer
+// type id struct
+// Delete offer.
+// Return true or error
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: offerId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: boolean
+//       400:
+//         description: Bad Request
+func (controller OfferController) DeleteOffer(c *gin.Context) {
+	offerId := c.Params.ByName(("offerId"))
+
+	var offer contract.OfferDTO
+
+	parsedId, _ := strconv.ParseUint(offerId, 10, 32)
+
+	offer.Id = uint(parsedId)
+
+	result, error := controller.usecase.OfferUsecase.DeleteOffer(offer.Id)
+
+	if error != nil {
+		c.IndentedJSON(http.StatusBadRequest, error.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, result)
+}
+
+

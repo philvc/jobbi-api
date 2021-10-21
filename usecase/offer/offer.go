@@ -18,7 +18,6 @@ func Default(repository repository.Repository) OfferUseCase {
 	}
 }
 
-
 func (usecase OfferUseCase) GetOffersBySearchId(searchId string) (*[]contract.OfferDTO, error) {
 	offers, err := usecase.repository.OfferRepository.GetOffersBySearchId(searchId)
 	return offers, err
@@ -48,4 +47,9 @@ func (usecase OfferUseCase) AddOffer(OfferDTO contract.OfferDTO) (*contract.Offe
 func (usecase OfferUseCase) ModifyOffer(OfferDTO contract.OfferDTO) (*contract.OfferDTO, error) {
 	user, err := usecase.repository.OfferRepository.ModifyOffer(OfferDTO)
 	return user, err
+}
+
+func (usecase OfferUseCase) DeleteOffer(offerId uint) (bool, error) {
+	result, err := usecase.repository.OfferRepository.DeleteOffer(offerId)
+	return result, err
 }

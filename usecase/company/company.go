@@ -18,7 +18,6 @@ func Default(repository repository.Repository) CompanyUseCase {
 	}
 }
 
-
 func (usecase CompanyUseCase) GetCompaniesBySearchId(searchId string) (*[]contract.CompanyDTO, error) {
 	Companies, err := usecase.repository.CompanyRepository.GetCompaniesBySearchId(searchId)
 	return Companies, err
@@ -48,4 +47,9 @@ func (usecase CompanyUseCase) AddCompany(CompanyDTO contract.CompanyDTO) (*contr
 func (usecase CompanyUseCase) ModifyCompany(CompanyDTO contract.CompanyDTO) (*contract.CompanyDTO, error) {
 	user, err := usecase.repository.CompanyRepository.ModifyCompany(CompanyDTO)
 	return user, err
+}
+
+func (usecase CompanyUseCase) DeleteCompany(companyId uint) (bool, error) {
+	result, err := usecase.repository.CompanyRepository.DeleteCompany(companyId)
+	return result, err
 }

@@ -209,3 +209,47 @@ func (controller NetworkController) ModifyNetwork(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, networkDTO)
 }
+
+// swagger:operation DELETE /searches/{searchId}/networks/{networkId} networks DeleteNetwork
+// type id struct
+// Delete network.
+// Return true or error
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: networkId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: boolean
+//       400:
+//         description: Bad Request
+func (controller NetworkController) DeleteNetwork(c *gin.Context) {
+	networkId := c.Params.ByName(("networkId"))
+
+	var network contract.NetworkDTO
+
+	parsedId, _ := strconv.ParseUint(networkId, 10, 32)
+
+	network.Id = uint(parsedId)
+
+	result, error := controller.usecase.NetworkUsecase.DeleteNetwork(network.Id)
+
+	if error != nil {
+		c.IndentedJSON(http.StatusBadRequest, error.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, result)
+}

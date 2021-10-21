@@ -300,6 +300,43 @@
             "description": "Bad Request"
           }
         }
+      },
+      "delete": {
+        "description": "type id struct\nDelete company.\nReturn true or error",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "companies"
+        ],
+        "operationId": "DeleteCompany",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "companyId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       }
     },
     "/searches/{searchId}/networks": {
@@ -459,6 +496,43 @@
             "description": "Bad Request"
           }
         }
+      },
+      "delete": {
+        "description": "type id struct\nDelete network.\nReturn true or error",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "networks"
+        ],
+        "operationId": "DeleteNetwork",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "networkId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       }
     },
     "/searches/{searchId}/offers": {
@@ -610,6 +684,43 @@
             "description": "Success",
             "schema": {
               "$ref": "#/definitions/OfferDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "description": "type id struct\nDelete offer.\nReturn true or error",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "offers"
+        ],
+        "operationId": "DeleteOffer",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "offerId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
             }
           },
           "400": {
@@ -829,9 +940,6 @@
     "OfferDTO": {
       "description": "An offer",
       "type": "object",
-      "required": [
-        "searchId"
-      ],
       "properties": {
         "description": {
           "description": "The description",

@@ -213,3 +213,48 @@ func (controller CompanyController) ModifyCompany(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, companyDTO)
 }
+
+
+// swagger:operation DELETE /searches/{searchId}/companies/{companyId} companies DeleteCompany
+// type id struct
+// Delete company.
+// Return true or error
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: companyId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: boolean
+//       400:
+//         description: Bad Request
+func (controller CompanyController) DeleteCompany(c *gin.Context) {
+	companyId := c.Params.ByName(("companyId"))
+
+	var company contract.CompanyDTO
+
+	parsedId, _ := strconv.ParseUint(companyId, 10, 32)
+
+	company.Id = uint(parsedId)
+
+	result, error := controller.usecase.CompanyUsecase.DeleteCompany(company.Id)
+
+	if error != nil {
+		c.IndentedJSON(http.StatusBadRequest, error.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, result)
+}

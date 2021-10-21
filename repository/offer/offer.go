@@ -71,3 +71,18 @@ func (repository OfferRepository) ModifyOffer(OfferDTO contract.OfferDTO) (*cont
 
 	return &OfferDTO, nil
 }
+
+func (repository OfferRepository) DeleteOffer(offerId uint) (bool, error) {
+
+	var Offer model.Offer
+
+	if err := repository.database.Where("id = ?", offerId).First(&Offer).Error; err != nil {
+		return false, errors.New("no Offer")
+	}
+
+	if err := repository.database.Delete(&Offer, offerId).Error; err != nil {
+		return false, errors.New("delete offer failed")
+	}
+
+	return true, nil
+}

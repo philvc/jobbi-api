@@ -22,7 +22,7 @@ type OfferDTO struct {
 	Link string `json:"link"`
 	// the search id
 	//
-	// required: true
+	// required: false
 	SearchID uint `json:"searchId"`
 	// the user id
 	//

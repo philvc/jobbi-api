@@ -71,3 +71,20 @@ func (repository NetworkRepository) ModifyNetwork(NetworkDTO contract.NetworkDTO
 
 	return &NetworkDTO, nil
 }
+
+
+
+func (repository NetworkRepository) DeleteNetwork(networkId uint) (bool, error) {
+
+	var Network model.Network
+
+	if err := repository.database.Where("id = ?", networkId).First(&Network).Error; err != nil {
+		return false, errors.New("no Network")
+	}
+
+	if err := repository.database.Delete(&Network, networkId).Error; err != nil {
+		return false, errors.New("delete network failed")
+	}
+
+	return true, nil
+}

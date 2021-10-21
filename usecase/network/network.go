@@ -46,3 +46,8 @@ func (usecase NetworkUseCase) ModifyNetwork(NetworkDTO contract.NetworkDTO) (*co
 	user, err := usecase.repository.NetworkRepository.ModifyNetwork(NetworkDTO)
 	return user, err
 }
+
+func (usecase NetworkUseCase) DeleteNetwork(networkId uint) (bool, error) {
+	result, err := usecase.repository.NetworkRepository.DeleteNetwork(networkId)
+	return result, err
+}

@@ -71,3 +71,18 @@ func (repository CompanyRepository) ModifyCompany(CompanyDTO contract.CompanyDTO
 
 	return &CompanyDTO, nil
 }
+
+func (repository CompanyRepository) DeleteCompany(companyId uint) (bool, error) {
+
+	var Company model.Company
+
+	if err := repository.database.Where("id = ?", companyId).First(&Company).Error; err != nil {
+		return false, errors.New("no company")
+	}
+
+	if err := repository.database.Delete(&Company, companyId).Error; err != nil {
+		return false, errors.New("delete offer failed")
+	}
+
+	return true, nil
+}
