@@ -34,7 +34,7 @@ type NetworkDTO struct {
 	Link string `json:"link"`
 	// The search id
 	//
-	// required: true
+	// required: false
 	SearchID uint `json:"searchId"`
 	// The user id
 	//

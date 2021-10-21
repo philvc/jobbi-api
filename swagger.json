@@ -774,9 +774,6 @@
     "NetworkDTO": {
       "description": "An network",
       "type": "object",
-      "required": [
-        "searchId"
-      ],
       "properties": {
         "description": {
           "description": "The description",
