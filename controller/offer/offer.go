@@ -185,6 +185,17 @@ func (controller OfferController) AddOffer(c *gin.Context) {
 func (controller OfferController) ModifyOffer(c *gin.Context) {
 
 	offerId := c.Params.ByName(("offerId"))
+	searchId := c.Params.ByName("searchId")
+
+	sub := c.GetString("sub")
+
+	// Check user identity
+	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
 
 	var offer contract.OfferDTO
 
@@ -194,7 +205,10 @@ func (controller OfferController) ModifyOffer(c *gin.Context) {
 	}
 
 	parsedId, _ := strconv.ParseUint(offerId, 10, 32)
+	parseSearchId, _ := strconv.ParseUint(searchId, 10, 32)
 	offer.Id = uint(parsedId)
+	offer.SearchID = uint(parseSearchId)
+	offer.UserID = userDTO.Id
 
 	offerDTO, error := controller.usecase.OfferUsecase.ModifyOffer(offer)
 
@@ -249,5 +263,3 @@ func (controller OfferController) DeleteOffer(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, result)
 }
-
-

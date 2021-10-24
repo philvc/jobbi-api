@@ -2,6 +2,7 @@ package search_controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -163,17 +164,31 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 func (controller SearchController) ModifySearch(c *gin.Context) {
 	var search contract.SearchDTO
 
+	sub := c.GetString("sub")
+	searchId := c.Params.ByName("searchId")
+
+	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	parsedId, _ := strconv.ParseUint(searchId, 10, 32)
+
+	search.Id = uint(parsedId)
+	search.UserID = userDTO.Id
+
 	if err := c.BindJSON(&search); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	userDTO, error := controller.usecase.SearchUsecase.ModifySearch(search)
+	searchDTO, error := controller.usecase.SearchUsecase.ModifySearch(search)
 
 	if error != nil {
 		c.IndentedJSON(http.StatusBadRequest, error.Error())
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, userDTO)
+	c.IndentedJSON(http.StatusOK, searchDTO)
 }

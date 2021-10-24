@@ -6,7 +6,7 @@ package contract
 type SearchDTO struct {
 	// The id
 	//
-	// required: true
+	// required: false
 	Id uint `json:"id"`
 	// The description
 	//

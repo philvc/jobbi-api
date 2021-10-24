@@ -192,8 +192,19 @@ func (controller CompanyController) AddCompany(c *gin.Context) {
 func (controller CompanyController) ModifyCompany(c *gin.Context) {
 
 	companyId := c.Params.ByName(("companyId"))
+	searchId := c.Params.ByName("searchId")
 
 	var company contract.CompanyDTO
+
+	// save user id in dto
+	sub := c.GetString("sub")
+
+	// Check user identity
+	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
 
 	if err := c.BindJSON(&company); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -201,8 +212,10 @@ func (controller CompanyController) ModifyCompany(c *gin.Context) {
 	}
 
 	parsedId, _ := strconv.ParseUint(companyId, 10, 32)
-
+	parseSearchId, _ := strconv.ParseUint(searchId, 10, 32)
+	company.SearchID = uint(parseSearchId)
 	company.Id = uint(parsedId)
+	company.UserID = userDTO.Id
 
 	companyDTO, err := controller.usecase.CompanyUsecase.ModifyCompany(company)
 
@@ -213,7 +226,6 @@ func (controller CompanyController) ModifyCompany(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, companyDTO)
 }
-
 
 // swagger:operation DELETE /searches/{searchId}/companies/{companyId} companies DeleteCompany
 // type id struct

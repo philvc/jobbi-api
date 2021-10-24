@@ -187,19 +187,33 @@ func (controller NetworkController) AddNetwork(c *gin.Context) {
 //         description: Bad Request
 func (controller NetworkController) ModifyNetwork(c *gin.Context) {
 
-	networkId := c.Params.ByName(("networkId"))
+	networkId := c.Params.ByName("networkId")
+	searchId := c.Params.ByName("searchId")
+
+	// save user id in dto
+	sub := c.GetString("sub")
+
+	// Check user identity
+	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
 
 	var network contract.NetworkDTO
 
 	parsedId, _ := strconv.ParseUint(networkId, 10, 32)
+	parseSearchId, _ := strconv.ParseUint(searchId, 10, 32)
 
 	network.Id = uint(parsedId)
+	network.SearchID = uint(parseSearchId)
+	network.UserID = userDTO.Id
 
 	if err := c.BindJSON(&network); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	
+
 	networkDTO, error := controller.usecase.NetworkUsecase.ModifyNetwork(network)
 
 	if error != nil {
