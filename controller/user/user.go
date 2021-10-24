@@ -45,6 +45,24 @@ func (controller UserController) GetUserBySub(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, user)
 }
 
+// swagger:operation POST /users CreateUser
+// Create new user.
+// Return user
+// ---
+//     Parameters:
+//       - name: user
+//         in: body
+//         schema:
+//            $ref: "#/definitions/UserDTO"
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/UserDTO"
+//       400:
+//         description: Bad Request
 func (controller UserController) AddUser(c *gin.Context) {
 
 	var user contract.UserDTO

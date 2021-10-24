@@ -25,6 +25,10 @@ func (usecase UserUsecase) GetUserBySub(sub string) (*contract.UserDTO, error) {
 
 func (usecase UserUsecase) AddUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
 
+	if userDTO.ExternalId == "" {
+		return nil, errors.New("missing information")
+	}
+
 	if userDTO.Email == "" {
 		return nil, errors.New("missing information")
 	}

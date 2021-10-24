@@ -778,6 +778,36 @@
           }
         }
       }
+    },
+    "/users": {
+      "post": {
+        "description": "Return user",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create new user.",
+        "operationId": "CreateUser",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "definitions": {
