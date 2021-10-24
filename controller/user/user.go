@@ -18,11 +18,24 @@ func Default(usecase usecase.Usecase) UserController {
 	}
 }
 
+// swagger:operation GET /me GetUserBySub
+// Get user by sub.
+// Return user
+// ---
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/UserDTO"
+//       400:
+//         description: Bad Request
 func (controller UserController) GetUserBySub(c *gin.Context) {
 
-	userId := c.GetString("sub")
+	sub := c.GetString("sub")
 
-	user, error := controller.usecase.UserUsecase.GetUserBySub(userId)
+	user, error := controller.usecase.UserUsecase.GetUserBySub(sub)
 
 	if error != nil {
 		c.IndentedJSON(http.StatusBadRequest, error)
@@ -51,13 +64,45 @@ func (controller UserController) AddUser(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, userDTO)
 }
 
+// swagger:operation PUT /me ModifyUser
+// Put user.
+// Return user
+// ---
+//     Parameters:
+//       - name: user
+//         in: body
+//         schema:
+//            $ref: "#/definitions/UserDTO"
+//         description: user
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/UserDTO"
+//       400:
+//         description: Bad Request
 func (controller UserController) ModifyUser(c *gin.Context) {
+
+	sub := c.GetString("sub")
+
+	userBySub, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return
+	}
+
 	var user contract.UserDTO
 
 	if err := c.BindJSON(&user); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
+
+	user.Id = userBySub.Id
+	user.ExternalId = userBySub.ExternalId
 
 	userDTO, error := controller.usecase.UserUsecase.ModifyUser(user)
 

@@ -24,5 +24,6 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	users := parent.Group(endpoint)
 	users.GET("", middleware.Authorize(routerGroup.controller.UserController.GetUserBySub))
+	users.PUT("", middleware.Authorize(routerGroup.controller.UserController.ModifyUser))
 
 }

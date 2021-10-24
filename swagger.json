@@ -17,6 +17,56 @@
   },
   "basePath": "/",
   "paths": {
+    "/me": {
+      "get": {
+        "description": "Return user",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get user by sub.",
+        "operationId": "GetUserBySub",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "description": "Return user",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Put user.",
+        "operationId": "ModifyUser",
+        "parameters": [
+          {
+            "description": "user",
+            "name": "user",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches": {
       "get": {
         "description": "Return all searches",
@@ -1072,9 +1122,6 @@
     "UserDTO": {
       "description": "An user",
       "type": "object",
-      "required": [
-        "id"
-      ],
       "properties": {
         "email": {
           "description": "The email",

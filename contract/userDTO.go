@@ -6,7 +6,7 @@ package contract
 type UserDTO struct {
 	// The id
 	//
-	// required: true
+	// required: false
 	Id uint `json:"id"`
 	// The firstName
 	//
