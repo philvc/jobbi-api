@@ -389,6 +389,86 @@
         }
       }
     },
+    "/searches/{searchId}/friendships": {
+      "get": {
+        "description": "type id struct\nGet friendships by searchId.\nReturn friendship",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "friendships"
+        ],
+        "operationId": "GetFriendshipsBySearchId",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "number",
+            "description": "test",
+            "name": "status",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FriendshipDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "description": "type id struct\nCreate friendship.\nReturn friendship",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "friendships"
+        ],
+        "operationId": "AddFriendship",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "friendship",
+            "name": "friendship",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/FriendshipDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/FriendshipDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches/{searchId}/networks": {
       "get": {
         "description": "type id struct\nGet networks by searchId.\nReturn network",
@@ -913,12 +993,6 @@
     "FriendshipDTO": {
       "description": "An friendship",
       "type": "object",
-      "required": [
-        "id",
-        "lastName",
-        "email",
-        "searchId"
-      ],
       "properties": {
         "email": {
           "description": "The email",

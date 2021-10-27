@@ -10,7 +10,6 @@ type Search struct {
 	Description string
 	Title       string
 	UserID      uint
-	Answers     []Answer     `gorm:"foreignKey:SearchID"`
 	Friendships []Friendship `gorm:"foreignKey:SearchID"`
 	Offers      []Offer      `gorm:"foreignKey:SearchID"`
 	Companies   []Company    `gorm:"foreignKey:SearchID"`

@@ -9,20 +9,21 @@ type Friendship struct {
 	gorm.Model
 	State     uint
 	FirstName string
-	LastName string
-	Email string
-	UserID uint
-	SearchID uint
-	Answers []Answer`gorm:"foreignKey:FriendshipID"`
+	LastName  string
+	Email     string
+	UserID    uint
+	SearchID  uint
 }
 
 func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 	return contract.FriendshipDTO{
-		Id:         friendship.ID,
-		State:  friendship.State,
-		FirstName:       friendship.FirstName,
-		LastName:       friendship.LastName,
-		Email:       friendship.Email,
+		Id:        friendship.ID,
+		State:     friendship.State,
+		FirstName: friendship.FirstName,
+		LastName:  friendship.LastName,
+		Email:     friendship.Email,
+		UserId:    friendship.UserID,
+		SearchId:   friendship.SearchID,
 	}
 }
 
@@ -31,10 +32,12 @@ func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 		Model: gorm.Model{
 			ID: friendshipDTO.Id,
 		},
-		State:  friendshipDTO.State,
-		FirstName:       friendshipDTO.FirstName,
-		LastName:       friendshipDTO.LastName,
-		Email:       friendshipDTO.Email,
+		State:     friendshipDTO.State,
+		FirstName: friendshipDTO.FirstName,
+		LastName:  friendshipDTO.LastName,
+		Email:     friendshipDTO.Email,
+		UserID:	   friendshipDTO.UserId,
+		SearchID:  friendshipDTO.SearchId,
 	}
 }
 

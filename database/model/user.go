@@ -7,16 +7,16 @@ import (
 
 type User struct {
 	gorm.Model
-	FirstName     string
-	LastName      string
-	Email         string
-	ExternalId    string
-	Searches []Search`gorm:"foreignKey:UserID"`
-	Devices []Device`gorm:"foreignKey:UserID"`
-	Friendships []Friendship`gorm:"foreignKey:UserID"`
-	Offers []Offer`gorm:"foreignKey:UserID"`
-	Companies []Company`gorm:"foreignKey:UserID"`
-	Networks []Network`gorm:"foreignKey:UserID"`
+	FirstName   string
+	LastName    string
+	Email       string
+	ExternalId  string
+	Searches    []Search     `gorm:"foreignKey:UserID"`
+	Devices     []Device     `gorm:"foreignKey:UserID"`
+	Friendships []Friendship `gorm:"foreignKey:UserID"`
+	Offers      []Offer      `gorm:"foreignKey:UserID"`
+	Companies   []Company    `gorm:"foreignKey:UserID"`
+	Networks    []Network    `gorm:"foreignKey:UserID"`
 }
 
 func ToUserDTO(user User) contract.UserDTO {

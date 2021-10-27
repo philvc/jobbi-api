@@ -18,8 +18,9 @@ func Default(repository repository.Repository) FriendshipUseCase {
 	}
 }
 
-func (usecase FriendshipUseCase) GetFriendshipsBySearchId(searchId string) (*[]contract.FriendshipDTO, error) {
-	Friendships, err := usecase.repository.FriendshipRepository.GetFriendshipsBySearchId(searchId)
+func (usecase FriendshipUseCase) GetFriendshipsBySearchId(searchId string, status uint) (*[]contract.FriendshipDTO, error) {
+
+	Friendships, err := usecase.repository.FriendshipRepository.GetFriendshipsBySearchId(searchId, status)
 	return Friendships, err
 }
 

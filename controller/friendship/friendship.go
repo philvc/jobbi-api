@@ -1,7 +1,9 @@
 package friendship_controller
 
 import (
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -18,10 +20,43 @@ func Default(usecase usecase.Usecase) FriendshipController {
 	}
 }
 
+// swagger:operation GET /searches/{searchId}/friendships friendships GetFriendshipsBySearchId
+// type id struct
+// Get friendships by searchId.
+// Return friendship
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: status
+//         in: path
+//         type: number
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: array
+//           items:
+//             $ref: "#/definitions/FriendshipDTO"
+//       400:
+//         description: Bad Request
 func (controller FriendshipController) GetFriendshipsBySearchId(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 
-	Friendships, error := controller.usecase.FriendshipUsecase.GetFriendshipsBySearchId(searchId)
+	log.Print("params", c)
+
+	parseStatus, _ := strconv.ParseInt("0", 10,32)
+
+	uintStatus := uint(parseStatus)
+
+	Friendships, error := controller.usecase.FriendshipUsecase.GetFriendshipsBySearchId(searchId, uintStatus)
 
 	if error != nil {
 		c.IndentedJSON(http.StatusBadRequest, error)
@@ -87,20 +122,19 @@ func (controller FriendshipController) AddFriendship(c *gin.Context) {
 	}
 
 	Friendship.SearchId = searchDTO.Id
-	
-	// @todo connect with iam and create account
-	// // Get User by email
-	// user, err := controller.usecase.UserUsecase.GetUserByEmail(Friendship.Email)
 
-	// if user != nil {
-	// 	Friendship.UserId = user.Id
-	// }
+	// @todo connect with iam and create account
+	// Get User by email
+	user, _ := controller.usecase.UserUsecase.GetUserByEmail(Friendship.Email)
+
+	if user != nil {
+		Friendship.UserId = user.Id
+	}
 
 	// // If no user, create new account supabase & crate new user
 	// if err != nil {
 
 	// 	// create temporary account in iam
-
 
 	// 	// map friendship to user
 	// 	var newUser contract.UserDTO
@@ -112,7 +146,7 @@ func (controller FriendshipController) AddFriendship(c *gin.Context) {
 	// 	new, err := controller.usecase.UserUsecase.AddUser(newUser)
 
 	// 	if err != nil {
-		
+
 	// 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 	// 		return
 	// 	}
