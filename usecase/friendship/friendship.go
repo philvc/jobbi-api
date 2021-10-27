@@ -24,7 +24,7 @@ func (usecase FriendshipUseCase) GetFriendshipsBySearchId(searchId string) (*[]c
 }
 
 func (usecase FriendshipUseCase) GetFriendshipsBySub(sub string) (*[]contract.FriendshipDTO, error) {
-	
+
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 
 	if err != nil {

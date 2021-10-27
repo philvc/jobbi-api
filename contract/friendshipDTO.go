@@ -6,7 +6,7 @@ package contract
 type FriendshipDTO struct {
 	// The id
 	//
-	// required: true
+	// required: false
 	Id uint `json:"id"`
 	// The state
 	//
@@ -18,11 +18,11 @@ type FriendshipDTO struct {
 	FirstName string `json:"firstName"`
 	// The lastName
 	//
-	// required: true
+	// required: false
 	LastName string `json:"lastName"`
 	// The email
 	//
-	// required: true
+	// required: false
 	Email string `json:"email"`
 	// The userId
 	//
@@ -30,7 +30,7 @@ type FriendshipDTO struct {
 	UserId uint `json:"userId"`
 	// The searchId
 	//
-	// required: true
+	// required: false
 	SearchId uint `json:"searchId"`
 
 }

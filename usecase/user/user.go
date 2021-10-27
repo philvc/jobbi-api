@@ -23,7 +23,20 @@ func (usecase UserUsecase) GetUserBySub(sub string) (*contract.UserDTO, error) {
 	return user, err
 }
 
+func (usecase UserUsecase) GetUserByEmail(email string) (*contract.UserDTO, error) {
+	user, err := usecase.repository.UserRepository.GetUserByEmail(email)
+	return user, err
+}
+
 func (usecase UserUsecase) AddUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
+
+	// Verify if email already exist:
+	// Get user by email
+	existingUser, err := usecase.repository.UserRepository.GetUserByEmail(userDTO.Email)
+
+	if existingUser != nil && err == nil {
+		return nil, errors.New(("wrong account information"))
+	}
 
 	if userDTO.ExternalId == "" {
 		return nil, errors.New("missing information")

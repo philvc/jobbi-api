@@ -43,6 +43,31 @@ func (controller FriendshipController) GetFriendshipsBySub(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, Friendships)
 }
 
+// swagger:operation POST /searches/{searchId}/friendships friendships AddFriendship
+// type id struct
+// Create friendship.
+// Return friendship
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: friendship
+//         in: body
+//         schema:
+//            $ref: "#/definitions/FriendshipDTO"
+//         description: friendship
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/FriendshipDTO"
+//       400:
+//         description: Bad Request
 func (controller FriendshipController) AddFriendship(c *gin.Context) {
 
 	searchId := c.Params.ByName("searchId")
@@ -62,6 +87,40 @@ func (controller FriendshipController) AddFriendship(c *gin.Context) {
 	}
 
 	Friendship.SearchId = searchDTO.Id
+	
+	// @todo connect with iam and create account
+	// // Get User by email
+	// user, err := controller.usecase.UserUsecase.GetUserByEmail(Friendship.Email)
+
+	// if user != nil {
+	// 	Friendship.UserId = user.Id
+	// }
+
+	// // If no user, create new account supabase & crate new user
+	// if err != nil {
+
+	// 	// create temporary account in iam
+
+
+	// 	// map friendship to user
+	// 	var newUser contract.UserDTO
+
+	// 	newUser.Email = Friendship.Email
+	// 	newUser.FirstName = Friendship.FirstName
+	// 	newUser.LastName = Friendship.LastName
+
+	// 	new, err := controller.usecase.UserUsecase.AddUser(newUser)
+
+	// 	if err != nil {
+		
+	// 		c.IndentedJSON(http.StatusBadRequest, err.Error())
+	// 		return
+	// 	}
+
+	// 	Friendship.UserId = new.Id
+	// }
+
+	// save userId in Friendship.UserId
 
 	FriendshipDTO, err := controller.usecase.FriendshipUsecase.AddFriendship(Friendship)
 

@@ -30,6 +30,18 @@ func (repository UserRepository) GetUserBySub(sub string) (*contract.UserDTO, er
 	return &userDTO, nil
 }
 
+func (repository UserRepository) GetUserByEmail(email string) (*contract.UserDTO, error){
+	var user model.User
+
+	if err := repository.database.Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, errors.New("no user")
+	}
+
+	userDTO := model.ToUserDTO(user)
+
+	return &userDTO, nil
+}
+
 func (repository UserRepository) AddUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
 
 	user := model.ToUser(userDTO)
