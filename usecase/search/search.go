@@ -26,9 +26,36 @@ func (usecase SearchUseCase) GetSearchesByUserSub(sub string) (*[]contract.Searc
 		return nil, err
 	}
 
+	// Get user searches
 	searches, err := usecase.repository.SearchRepository.GetSearchesByUserId(user.Id)
 
-	return searches, err
+	if err != nil {
+		return nil, err
+	}
+
+	// Get friends search by friendship user id
+	friendships, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	friendSearches := make([]contract.SearchDTO, len(*friendships))
+
+	for _, friendship := range *friendships {
+
+		search, err := usecase.repository.SearchRepository.GetSearchById(friendship.SearchId)
+		if err != nil {
+			return nil, err
+		}
+
+		friendSearches = append(friendSearches, *search)
+
+	}
+
+	allSearches := append(*searches, friendSearches...)
+
+	return &allSearches, err
 }
 
 func (usecase SearchUseCase) GetSearchesByFriendshipId(sub string) (*[]contract.SearchDTO, error) {
@@ -38,7 +65,7 @@ func (usecase SearchUseCase) GetSearchesByFriendshipId(sub string) (*[]contract.
 	// friendship, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
 }
 
-func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTO, error) {
+func (usecase SearchUseCase) GetSearchById(searchId uint) (*contract.SearchDTO, error) {
 	search, err := usecase.repository.SearchRepository.GetSearchById(searchId)
 	return search, err
 }

@@ -13,7 +13,7 @@ type Search struct {
 	Friendships []Friendship `gorm:"foreignKey:SearchID"`
 	Offers      []Offer      `gorm:"foreignKey:SearchID"`
 	Companies   []Company    `gorm:"foreignKey:SearchID"`
-	Networks   []Network    `gorm:"foreignKey:SearchID"`
+	Networks    []Network    `gorm:"foreignKey:SearchID"`
 }
 
 func ToSearchDTO(search Search) contract.SearchDTO {
