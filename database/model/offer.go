@@ -6,12 +6,13 @@ import (
 )
 
 type Offer struct {
-	gorm.Model
+	ID          string
 	Description string
 	Title       string
 	Link 		string
-	SearchID		uint
-	UserID uint
+	SearchID	string
+	UserID 		string
+	gorm.Model
 }
 
 func ToOfferDTO(Offer Offer) contract.OfferDTO {
@@ -27,9 +28,7 @@ func ToOfferDTO(Offer Offer) contract.OfferDTO {
 
 func ToOffer(offerDTO contract.OfferDTO) Offer {
 	return Offer{
-		Model: gorm.Model{
-			ID: offerDTO.Id,
-		},
+		ID: offerDTO.Id,
 		Link: offerDTO.Link,
 		Description: offerDTO.Description,
 		Title:       offerDTO.Title,

@@ -6,13 +6,14 @@ import (
 )
 
 type Friendship struct {
-	gorm.Model
+	ID 		  string
 	State     uint
 	FirstName string
 	LastName  string
 	Email     string
-	UserID    uint
-	SearchID  uint
+	UserID    string
+	SearchID  string
+	gorm.Model
 }
 
 func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
@@ -29,9 +30,7 @@ func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 
 func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 	return Friendship{
-		Model: gorm.Model{
-			ID: friendshipDTO.Id,
-		},
+		ID: 	   friendshipDTO.Id,
 		State:     friendshipDTO.State,
 		FirstName: friendshipDTO.FirstName,
 		LastName:  friendshipDTO.LastName,

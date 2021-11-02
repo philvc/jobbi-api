@@ -6,15 +6,16 @@ import (
 )
 
 type Network struct {
-	gorm.Model
+	ID 			string
 	Description string
 	LastName    string
 	FirstName   string
 	Email       string
 	PhoneNumber string
 	Link        string
-	SearchID    uint
-	UserID      uint
+	SearchID    string
+	UserID      string
+	gorm.Model
 }
 
 func ToNetworkDTO(Network Network) contract.NetworkDTO {
@@ -33,9 +34,7 @@ func ToNetworkDTO(Network Network) contract.NetworkDTO {
 
 func ToNetwork(NetworkDTO contract.NetworkDTO) Network {
 	return Network{
-		Model: gorm.Model{
-			ID: NetworkDTO.Id,
-		},
+		ID: 		 NetworkDTO.Id,
 		Link:        NetworkDTO.Link,
 		Description: NetworkDTO.Description,
 		LastName:    NetworkDTO.LastName,

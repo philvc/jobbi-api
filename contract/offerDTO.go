@@ -7,7 +7,7 @@ type OfferDTO struct {
 	// The id
 	//
 	// required: false
-	Id uint `json:"id"`
+	Id string `json:"id"`
 	// The description
 	//
 	// required: false
@@ -23,9 +23,9 @@ type OfferDTO struct {
 	// the search id
 	//
 	// required: false
-	SearchID uint `json:"searchId"`
+	SearchID string `json:"searchId"`
 	// the user id
 	//
 	// required: false
-	UserID uint `json:"userId"`
+	UserID string `json:"userId"`
 }

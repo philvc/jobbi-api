@@ -49,7 +49,7 @@ func (usecase CompanyUseCase) ModifyCompany(CompanyDTO contract.CompanyDTO) (*co
 	return user, err
 }
 
-func (usecase CompanyUseCase) DeleteCompany(companyId uint) (bool, error) {
+func (usecase CompanyUseCase) DeleteCompany(companyId string) (bool, error) {
 	result, err := usecase.repository.CompanyRepository.DeleteCompany(companyId)
 	return result, err
 }

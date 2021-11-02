@@ -7,7 +7,7 @@ type CompanyDTO struct {
 	// The id
 	//
 	// required: false
-	Id uint `json:"id"`
+	Id string `json:"id"`
 	// The link
 	//
 	// required: false
@@ -23,9 +23,9 @@ type CompanyDTO struct {
 	// The UserID
 	//
 	// required: false
-	UserID uint `json:"userId"`
+	UserID string `json:"userId"`
 	// The SearchID
 	//
 	// required: false
-	SearchID uint `json:"searchId"`
+	SearchID string `json:"searchId"`
 }

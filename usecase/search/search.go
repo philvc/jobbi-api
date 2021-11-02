@@ -65,7 +65,7 @@ func (usecase SearchUseCase) GetSearchesByFriendshipId(sub string) (*[]contract.
 	// friendship, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
 }
 
-func (usecase SearchUseCase) GetSearchById(searchId uint) (*contract.SearchDTO, error) {
+func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTO, error) {
 	search, err := usecase.repository.SearchRepository.GetSearchById(searchId)
 	return search, err
 }

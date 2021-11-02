@@ -6,14 +6,15 @@ import (
 )
 
 type Search struct {
-	gorm.Model
+	ID          string
 	Description string
 	Title       string
-	UserID      uint
+	UserID      string
 	Friendships []Friendship `gorm:"foreignKey:SearchID"`
 	Offers      []Offer      `gorm:"foreignKey:SearchID"`
 	Companies   []Company    `gorm:"foreignKey:SearchID"`
 	Networks    []Network    `gorm:"foreignKey:SearchID"`
+	gorm.Model
 }
 
 func ToSearchDTO(search Search) contract.SearchDTO {
@@ -27,9 +28,7 @@ func ToSearchDTO(search Search) contract.SearchDTO {
 
 func ToSearch(searchDTO contract.SearchDTO) Search {
 	return Search{
-		Model: gorm.Model{
-			ID: searchDTO.Id,
-		},
+		ID:          searchDTO.Id,
 		Description: searchDTO.Description,
 		Title:       searchDTO.Title,
 		UserID:      searchDTO.UserID,

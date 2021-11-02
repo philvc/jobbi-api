@@ -6,12 +6,13 @@ import (
 )
 
 type Company struct {
-	gorm.Model
+	ID 			string
 	Description string
 	Title       string
 	Link 		string
-	SearchID		uint
-	UserID uint
+	SearchID	string
+	UserID 		string
+	gorm.Model
 }
 
 func ToCompanyDTO(Company Company) contract.CompanyDTO {
@@ -27,9 +28,7 @@ func ToCompanyDTO(Company Company) contract.CompanyDTO {
 
 func ToCompany(CompanyDTO contract.CompanyDTO) Company {
 	return Company{
-		Model: gorm.Model{
-			ID: CompanyDTO.Id,
-		},
+		ID: CompanyDTO.Id,
 		Link: CompanyDTO.Link,
 		Description: CompanyDTO.Description,
 		Title:       CompanyDTO.Title,

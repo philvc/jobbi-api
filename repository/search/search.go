@@ -18,7 +18,7 @@ func Default(db *gorm.DB) SearchRepository {
 	}
 }
 
-func (repository SearchRepository) GetSearchesByUserId(userId uint) (*[]contract.SearchDTO, error) {
+func (repository SearchRepository) GetSearchesByUserId(userId string) (*[]contract.SearchDTO, error) {
 	var searches []model.Search
 	var user model.User
 

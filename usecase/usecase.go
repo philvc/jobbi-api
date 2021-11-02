@@ -6,13 +6,11 @@ import (
 	friendship_usecase "github.com/philvc/jobbi-api/usecase/friendship"
 	network_usecase "github.com/philvc/jobbi-api/usecase/network"
 	offer_usecase "github.com/philvc/jobbi-api/usecase/offer"
-	organisation_usecase "github.com/philvc/jobbi-api/usecase/organisation"
 	search_usecase "github.com/philvc/jobbi-api/usecase/search"
 	user_usecase "github.com/philvc/jobbi-api/usecase/user"
 )
 
 type Usecase struct {
-	OrganisationUsecase organisation_usecase.OrganisationUsecase
 	UserUsecase         user_usecase.UserUsecase
 	SearchUsecase       search_usecase.SearchUseCase
 	OfferUsecase        offer_usecase.OfferUseCase
@@ -23,7 +21,6 @@ type Usecase struct {
 
 func Default(repository repository.Repository) Usecase {
 	return Usecase{
-		OrganisationUsecase: organisation_usecase.Default(repository),
 		UserUsecase:         user_usecase.Default(repository),
 		SearchUsecase:       search_usecase.Default(repository),
 		OfferUsecase:        offer_usecase.Default(repository),

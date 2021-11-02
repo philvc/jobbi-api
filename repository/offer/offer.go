@@ -72,7 +72,7 @@ func (repository OfferRepository) ModifyOffer(OfferDTO contract.OfferDTO) (*cont
 	return &OfferDTO, nil
 }
 
-func (repository OfferRepository) DeleteOffer(offerId uint) (bool, error) {
+func (repository OfferRepository) DeleteOffer(offerId string) (bool, error) {
 
 	var Offer model.Offer
 

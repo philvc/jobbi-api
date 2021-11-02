@@ -7,7 +7,7 @@ type NetworkDTO struct {
 	// The id
 	//
 	// required: false
-	Id uint `json:"id"`
+	Id string `json:"id"`
 	// The description
 	//
 	// required: false
@@ -35,9 +35,9 @@ type NetworkDTO struct {
 	// The search id
 	//
 	// required: false
-	SearchID uint `json:"searchId"`
+	SearchID string `json:"searchId"`
 	// The user id
 	//
 	// required: false
-	UserID uint `json:"userId"`
+	UserID string `json:"userId"`
 }

@@ -74,7 +74,7 @@ func (repository NetworkRepository) ModifyNetwork(NetworkDTO contract.NetworkDTO
 
 
 
-func (repository NetworkRepository) DeleteNetwork(networkId uint) (bool, error) {
+func (repository NetworkRepository) DeleteNetwork(networkId string) (bool, error) {
 
 	var Network model.Network
 

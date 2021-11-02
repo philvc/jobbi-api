@@ -2,7 +2,6 @@ package company_controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -211,10 +210,8 @@ func (controller CompanyController) ModifyCompany(c *gin.Context) {
 		return
 	}
 
-	parsedId, _ := strconv.ParseUint(companyId, 10, 32)
-	parseSearchId, _ := strconv.ParseUint(searchId, 10, 32)
-	company.SearchID = uint(parseSearchId)
-	company.Id = uint(parsedId)
+	company.SearchID = searchId
+	company.Id = companyId
 	company.UserID = userDTO.Id
 
 	companyDTO, err := controller.usecase.CompanyUsecase.ModifyCompany(company)
@@ -257,9 +254,7 @@ func (controller CompanyController) DeleteCompany(c *gin.Context) {
 
 	var company contract.CompanyDTO
 
-	parsedId, _ := strconv.ParseUint(companyId, 10, 32)
-
-	company.Id = uint(parsedId)
+	company.Id = companyId
 
 	result, error := controller.usecase.CompanyUsecase.DeleteCompany(company.Id)
 

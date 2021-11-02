@@ -7,7 +7,7 @@ type SearchDTO struct {
 	// The id
 	//
 	// required: false
-	Id uint `json:"id"`
+	Id string `json:"id"`
 	// The description
 	//
 	// required: true
@@ -19,5 +19,5 @@ type SearchDTO struct {
 	// UserId
 	//
 	// required: false
-	UserID uint `json:"userId"`
+	UserID string `json:"userId"`
 }

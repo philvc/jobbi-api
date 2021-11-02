@@ -7,7 +7,7 @@ type UserDTO struct {
 	// The id
 	//
 	// required: false
-	Id uint `json:"id"`
+	Id string `json:"id"`
 	// The firstName
 	//
 	// required: false

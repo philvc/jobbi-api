@@ -51,10 +51,6 @@ func (usecase UserUsecase) AddUser(userDTO contract.UserDTO) (*contract.UserDTO,
 	return user, err
 }
 
-func (usecase UserUsecase) AddUserToOrganisation(userId uint, organisationDTO contract.OrganisationDTO) (*contract.UserDTO, error) {
-	user, err := usecase.repository.UserRepository.AddUserToOrganisation(userId, organisationDTO)
-	return user, err
-}
 
 func (usecase UserUsecase) ModifyUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
 	user, err := usecase.repository.UserRepository.ModifyUser(userDTO)

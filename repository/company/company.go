@@ -72,7 +72,7 @@ func (repository CompanyRepository) ModifyCompany(CompanyDTO contract.CompanyDTO
 	return &CompanyDTO, nil
 }
 
-func (repository CompanyRepository) DeleteCompany(companyId uint) (bool, error) {
+func (repository CompanyRepository) DeleteCompany(companyId string) (bool, error) {
 
 	var Company model.Company
 

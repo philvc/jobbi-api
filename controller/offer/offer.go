@@ -2,7 +2,6 @@ package offer_controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -204,10 +203,8 @@ func (controller OfferController) ModifyOffer(c *gin.Context) {
 		return
 	}
 
-	parsedId, _ := strconv.ParseUint(offerId, 10, 32)
-	parseSearchId, _ := strconv.ParseUint(searchId, 10, 32)
-	offer.Id = uint(parsedId)
-	offer.SearchID = uint(parseSearchId)
+	offer.Id = offerId
+	offer.SearchID = searchId
 	offer.UserID = userDTO.Id
 
 	offerDTO, error := controller.usecase.OfferUsecase.ModifyOffer(offer)
@@ -250,9 +247,7 @@ func (controller OfferController) DeleteOffer(c *gin.Context) {
 
 	var offer contract.OfferDTO
 
-	parsedId, _ := strconv.ParseUint(offerId, 10, 32)
-
-	offer.Id = uint(parsedId)
+	offer.Id = offerId
 
 	result, error := controller.usecase.OfferUsecase.DeleteOffer(offer.Id)
 

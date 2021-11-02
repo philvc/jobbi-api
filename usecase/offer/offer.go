@@ -49,7 +49,7 @@ func (usecase OfferUseCase) ModifyOffer(OfferDTO contract.OfferDTO) (*contract.O
 	return user, err
 }
 
-func (usecase OfferUseCase) DeleteOffer(offerId uint) (bool, error) {
+func (usecase OfferUseCase) DeleteOffer(offerId string) (bool, error) {
 	result, err := usecase.repository.OfferRepository.DeleteOffer(offerId)
 	return result, err
 }

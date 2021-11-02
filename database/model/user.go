@@ -6,7 +6,7 @@ import (
 )
 
 type User struct {
-	gorm.Model
+	ID 			string
 	FirstName   string
 	LastName    string
 	Email       string
@@ -17,6 +17,7 @@ type User struct {
 	Offers      []Offer      `gorm:"foreignKey:UserID"`
 	Companies   []Company    `gorm:"foreignKey:UserID"`
 	Networks    []Network    `gorm:"foreignKey:UserID"`
+	gorm.Model
 }
 
 func ToUserDTO(user User) contract.UserDTO {
@@ -31,9 +32,7 @@ func ToUserDTO(user User) contract.UserDTO {
 
 func ToUser(userDTO contract.UserDTO) User {
 	return User{
-		Model: gorm.Model{
-			ID: userDTO.Id,
-		},
+		ID: userDTO.Id,
 		FirstName:  userDTO.FirstName,
 		LastName:   userDTO.LastName,
 		Email:      userDTO.Email,

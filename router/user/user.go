@@ -5,7 +5,6 @@ import (
 	"github.com/philvc/jobbi-api/controller"
 	"github.com/philvc/jobbi-api/middleware"
 	user_friendship_router "github.com/philvc/jobbi-api/router/user/friendship"
-	user_organisation_router "github.com/philvc/jobbi-api/router/user/organisation"
 )
 
 // Name of the endpoint
@@ -32,9 +31,6 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	childParam := child.Group(parameter)
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.UserController.ModifyUser))
-
-	organisationGroup := user_organisation_router.Default(routerGroup.controller)
-	organisationGroup.Initialise(childParam)
 
 	friendshipGroup := user_friendship_router.Default(routerGroup.controller)
 	friendshipGroup.Initialise(childParam)

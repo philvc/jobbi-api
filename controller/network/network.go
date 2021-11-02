@@ -2,7 +2,6 @@ package network_controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -202,11 +201,8 @@ func (controller NetworkController) ModifyNetwork(c *gin.Context) {
 
 	var network contract.NetworkDTO
 
-	parsedId, _ := strconv.ParseUint(networkId, 10, 32)
-	parseSearchId, _ := strconv.ParseUint(searchId, 10, 32)
-
-	network.Id = uint(parsedId)
-	network.SearchID = uint(parseSearchId)
+	network.Id = networkId
+	network.SearchID = searchId
 	network.UserID = userDTO.Id
 
 	if err := c.BindJSON(&network); err != nil {
@@ -254,9 +250,7 @@ func (controller NetworkController) DeleteNetwork(c *gin.Context) {
 
 	var network contract.NetworkDTO
 
-	parsedId, _ := strconv.ParseUint(networkId, 10, 32)
-
-	network.Id = uint(parsedId)
+	network.Id = networkId
 
 	result, error := controller.usecase.NetworkUsecase.DeleteNetwork(network.Id)
 

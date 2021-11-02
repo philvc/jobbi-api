@@ -7,7 +7,7 @@ type FriendshipDTO struct {
 	// The id
 	//
 	// required: false
-	Id uint `json:"id"`
+	Id string `json:"id"`
 	// The state
 	//
 	// required: false
@@ -27,10 +27,10 @@ type FriendshipDTO struct {
 	// The userId
 	//
 	// required: false
-	UserId uint `json:"userId"`
+	UserId string `json:"userId"`
 	// The searchId
 	//
 	// required: false
-	SearchId uint `json:"searchId"`
+	SearchId string `json:"searchId"`
 
 }

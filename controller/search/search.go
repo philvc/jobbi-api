@@ -2,7 +2,6 @@ package search_controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
@@ -173,9 +172,7 @@ func (controller SearchController) ModifySearch(c *gin.Context) {
 		return
 	}
 
-	parsedId, _ := strconv.ParseUint(searchId, 10, 32)
-
-	search.Id = uint(parsedId)
+	search.Id = searchId
 	search.UserID = userDTO.Id
 
 	if err := c.BindJSON(&search); err != nil {

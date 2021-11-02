@@ -66,21 +66,3 @@ func (repository UserRepository) ModifyUser(userDTO contract.UserDTO) (*contract
 
 	return &userDTO, nil
 }
-
-func (repository UserRepository) AddUserToOrganisation(userId uint, organisationDTO contract.OrganisationDTO) (*contract.UserDTO, error) {
-
-	var user model.User
-	if err := repository.database.Where("id = ?", userId).First(&user).Error; err != nil {
-		return nil, errors.New(err.Error())
-	}
-
-	organisation := model.ToOrganisation(organisationDTO)
-
-	if err := repository.database.Model(&user).Where("id = ?", userId).Association("Organisations").Append(&organisation); err != nil {
-		return nil, errors.New("fail to add user to organisation" + err.Error())
-	}
-
-	userDTO := model.ToUserDTO(user)
-
-	return &userDTO, nil
-}

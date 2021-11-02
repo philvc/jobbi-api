@@ -34,7 +34,7 @@ func (repository FriendshipRepository) GetFriendshipsBySearchId(searchId string,
 
 	return &friendshipDTOs, nil
 }
-func (repository FriendshipRepository) GetFriendshipsByUserId(userId uint) (*[]contract.FriendshipDTO, error) {
+func (repository FriendshipRepository) GetFriendshipsByUserId(userId string) (*[]contract.FriendshipDTO, error) {
 	var friendships []model.Friendship
 	var user model.User
 
