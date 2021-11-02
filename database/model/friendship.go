@@ -2,23 +2,21 @@ package model
 
 import (
 	"github.com/philvc/jobbi-api/contract"
-	"gorm.io/gorm"
 )
 
 type Friendship struct {
-	ID 		  string
+	Base
 	State     uint
 	FirstName string
 	LastName  string
 	Email     string
 	UserID    string
 	SearchID  string
-	gorm.Model
 }
 
 func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 	return contract.FriendshipDTO{
-		Id:        friendship.ID,
+		Id:        friendship.Base.ID,
 		State:     friendship.State,
 		FirstName: friendship.FirstName,
 		LastName:  friendship.LastName,
@@ -30,7 +28,9 @@ func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 
 func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 	return Friendship{
-		ID: 	   friendshipDTO.Id,
+		Base: 	   Base{
+			ID: friendshipDTO.Id,
+		},
 		State:     friendshipDTO.State,
 		FirstName: friendshipDTO.FirstName,
 		LastName:  friendshipDTO.LastName,

@@ -3,6 +3,7 @@ package offer_repository
 import (
 	"errors"
 
+	"github.com/google/uuid"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
@@ -50,6 +51,10 @@ func (repository OfferRepository) GetOfferById(OfferId string) (*contract.OfferD
 func (repository OfferRepository) AddOffer(OfferDTO contract.OfferDTO) (*contract.OfferDTO, error) {
 
 	Offer := model.ToOffer(OfferDTO)
+
+	id := uuid.New()
+
+	Offer.ID = id.String()
 
 	if err := repository.database.Create(&Offer).Error; err != nil {
 		return nil, errors.New("failed to create Offer")

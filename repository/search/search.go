@@ -3,6 +3,7 @@ package search_repository
 import (
 	"errors"
 
+	"github.com/google/uuid"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
@@ -50,6 +51,10 @@ func (repository SearchRepository) GetSearchById(searchId string) (*contract.Sea
 func (repository SearchRepository) AddSearch(SearchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
 
 	search := model.ToSearch(SearchDTO)
+
+	id := uuid.New()
+
+	search.ID = id.String()
 
 	if err := repository.database.Create(&search).Error; err != nil {
 		return nil, errors.New("failed to create Search")

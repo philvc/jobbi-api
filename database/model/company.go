@@ -2,22 +2,20 @@ package model
 
 import (
 	"github.com/philvc/jobbi-api/contract"
-	"gorm.io/gorm"
 )
 
 type Company struct {
-	ID 			string
+	Base
 	Description string
 	Title       string
 	Link 		string
 	SearchID	string
 	UserID 		string
-	gorm.Model
 }
 
 func ToCompanyDTO(Company Company) contract.CompanyDTO {
 	return contract.CompanyDTO{
-		Id:          Company.ID,
+		Id:          Company.Base.ID,
 		Description: Company.Description,
 		Title:       Company.Title,
 		Link: 		Company.Link,
@@ -28,7 +26,9 @@ func ToCompanyDTO(Company Company) contract.CompanyDTO {
 
 func ToCompany(CompanyDTO contract.CompanyDTO) Company {
 	return Company{
-		ID: CompanyDTO.Id,
+		Base: Base{
+			ID: CompanyDTO.Id,
+		},
 		Link: CompanyDTO.Link,
 		Description: CompanyDTO.Description,
 		Title:       CompanyDTO.Title,

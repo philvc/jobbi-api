@@ -2,38 +2,38 @@ package model
 
 import (
 	"github.com/philvc/jobbi-api/contract"
-	"gorm.io/gorm"
 )
 
 type Offer struct {
-	ID          string
+	Base
 	Description string
 	Title       string
-	Link 		string
-	SearchID	string
-	UserID 		string
-	gorm.Model
+	Link        string
+	SearchID    string
+	UserID      string
 }
 
 func ToOfferDTO(Offer Offer) contract.OfferDTO {
 	return contract.OfferDTO{
-		Id:          Offer.ID,
+		Id:          Offer.Base.ID,
 		Description: Offer.Description,
 		Title:       Offer.Title,
-		Link: 		Offer.Link,
-		SearchID: 	Offer.SearchID,
-		UserID: Offer.UserID,
+		Link:        Offer.Link,
+		SearchID:    Offer.SearchID,
+		UserID:      Offer.UserID,
 	}
 }
 
 func ToOffer(offerDTO contract.OfferDTO) Offer {
 	return Offer{
-		ID: offerDTO.Id,
-		Link: offerDTO.Link,
+		Base: Base{
+			ID: offerDTO.Id,
+		},
+		Link:        offerDTO.Link,
 		Description: offerDTO.Description,
 		Title:       offerDTO.Title,
-		SearchID: 	offerDTO.SearchID,
-		UserID: offerDTO.UserID,
+		SearchID:    offerDTO.SearchID,
+		UserID:      offerDTO.UserID,
 	}
 }
 

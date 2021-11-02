@@ -3,6 +3,7 @@ package network_repository
 import (
 	"errors"
 
+	"github.com/google/uuid"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
@@ -50,6 +51,11 @@ func (repository NetworkRepository) GetNetworkById(NetworkId string) (*contract.
 func (repository NetworkRepository) AddNetwork(NetworkDTO contract.NetworkDTO) (*contract.NetworkDTO, error) {
 
 	Network := model.ToNetwork(NetworkDTO)
+
+
+	id := uuid.New()
+
+	Network.ID = id.String()
 
 	if err := repository.database.Create(&Network).Error; err != nil {
 		return nil, errors.New("failed to create Network")

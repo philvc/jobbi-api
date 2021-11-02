@@ -2,11 +2,10 @@ package model
 
 import (
 	"github.com/philvc/jobbi-api/contract"
-	"gorm.io/gorm"
 )
 
 type User struct {
-	ID 			string
+	Base
 	FirstName   string
 	LastName    string
 	Email       string
@@ -17,12 +16,11 @@ type User struct {
 	Offers      []Offer      `gorm:"foreignKey:UserID"`
 	Companies   []Company    `gorm:"foreignKey:UserID"`
 	Networks    []Network    `gorm:"foreignKey:UserID"`
-	gorm.Model
 }
 
 func ToUserDTO(user User) contract.UserDTO {
 	return contract.UserDTO{
-		Id:         user.ID,
+		Id: user.ID,
 		FirstName:  user.FirstName,
 		LastName:   user.LastName,
 		Email:      user.Email,
@@ -32,7 +30,9 @@ func ToUserDTO(user User) contract.UserDTO {
 
 func ToUser(userDTO contract.UserDTO) User {
 	return User{
-		ID: userDTO.Id,
+		Base: Base{
+			ID: userDTO.Id,
+		},
 		FirstName:  userDTO.FirstName,
 		LastName:   userDTO.LastName,
 		Email:      userDTO.Email,

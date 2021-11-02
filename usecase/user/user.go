@@ -32,9 +32,9 @@ func (usecase UserUsecase) AddUser(userDTO contract.UserDTO) (*contract.UserDTO,
 
 	// Verify if email already exist:
 	// Get user by email
-	existingUser, err := usecase.repository.UserRepository.GetUserByEmail(userDTO.Email)
+	existingUser, _ := usecase.repository.UserRepository.GetUserByEmail(userDTO.Email)
 
-	if existingUser != nil && err == nil {
+	if existingUser != nil {
 		return nil, errors.New(("wrong account information"))
 	}
 
@@ -50,7 +50,6 @@ func (usecase UserUsecase) AddUser(userDTO contract.UserDTO) (*contract.UserDTO,
 
 	return user, err
 }
-
 
 func (usecase UserUsecase) ModifyUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
 	user, err := usecase.repository.UserRepository.ModifyUser(userDTO)

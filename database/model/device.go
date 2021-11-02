@@ -2,25 +2,24 @@ package model
 
 import (
 	"github.com/philvc/jobbi-api/contract"
-	"gorm.io/gorm"
 )
 
 type Device struct {
-	gorm.Model
+	Base
 	Token string
 	UserID uint
 }
 
 func ToDeviceDTO(Device Device) contract.DeviceDTO {
 	return contract.DeviceDTO{
-		Id:         Device.ID,
+		Id:         Device.Base.ID,
 		Token:  Device.Token,
 	}
 }
 
 func ToDevice(DeviceDTO contract.DeviceDTO) Device {
 	return Device{
-		Model: gorm.Model{
+		Base: Base{
 			ID: DeviceDTO.Id,
 		},
 		Token:  DeviceDTO.Token,

@@ -3,6 +3,7 @@ package company_repository
 import (
 	"errors"
 
+	"github.com/google/uuid"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
@@ -50,6 +51,10 @@ func (repository CompanyRepository) GetCompanyById(CompanyId string) (*contract.
 func (repository CompanyRepository) AddCompany(CompanyDTO contract.CompanyDTO) (*contract.CompanyDTO, error) {
 
 	Company := model.ToCompany(CompanyDTO)
+
+	id := uuid.New()
+
+	Company.ID = id.String()
 
 	if err := repository.database.Create(&Company).Error; err != nil {
 		return nil, errors.New("failed to create Company")

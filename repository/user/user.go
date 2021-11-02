@@ -3,6 +3,7 @@ package user_repository
 import (
 	"errors"
 
+	"github.com/google/uuid"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
@@ -30,7 +31,7 @@ func (repository UserRepository) GetUserBySub(sub string) (*contract.UserDTO, er
 	return &userDTO, nil
 }
 
-func (repository UserRepository) GetUserByEmail(email string) (*contract.UserDTO, error){
+func (repository UserRepository) GetUserByEmail(email string) (*contract.UserDTO, error) {
 	var user model.User
 
 	if err := repository.database.Where("email = ?", email).First(&user).Error; err != nil {
@@ -45,6 +46,10 @@ func (repository UserRepository) GetUserByEmail(email string) (*contract.UserDTO
 func (repository UserRepository) AddUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
 
 	user := model.ToUser(userDTO)
+
+	id, _ := uuid.NewUUID()
+
+	user.ID = id.String()
 
 	if err := repository.database.Create(&user).Error; err != nil {
 		return nil, errors.New("failed to create user")

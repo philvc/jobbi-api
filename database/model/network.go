@@ -2,11 +2,10 @@ package model
 
 import (
 	"github.com/philvc/jobbi-api/contract"
-	"gorm.io/gorm"
 )
 
 type Network struct {
-	ID 			string
+	Base
 	Description string
 	LastName    string
 	FirstName   string
@@ -15,12 +14,11 @@ type Network struct {
 	Link        string
 	SearchID    string
 	UserID      string
-	gorm.Model
 }
 
 func ToNetworkDTO(Network Network) contract.NetworkDTO {
 	return contract.NetworkDTO{
-		Id:          Network.ID,
+		Id:          Network.Base.ID,
 		Description: Network.Description,
 		FirstName:   Network.FirstName,
 		LastName:    Network.LastName,
@@ -34,7 +32,9 @@ func ToNetworkDTO(Network Network) contract.NetworkDTO {
 
 func ToNetwork(NetworkDTO contract.NetworkDTO) Network {
 	return Network{
-		ID: 		 NetworkDTO.Id,
+		Base: Base{
+			ID: NetworkDTO.Id,
+		},
 		Link:        NetworkDTO.Link,
 		Description: NetworkDTO.Description,
 		LastName:    NetworkDTO.LastName,

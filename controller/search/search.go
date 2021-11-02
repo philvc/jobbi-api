@@ -35,7 +35,9 @@ func Default(usecase usecase.Usecase) SearchController {
 //         description: Bad Request
 func (controller SearchController) GetSearches(c *gin.Context) {
 
+	
 	sub := c.GetString("sub")
+
 
 	// Get My Searches - Searches by userId
 	searches, err := controller.usecase.SearchUsecase.GetSearchesByUserSub(sub)

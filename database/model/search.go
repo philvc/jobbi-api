@@ -2,11 +2,10 @@ package model
 
 import (
 	"github.com/philvc/jobbi-api/contract"
-	"gorm.io/gorm"
 )
 
 type Search struct {
-	ID          string
+	Base
 	Description string
 	Title       string
 	UserID      string
@@ -14,12 +13,11 @@ type Search struct {
 	Offers      []Offer      `gorm:"foreignKey:SearchID"`
 	Companies   []Company    `gorm:"foreignKey:SearchID"`
 	Networks    []Network    `gorm:"foreignKey:SearchID"`
-	gorm.Model
 }
 
 func ToSearchDTO(search Search) contract.SearchDTO {
 	return contract.SearchDTO{
-		Id:          search.ID,
+		Id:          search.Base.ID,
 		Description: search.Description,
 		Title:       search.Title,
 		UserID:      search.UserID,
@@ -28,7 +26,9 @@ func ToSearchDTO(search Search) contract.SearchDTO {
 
 func ToSearch(searchDTO contract.SearchDTO) Search {
 	return Search{
-		ID:          searchDTO.Id,
+		Base: Base{
+			ID: searchDTO.Id,
+		},
 		Description: searchDTO.Description,
 		Title:       searchDTO.Title,
 		UserID:      searchDTO.UserID,

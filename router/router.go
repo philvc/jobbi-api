@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/controller"
 
+	swagger_controller "github.com/philvc/jobbi-api/controller/swagger"
 	me_router "github.com/philvc/jobbi-api/router/me"
 	search_router "github.com/philvc/jobbi-api/router/search"
 	user_router "github.com/philvc/jobbi-api/router/user"
@@ -38,9 +39,11 @@ func (router Router) Initiliase() {
 	meRouter := me_router.Default(router.controller)
 	userRouter := user_router.Default(router.controller)
 	searchRouter := search_router.Default(router.controller)
+	swagController := swagger_controller.InitialiseSwaggerController()
 
 	// Creates the api-group
 	api := router.engine.Group("")
+	api.GET("/swagger.json", swagController.GetSwagger)
 
 	// Initialises all the routers
 	meRouter.Initialise(api)
