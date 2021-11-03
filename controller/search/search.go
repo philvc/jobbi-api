@@ -42,8 +42,6 @@ func (controller SearchController) GetSearches(c *gin.Context) {
 	// Get My Searches - Searches by userId
 	searches, err := controller.usecase.SearchUsecase.GetSearchesByUserSub(sub)
 
-	// Get Searches where I am invited - Searches by friendshipId
-	// searches, err := controller.usecase.SearchUsecase.GetSearchesByFriendshipId(sub)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())

@@ -22,20 +22,20 @@ func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 		LastName:  friendship.LastName,
 		Email:     friendship.Email,
 		UserId:    friendship.UserID,
-		SearchId:   friendship.SearchID,
+		SearchId:  friendship.SearchID,
 	}
 }
 
 func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 	return Friendship{
-		Base: 	   Base{
+		Base: Base{
 			ID: friendshipDTO.Id,
 		},
 		State:     friendshipDTO.State,
 		FirstName: friendshipDTO.FirstName,
 		LastName:  friendshipDTO.LastName,
 		Email:     friendshipDTO.Email,
-		UserID:	   friendshipDTO.UserId,
+		UserID:    friendshipDTO.UserId,
 		SearchID:  friendshipDTO.SearchId,
 	}
 }

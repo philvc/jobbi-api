@@ -33,29 +33,8 @@ func (usecase SearchUseCase) GetSearchesByUserSub(sub string) (*[]contract.Searc
 		return nil, err
 	}
 
-	// Get friends search by friendship user id
-	friendships, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
 
-	if err != nil {
-		return nil, err
-	}
-
-	friendSearches := make([]contract.SearchDTO, len(*friendships))
-
-	for _, friendship := range *friendships {
-
-		search, err := usecase.repository.SearchRepository.GetSearchById(friendship.SearchId)
-		if err != nil {
-			return nil, err
-		}
-
-		friendSearches = append(friendSearches, *search)
-
-	}
-
-	allSearches := append(*searches, friendSearches...)
-
-	return &allSearches, err
+	return searches, err
 }
 
 func (usecase SearchUseCase) GetSearchesByFriendshipId(sub string) (*[]contract.SearchDTO, error) {
