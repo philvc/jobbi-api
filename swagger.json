@@ -411,7 +411,7 @@
             "type": "number",
             "description": "test",
             "name": "status",
-            "in": "path",
+            "in": "query",
             "required": true
           }
         ],
@@ -940,8 +940,7 @@
         },
         "id": {
           "description": "The id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "Id"
         },
         "link": {
@@ -951,8 +950,7 @@
         },
         "searchId": {
           "description": "The SearchID",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "SearchID"
         },
         "title": {
@@ -962,8 +960,7 @@
         },
         "userId": {
           "description": "The UserID",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "UserID"
         }
       },
@@ -978,8 +975,7 @@
       "properties": {
         "id": {
           "description": "The id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "Id"
         },
         "token": {
@@ -1006,8 +1002,7 @@
         },
         "id": {
           "description": "The id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "Id"
         },
         "lastName": {
@@ -1017,8 +1012,7 @@
         },
         "searchId": {
           "description": "The searchId",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "SearchId"
         },
         "state": {
@@ -1029,8 +1023,7 @@
         },
         "userId": {
           "description": "The userId",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "UserId"
         }
       },
@@ -1057,8 +1050,7 @@
         },
         "id": {
           "description": "The id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "Id"
         },
         "lastName": {
@@ -1078,14 +1070,12 @@
         },
         "searchId": {
           "description": "The search id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "SearchID"
         },
         "userId": {
           "description": "The user id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "UserID"
         }
       },
@@ -1102,8 +1092,7 @@
         },
         "id": {
           "description": "The id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "Id"
         },
         "link": {
@@ -1113,8 +1102,7 @@
         },
         "searchId": {
           "description": "the search id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "SearchID"
         },
         "title": {
@@ -1124,68 +1112,8 @@
         },
         "userId": {
           "description": "the user id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "UserID"
-        }
-      },
-      "x-go-package": "github.com/philvc/jobbi-api/contract"
-    },
-    "OrganisationDTO": {
-      "description": "An user",
-      "type": "object",
-      "properties": {
-        "address": {
-          "description": "The address",
-          "type": "string",
-          "x-go-name": "Address"
-        },
-        "bankAccount": {
-          "type": "string",
-          "x-go-name": "BankAccount"
-        },
-        "companyColor": {
-          "type": "string",
-          "x-go-name": "CompanyColor"
-        },
-        "contactEmail": {
-          "type": "string",
-          "x-go-name": "ContactEmail"
-        },
-        "contactPhoneNumber": {
-          "type": "string",
-          "x-go-name": "ContactPhoneNumber"
-        },
-        "id": {
-          "description": "The id",
-          "type": "integer",
-          "format": "uint64",
-          "x-go-name": "Id"
-        },
-        "name": {
-          "description": "The name",
-          "type": "string",
-          "x-go-name": "Name"
-        },
-        "slug": {
-          "description": "The slug",
-          "type": "string",
-          "x-go-name": "Slug"
-        },
-        "swift": {
-          "type": "string",
-          "x-go-name": "Swift"
-        },
-        "userId": {
-          "description": "The owner Id",
-          "type": "integer",
-          "format": "uint64",
-          "x-go-name": "Owner"
-        },
-        "vatNumber": {
-          "description": "The VAT Number",
-          "type": "string",
-          "x-go-name": "VATNumber"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
@@ -1205,8 +1133,7 @@
         },
         "id": {
           "description": "The id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "Id"
         },
         "title": {
@@ -1216,8 +1143,7 @@
         },
         "userId": {
           "description": "UserId",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "UserID"
         }
       },
@@ -1244,8 +1170,7 @@
         },
         "id": {
           "description": "The id",
-          "type": "integer",
-          "format": "uint64",
+          "type": "string",
           "x-go-name": "Id"
         },
         "lastName": {

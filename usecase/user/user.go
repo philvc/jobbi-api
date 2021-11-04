@@ -52,6 +52,11 @@ func (usecase UserUsecase) AddUser(userDTO contract.UserDTO) (*contract.UserDTO,
 }
 
 func (usecase UserUsecase) ModifyUser(userDTO contract.UserDTO) (*contract.UserDTO, error) {
+
+	if userDTO.Email == "" {
+		return nil, errors.New("missing information")
+	}
+
 	user, err := usecase.repository.UserRepository.ModifyUser(userDTO)
 	return user, err
 }

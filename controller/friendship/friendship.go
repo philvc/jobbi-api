@@ -32,7 +32,7 @@ func Default(usecase usecase.Usecase) FriendshipController {
 //         required: true
 //         description: test
 //       - name: status
-//         in: path
+//         in: query
 //         type: number
 //         required: true
 //         description: test

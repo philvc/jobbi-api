@@ -13,7 +13,7 @@ type FriendshipDTO struct {
 	// required: false
 	State uint `json:"state"`
 	// The firstName
-	// 
+	//
 	// required: false
 	FirstName string `json:"firstName"`
 	// The lastName
@@ -32,5 +32,4 @@ type FriendshipDTO struct {
 	//
 	// required: false
 	SearchId string `json:"searchId"`
-
 }
