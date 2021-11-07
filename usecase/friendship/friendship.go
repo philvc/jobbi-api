@@ -24,7 +24,7 @@ func (usecase FriendshipUseCase) GetFriendshipsBySearchId(searchId string, statu
 	return Friendships, err
 }
 
-func (usecase FriendshipUseCase) GetFriendshipsBySub(sub string) (*[]contract.FriendshipDTO, error) {
+func (usecase FriendshipUseCase) GetFriendshipsBySub(sub string, status uint) (*[]contract.FriendshipDTO, error) {
 
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 
@@ -33,7 +33,18 @@ func (usecase FriendshipUseCase) GetFriendshipsBySub(sub string) (*[]contract.Fr
 	}
 
 	Friendships, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
-	return Friendships, err
+
+	// filter friendships by status
+	 filteredFriendships := make([]contract.FriendshipDTO, 0, len(*Friendships));
+
+	 for _, friendship := range *Friendships {
+		 if friendship.State == status {
+			 filteredFriendships = append(filteredFriendships, friendship)
+		 }
+	 }
+	
+
+	return &filteredFriendships, err
 }
 
 func (usecase FriendshipUseCase) AddFriendship(FriendshipDTO contract.FriendshipDTO) (*contract.FriendshipDTO, error) {

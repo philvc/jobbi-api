@@ -37,13 +37,13 @@ func (repository FriendshipRepository) GetFriendshipsBySearchId(searchId string,
 }
 func (repository FriendshipRepository) GetFriendshipsByUserId(userId string) (*[]contract.FriendshipDTO, error) {
 	var friendships []model.Friendship
-	var user model.User
+	// var user model.User
 
-	if err := repository.database.Where("id = ?", userId).First(&user).Error; err != nil {
-		return nil, errors.New(err.Error())
-	}
+	// if err := repository.database.Where("id = ?", userId).First(&user).Error; err != nil {
+	// 	return nil, errors.New(err.Error())
+	// }
 
-	if err := repository.database.Where("user_id = ?", userId).Association("Friendships").Find(&friendships); err != nil {
+	if err := repository.database.Where("user_id = ?", userId).Find(&friendships).Error; err != nil {
 		return nil, err
 	}
 

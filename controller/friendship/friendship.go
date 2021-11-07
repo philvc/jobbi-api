@@ -1,7 +1,6 @@
 package friendship_controller
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -50,9 +49,9 @@ func Default(usecase usecase.Usecase) FriendshipController {
 func (controller FriendshipController) GetFriendshipsBySearchId(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 
-	log.Print("params", c)
+	status := c.Query("status")
 
-	parseStatus, _ := strconv.ParseInt("0", 10,32)
+	parseStatus, _ := strconv.ParseInt(status, 10, 32)
 
 	uintStatus := uint(parseStatus)
 
@@ -65,10 +64,44 @@ func (controller FriendshipController) GetFriendshipsBySearchId(c *gin.Context) 
 
 	c.IndentedJSON(http.StatusOK, Friendships)
 }
+
+// swagger:operation GET /searches/{searchId}/friendships friendships GetFriendshipsByUserId
+// type id struct
+// Get user's friends quests is friendship status is 1 or get user's friendships requests if friendship is 0.
+// Return friendship
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: status
+//         in: query
+//         type: number
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: array
+//           items:
+//             $ref: "#/definitions/FriendshipDTO"
+//       400:
+//         description: Bad Request
 func (controller FriendshipController) GetFriendshipsBySub(c *gin.Context) {
 	sub := c.GetString("sub")
+	status := c.Query("status")
 
-	Friendships, error := controller.usecase.FriendshipUsecase.GetFriendshipsBySub(sub)
+
+	parseStatus, _ := strconv.ParseInt(status, 10, 32)
+
+	uintStatus := uint(parseStatus)
+
+	Friendships, error := controller.usecase.FriendshipUsecase.GetFriendshipsBySub(sub, uintStatus)
 
 	if error != nil {
 		c.IndentedJSON(http.StatusBadRequest, error)
