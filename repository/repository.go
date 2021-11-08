@@ -11,21 +11,21 @@ import (
 )
 
 type Repository struct {
-	UserRepository         user_repository.UserRepository
-	SearchRepository       search_repository.SearchRepository
-	OfferRepository        offer_repository.OfferRepository
-	CompanyRepository      company_repository.CompanyRepository
-	NetworkRepository      network_repository.NetworkRepository
-	FriendshipRepository   friendship_repository.FriendshipRepository
+	UserRepository       user_repository.UserRepository
+	SearchRepository     search_repository.SearchRepository
+	OfferRepository      offer_repository.OfferRepository
+	CompanyRepository    company_repository.CompanyRepository
+	NetworkRepository    network_repository.NetworkRepository
+	FriendshipRepository friendship_repository.FriendshipRepository
 }
 
 func Default(database *gorm.DB) Repository {
 	return Repository{
-		UserRepository:         user_repository.Default(database),
-		SearchRepository:       search_repository.Default(database),
-		OfferRepository:        offer_repository.Default(database),
-		CompanyRepository:      company_repository.Default(database),
-		NetworkRepository:      network_repository.Default(database),
-		FriendshipRepository:   friendship_repository.Default(database),
+		UserRepository:       user_repository.Default(database),
+		SearchRepository:     search_repository.Default(database),
+		OfferRepository:      offer_repository.Default(database),
+		CompanyRepository:    company_repository.Default(database),
+		NetworkRepository:    network_repository.Default(database),
+		FriendshipRepository: friendship_repository.Default(database),
 	}
 }

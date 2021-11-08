@@ -138,7 +138,7 @@ func (controller FriendshipController) GetFriendshipsBySub(c *gin.Context) {
 //         description: Bad Request
 func (controller FriendshipController) AddFriendship(c *gin.Context) {
 
-	searchId := c.Params.ByName("searchId")
+	body := c.BindJSON(c)
 
 	var Friendship contract.FriendshipDTO
 
@@ -156,38 +156,6 @@ func (controller FriendshipController) AddFriendship(c *gin.Context) {
 
 	Friendship.SearchId = searchDTO.Id
 
-	// @todo connect with iam and create account
-	// Get User by email
-	user, _ := controller.usecase.UserUsecase.GetUserByEmail(Friendship.Email)
-
-	if user != nil {
-		Friendship.UserId = user.Id
-	}
-
-	// // If no user, create new account supabase & crate new user
-	// if err != nil {
-
-	// 	// create temporary account in iam
-
-	// 	// map friendship to user
-	// 	var newUser contract.UserDTO
-
-	// 	newUser.Email = Friendship.Email
-	// 	newUser.FirstName = Friendship.FirstName
-	// 	newUser.LastName = Friendship.LastName
-
-	// 	new, err := controller.usecase.UserUsecase.AddUser(newUser)
-
-	// 	if err != nil {
-
-	// 		c.IndentedJSON(http.StatusBadRequest, err.Error())
-	// 		return
-	// 	}
-
-	// 	Friendship.UserId = new.Id
-	// }
-
-	// save userId in Friendship.UserId
 
 	FriendshipDTO, err := controller.usecase.FriendshipUsecase.AddFriendship(Friendship)
 
