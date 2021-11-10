@@ -3,13 +3,12 @@ package user_usecase
 import (
 
 	"github.com/philvc/jobbi-api/contract"
-	"github.com/philvc/jobbi-api/usecase/constant"
 )
 
 
 
 
-func (u UserUsecase) GetUserFriendships(userId string, state uint) (*[]contract.SearchWithOwnerAndFriendsDTO, error) {
+func (u UserUsecase) GetUserFriendships(userId string, state int) (*[]contract.SearchWithOwnerAndFriendsDTO, error) {
 
 	// Get friendships by user
 	friendships, err := u.repository.FriendshipRepository.GetFriendshipsByUserIdAndState(userId, state)
@@ -68,7 +67,7 @@ func (u UserUsecase) GetUserFriendships(userId string, state uint) (*[]contract.
 		friends := []contract.UserDTO{}
 
 		// Get Friendships by searchId
-		friendships, err := u.repository.FriendshipRepository.GetFriendshipsBySearchIdAndState(search.Id, constant.FriendshipActive)
+		friendships, err := u.repository.FriendshipRepository.GetFriendshipsBySearchIdAndState(search.Id, state)
 
 		// Error
 		if err != nil {

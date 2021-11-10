@@ -41,7 +41,7 @@ func (controller UserController) GetUserFriendships(c *gin.Context){
 	status := c.Query("status")
 
 	parseStatus, _ := strconv.ParseInt(status, 10,32)
-	intStatus := uint(parseStatus)
+	intStatus := int(parseStatus)
 
 	results, err :=	controller.usecase.UserUsecase.GetUserFriendships(userId, intStatus)
 

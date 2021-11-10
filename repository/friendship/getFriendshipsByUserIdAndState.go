@@ -7,7 +7,7 @@ import (
 	"github.com/philvc/jobbi-api/database/model"
 )
 
-func (repo FriendshipRepository) GetFriendshipsByUserIdAndState(userId string, state uint) (*[]contract.FriendshipDTO, error) {
+func (repo FriendshipRepository) GetFriendshipsByUserIdAndState(userId string, state int) (*[]contract.FriendshipDTO, error) {
 	
 	friendships := []model.Friendship{}
 
