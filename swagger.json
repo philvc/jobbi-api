@@ -921,7 +921,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/FriendshipDTO"
+                "$ref": "#/definitions/SearchWithOwnerAndFriendsDTO"
               }
             }
           },
@@ -1195,8 +1195,7 @@
           "$ref": "#/definitions/SearchDTO"
         }
       },
-      "x-go-name": "SearchWithOwnerAndFriends",
-      "x-go-package": "github.com/philvc/jobbi-api/contract/search"
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
     },
     "UserDTO": {
       "description": "An user",
