@@ -2,17 +2,22 @@ package contract
 
 import "github.com/philvc/jobbi-api/contract"
 
+
+
+// A Quest with owner and friends details
+//
+// swagger:model SearchWithOwnerAndFriendsDTO
 type SearchWithOwnerAndFriends struct {
 	// The search
 	// 
-	// required: true
+	// required: false
 	Search contract.SearchDTO `json:"search"`
-	// Friends for search
+	// Friends
 	//
-	// required: true
+	// required: false
 	Friends []contract.UserDTO `json:"friends"`
-	// owner of search
+	// owner
 	//
-	// required: true
+	// required: false
 	Owner contract.UserDTO `json:"owner"`
 }

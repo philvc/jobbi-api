@@ -1,23 +1,17 @@
 package friendship_usecase
 
 import (
-	"github.com/philvc/jobbi-api/contract/search"
-	"github.com/philvc/jobbi-api/repository/friendship"
+	"github.com/philvc/jobbi-api/repository"
 )
 
-type FriendshipUsecase interface {
-	GetFriendshipsByUserIdAndState(userId string, state uint)(*contract.SearchWithOwnerAndFriends, error)
-}
-
-type FriendshipUsecaseImplementation struct {
-	repository friendship_repository.FriendshipRepositoryImplementation
+type FriendshipUsecase struct {
+	repository repository.Repository
 }
 
 // Returns an instance of a Friendship use-case
-func Default(repository friendship_repository.FriendshipRepositoryImplementation) FriendshipUsecaseImplementation {
-	return FriendshipUsecaseImplementation{
+func Default(repository repository.Repository ) FriendshipUsecase {
+	return FriendshipUsecase{
 		repository: repository,
 	}
 }
-
 

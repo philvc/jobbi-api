@@ -2,13 +2,12 @@ package usecase
 
 import (
 	"github.com/philvc/jobbi-api/repository"
-	friendship_repository "github.com/philvc/jobbi-api/repository/friendship"
 	company_usecase "github.com/philvc/jobbi-api/usecase/company"
 	friendship_usecase "github.com/philvc/jobbi-api/usecase/friendship"
 	network_usecase "github.com/philvc/jobbi-api/usecase/network"
 	offer_usecase "github.com/philvc/jobbi-api/usecase/offer"
 	search_usecase "github.com/philvc/jobbi-api/usecase/search"
-	user_usecase "github.com/philvc/jobbi-api/usecase/user"
+	user_usecase  "github.com/philvc/jobbi-api/usecase/user"
 )
 
 type Usecase struct {
@@ -27,6 +26,6 @@ func Default(repository repository.Repository) Usecase {
 		OfferUsecase:      offer_usecase.Default(repository),
 		CompanyUsecase:    company_usecase.Default(repository),
 		NetworkUsecase:    network_usecase.Default(repository),
-		FriendshipUsecase: friendship_usecase.Default(friendship_repository.FriendshipRepositoryImplementation),
+		FriendshipUsecase: friendship_usecase.Default(repository),
 	}
 }

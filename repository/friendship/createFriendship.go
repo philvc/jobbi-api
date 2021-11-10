@@ -8,8 +8,7 @@ import (
 	"github.com/philvc/jobbi-api/database/model"
 )
 
-
-func (repository FriendshipRepositoryImplementation) CreateFriendship(friendshipDTO contract.FriendshipDTO) (*contract.FriendshipDTO, error) {
+func (repository FriendshipRepository) CreateFriendship(friendshipDTO contract.FriendshipDTO) (*contract.FriendshipDTO, error) {
 
 	friendship := model.ToFriendship(friendshipDTO)
 

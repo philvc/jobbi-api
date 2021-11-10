@@ -7,6 +7,8 @@ import (
 	"github.com/philvc/jobbi-api/repository"
 )
 
+
+
 type UserUsecase struct {
 	repository repository.Repository
 }
