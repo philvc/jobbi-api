@@ -9,9 +9,8 @@ type FriendshipUsecase struct {
 }
 
 // Returns an instance of a Friendship use-case
-func Default(repository repository.Repository ) FriendshipUsecase {
+func Default(repository repository.Repository) FriendshipUsecase {
 	return FriendshipUsecase{
 		repository: repository,
 	}
 }
-
