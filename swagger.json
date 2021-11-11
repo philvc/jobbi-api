@@ -888,6 +888,48 @@
           }
         }
       }
+    },
+    "/users/{userId}/friendships": {
+      "get": {
+        "description": "type id struct\nGet user friendships.\nReturn friendship",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "users"
+        ],
+        "operationId": "GetUserFriendships",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "userId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "number",
+            "description": "test",
+            "name": "status",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SearchWithOwnerAndFriendsDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -990,25 +1032,10 @@
       "description": "An friendship",
       "type": "object",
       "properties": {
-        "email": {
-          "description": "The email",
-          "type": "string",
-          "x-go-name": "Email"
-        },
-        "firstName": {
-          "description": "The firstName",
-          "type": "string",
-          "x-go-name": "FirstName"
-        },
         "id": {
           "description": "The id",
           "type": "string",
           "x-go-name": "Id"
-        },
-        "lastName": {
-          "description": "The lastName",
-          "type": "string",
-          "x-go-name": "LastName"
         },
         "searchId": {
           "description": "The searchId",
@@ -1145,6 +1172,27 @@
           "description": "UserId",
           "type": "string",
           "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "SearchWithOwnerAndFriendsDTO": {
+      "description": "A Quest with owner and friends details",
+      "type": "object",
+      "properties": {
+        "friends": {
+          "description": "Friends",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserDTO"
+          },
+          "x-go-name": "Friends"
+        },
+        "owner": {
+          "$ref": "#/definitions/UserDTO"
+        },
+        "search": {
+          "$ref": "#/definitions/SearchDTO"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"

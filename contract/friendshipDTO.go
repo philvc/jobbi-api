@@ -12,18 +12,6 @@ type FriendshipDTO struct {
 	//
 	// required: false
 	State uint `json:"state"`
-	// The firstName
-	//
-	// required: false
-	FirstName string `json:"firstName"`
-	// The lastName
-	//
-	// required: false
-	LastName string `json:"lastName"`
-	// The email
-	//
-	// required: false
-	Email string `json:"email"`
 	// The userId
 	//
 	// required: false

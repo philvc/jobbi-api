@@ -1,4 +1,4 @@
-package search_friendship_router
+package friendship_router
 
 import (
 	"github.com/gin-gonic/gin"
@@ -26,9 +26,9 @@ func Default(controller controller.Controller) RouterGroup {
 func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	child := parent.Group(endpoint)
-	child.GET("", middleware.Authorize(routerGroup.controller.SearchController.GetSearchFriendships))
-	child.POST("", middleware.Authorize(routerGroup.controller.FriendshipController.AddFriendship))
+	child.POST("", middleware.Authorize(routerGroup.controller.FriendshipController.CreateFriendship))
 
 	childParam := child.Group(parameter)
-	childParam.PUT("", middleware.Authorize(routerGroup.controller.FriendshipController.ModifyFriendship))
+	childParam.PUT("", middleware.Authorize(routerGroup.controller.FriendshipController.UpdateFriendship))
+
 }

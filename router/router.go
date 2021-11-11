@@ -9,6 +9,7 @@ import (
 	me_router "github.com/philvc/jobbi-api/router/me"
 	search_router "github.com/philvc/jobbi-api/router/search"
 	user_router "github.com/philvc/jobbi-api/router/user"
+	friendship_router "github.com/philvc/jobbi-api/router/friendship"
 )
 
 type Router struct {
@@ -39,6 +40,8 @@ func (router Router) Initiliase() {
 	meRouter := me_router.Default(router.controller)
 	userRouter := user_router.Default(router.controller)
 	searchRouter := search_router.Default(router.controller)
+	friendshipRouter := friendship_router.Default(router.controller)
+
 	swagController := swagger_controller.InitialiseSwaggerController()
 
 	// Creates the api-group
@@ -49,6 +52,7 @@ func (router Router) Initiliase() {
 	meRouter.Initialise(api)
 	userRouter.Initialise(api)
 	searchRouter.Initialise(api)
+	friendshipRouter.Initialise(api)
 
 }
 
