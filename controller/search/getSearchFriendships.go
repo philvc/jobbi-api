@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// swagger:operation GET /searches/{searchId}/friendships searches GetSearchById
+// swagger:operation GET /searches/{searchId}/friendships searches GetSearchFriendships
 // type id struct
 // Get friendships by search id.
 // Return users
@@ -19,9 +19,10 @@ import (
 //         required: true
 //         description: test
 //       - name: status
-//		   in: query
-//		   type: string
-//		   required: false
+//         in: query
+//         type: string
+//         required: true
+//         description: test
 //     Produces:
 //       - application/json
 //     Responses:

@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/usecase"
-
 )
 
 type NetworkController struct {

@@ -391,14 +391,14 @@
     },
     "/searches/{searchId}/friendships": {
       "get": {
-        "description": "type id struct\nGet friendships by searchId.\nReturn friendship",
+        "description": "type id struct\nGet friendships by search id.\nReturn users",
         "produces": [
           "application/json"
         ],
         "tags": [
-          "friendships"
+          "searches"
         ],
-        "operationId": "GetFriendshipsBySearchId",
+        "operationId": "GetSearchFriendships",
         "parameters": [
           {
             "type": "string",
@@ -408,7 +408,7 @@
             "required": true
           },
           {
-            "type": "number",
+            "type": "string",
             "description": "test",
             "name": "status",
             "in": "query",
@@ -419,10 +419,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FriendshipDTO"
-              }
+              "$ref": "#/definitions/UserDTO"
             }
           },
           "400": {
