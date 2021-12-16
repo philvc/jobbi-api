@@ -76,8 +76,17 @@
         "tags": [
           "searches"
         ],
-        "summary": "Get all searches.",
+        "summary": "Get searches of friends.",
         "operationId": "GetSearches",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "status",
+            "in": "query",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "All the searches",

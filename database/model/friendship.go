@@ -6,17 +6,17 @@ import (
 
 type Friendship struct {
 	Base
-	State     uint
-	UserID    string
-	SearchID  string
+	State    uint
+	UserID   string
+	SearchID string
 }
 
 func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 	return contract.FriendshipDTO{
-		Id:        friendship.Base.ID,
-		State:     friendship.State,
-		UserId:    friendship.UserID,
-		SearchId:  friendship.SearchID,
+		Id:       friendship.Base.ID,
+		State:    friendship.State,
+		UserId:   friendship.UserID,
+		SearchId: friendship.SearchID,
 	}
 }
 
@@ -25,9 +25,9 @@ func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 		Base: Base{
 			ID: friendshipDTO.Id,
 		},
-		State:     friendshipDTO.State,
-		UserID:    friendshipDTO.UserId,
-		SearchID:  friendshipDTO.SearchId,
+		State:    friendshipDTO.State,
+		UserID:   friendshipDTO.UserId,
+		SearchID: friendshipDTO.SearchId,
 	}
 }
 

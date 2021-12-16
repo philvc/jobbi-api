@@ -20,9 +20,15 @@ func Default(usecase usecase.Usecase) SearchController {
 }
 
 // swagger:operation GET /searches searches GetSearches
-// Get all searches.
+// Get searches. Status is either active or pending
 // Return all searches
 // ---
+//     Parameters:
+//       - name: status
+//         in: query
+//         type: string
+//         required: true
+//         description: test
 //     Produces:
 //       - application/json
 //     Responses:
@@ -42,6 +48,24 @@ func (controller SearchController) GetSearches(c *gin.Context) {
 
 	// Get My Searches - Searches by userId
 	searches, err := controller.usecase.SearchUsecase.GetSearchesByUserSub(sub)
+
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, searches)
+}
+
+func (controller SearchController) GetFriendsSearches(c *gin.Context) {
+
+	
+	sub := c.GetString("sub")
+
+
+	// Get My Searches - Searches by userId
+	searches, err := controller.usecase.SearchUsecase.GetFriendsSearches(sub)
 
 
 	if err != nil {
