@@ -30,9 +30,21 @@ func Default(controller controller.Controller) RouterGroup {
 func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	child := parent.Group(endpoint)
+	// Get all searches
 	child.GET("", middleware.Authorize(routerGroup.controller.SearchController.GetSearches))
+
 	// Get friends searches
 	child.GET("/friends", middleware.Authorize(routerGroup.controller.SearchController.GetFriendsSearches))
+
+	// Get my search
+	child.GET("/me", middleware.Authorize(routerGroup.controller.SearchController.GetMySearch))
+
+	// Get my shared searches
+	child.GET("/shared", middleware.Authorize(routerGroup.controller.SearchController.GetMySharedSearches))
+
+	// Get my followed searches
+	child.GET("/public", middleware.Authorize(routerGroup.controller.SearchController.GetMyFollowedSearches))
+
 	child.POST("", middleware.Authorize(routerGroup.controller.SearchController.AddSearch))
 	childParam := child.Group(parameter)
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.SearchController.ModifySearch))

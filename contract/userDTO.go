@@ -24,4 +24,8 @@ type UserDTO struct {
 	//
 	// required: false
 	ExternalId string `json:"externalId"`
+	// Avatar url
+	//
+	// required: false
+	AvatarUrl string `json:"avatarUrl"`
 }
