@@ -22,7 +22,7 @@ func Default(db *gorm.DB) SearchRepository {
 func (repository SearchRepository) GetFriendsSearches(userId string) (*[]contract.FriendSearchDTO, error) {
 
 	// Get user Friendships then fetch search owner
-	// TODO CONTINUE MODEL & THEN MAPPER USECASE
+	// TODO CONTINUE MODEL & the return statementTHEN MAPPER USECASE
 	var friendsrhips []model.Friendship
 	type searchTitle struct {
 		Title string
