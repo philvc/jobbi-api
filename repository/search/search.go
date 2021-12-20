@@ -19,6 +19,37 @@ func Default(db *gorm.DB) SearchRepository {
 	}
 }
 
+func (repository SearchRepository) GetFriendsSearches(userId string) (*[]contract.FriendSearchDTO, error) {
+
+	// Get user Friendships then fetch search owner
+	// TODO CONTINUE MODEL & the return statementTHEN MAPPER USECASE
+	var friendsrhips []model.Friendship
+	type searchTitle struct {
+		Title string
+		FirstName string
+	}
+
+	var results []searchTitle
+	var searches []model.Search
+
+	if err := repository.database.Model(&model.Search{}).
+		Select("title, users.first_name").
+		Joins("JOIN friendships ON friendships.search_id = searches.id").
+		Joins("JOIN users ON users.id = searches.user_id").
+		Where("friendships.user_id = ?", userId).
+		Take(&searches).
+		Scan(&results).
+		Error; err != nil {
+		print(err)
+	}
+
+	if err := repository.database.Find(&friendsrhips).Error; err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
 func (repository SearchRepository) GetSearchesByUserId(userId string) (*[]contract.SearchDTO, error) {
 	var searches []model.Search
 	var user model.User

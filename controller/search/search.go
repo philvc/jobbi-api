@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/usecase"
-
 )
 
 type SearchController struct {
@@ -20,9 +19,15 @@ func Default(usecase usecase.Usecase) SearchController {
 }
 
 // swagger:operation GET /searches searches GetSearches
-// Get all searches.
+// Get searches. Status is either active or pending
 // Return all searches
 // ---
+//     Parameters:
+//       - name: status
+//         in: query
+//         type: string
+//         required: true
+//         description: test
 //     Produces:
 //       - application/json
 //     Responses:
@@ -36,13 +41,86 @@ func Default(usecase usecase.Usecase) SearchController {
 //         description: Bad Request
 func (controller SearchController) GetSearches(c *gin.Context) {
 
-	
 	sub := c.GetString("sub")
-
 
 	// Get My Searches - Searches by userId
 	searches, err := controller.usecase.SearchUsecase.GetSearchesByUserSub(sub)
 
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, searches)
+}
+
+// swagger:operation GET /searches/me searches GetMySearch
+// Get my search.
+// Return my search
+// ---
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Get my search
+//         schema:
+//             "$ref": "#/definitions/MySearchDTO"
+//       400:
+//         description: Bad Request
+func (controller SearchController) GetMySearch(c *gin.Context) {
+
+	c.IndentedJSON(http.StatusOK, "get my search endpoint")
+
+}
+
+// swagger:operation GET /searches/shared searches GetMySharedSearches
+// Get my shared searches.
+// Return my shared searches
+// ---
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Get my shared searches
+//         schema:
+//           type: array
+//           items:
+//             "$ref": "#/definitions/SharedSearchDTO"
+//       400:
+//         description: Bad Request
+func (controller SearchController) GetMySharedSearches(c *gin.Context) {
+
+	c.IndentedJSON(http.StatusOK, "get shared searches endpoint")
+
+}
+
+// swagger:operation GET /searches/public searches GetMyFollowedSearches
+// Get my followed searches.
+// Return my followed searches
+// ---
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Get my followed searches
+//         schema:
+//           type: array
+//           items:
+//             "$ref": "#/definitions/FollowedSearchDTO"
+//       400:
+//         description: Bad Request
+func (controller SearchController) GetMyFollowedSearches(c *gin.Context) {
+
+	c.IndentedJSON(http.StatusOK, "get followed searches endpoint")
+
+}
+
+func (controller SearchController) GetFriendsSearches(c *gin.Context) {
+
+	sub := c.GetString("sub")
+
+	// Get My Searches - Searches by userId
+	searches, err := controller.usecase.SearchUsecase.GetFriendsSearches(sub)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())

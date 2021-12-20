@@ -1,13 +1,25 @@
 package contract
 
-// An user
+// A friend search
 //
-// swagger:model UserDTO
-type UserDTO struct {
+// swagger:model FriendSearchDTO
+type FriendSearchDTO struct {
 	// The id
 	//
 	// required: false
 	Id string `json:"id"`
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// UserId
+	//
+	// required: false
+	UserID string `json:"userId"`
 	// The firstName
 	//
 	// required: false
@@ -24,8 +36,4 @@ type UserDTO struct {
 	//
 	// required: false
 	ExternalId string `json:"externalId"`
-	// Avatar url
-	//
-	// required: false
-	AvatarUrl string `json:"avatarUrl"`
 }
