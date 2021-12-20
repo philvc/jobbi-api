@@ -69,6 +69,18 @@ func (controller SearchController) GetSearches(c *gin.Context) {
 //         description: Bad Request
 func (controller SearchController) GetMySearch(c *gin.Context) {
 
+	sub := c.GetString("sub")
+
+	// Get My Searches - Searches by userId
+	searches, err := controller.usecase.SearchUsecase.GetMySearch(sub)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	print(searches)
+
 	c.IndentedJSON(http.StatusOK, "get my search endpoint")
 
 }

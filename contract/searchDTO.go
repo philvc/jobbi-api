@@ -20,6 +20,10 @@ type SearchDTO struct {
 	//
 	// required: false
 	UserID string `json:"userId"`
+	// The search tags
+	//
+	// required: false
+	Tags []string `json:"tags"`
 }
 
 // An shared search

@@ -10,6 +10,7 @@ type User struct {
 	LastName    string
 	Email       string
 	ExternalId  string
+	AvatarUrl   string
 	Searches    []Search     `gorm:"foreignKey:UserID"`
 	Devices     []Device     `gorm:"foreignKey:UserID"`
 	Friendships []Friendship `gorm:"foreignKey:UserID"`
@@ -20,7 +21,7 @@ type User struct {
 
 func ToUserDTO(user User) contract.UserDTO {
 	return contract.UserDTO{
-		Id: user.ID,
+		Id:         user.ID,
 		FirstName:  user.FirstName,
 		LastName:   user.LastName,
 		Email:      user.Email,
