@@ -22,7 +22,7 @@ func Default(db *gorm.DB) UserRepository {
 func (repository UserRepository) GetUserBySub(sub string) (*contract.UserDTO, error) {
 	var user model.User
 
-	if err := repository.database.Where("external_id = ?", sub).First(&user).Error; err != nil {
+	if err := repository.database.Model(&model.User{}).Where("external_id = ?", sub).First(&user).Error; err != nil {
 		return nil, errors.New("no user")
 	}
 

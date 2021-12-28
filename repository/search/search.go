@@ -21,23 +21,33 @@ func Default(db *gorm.DB) SearchRepository {
 
 func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearchDTO, error) {
 
-	// Get search
-	// if err := repository.database.Model(&model.Search{}).Select("title, tags, id").Where("user_id ? = ", userId).Scan(&contract.MySearchDTO{}).W; err != nil {
-	// 	print(err)
-	// 	return nil, err
-	// }
-	// if err := repository.database.Model(&model.Search{}).
-	// 	Select("users.first_name, users.last_name").
-	// 	Joins("JOIN").
-	// 	Where("user_id ? = ", userId).
-	// 	Scan(&contract.MySearchDTO{}).
-	// 	Error; err != nil {
-	// 	print(err)
-	// 	return nil, err
-	// }
+	var result contract.MySearchDTO
 
-	// Get participants
-	return nil, nil
+	// Get search by user id
+	if err := repository.database.
+	Model(&model.Search{}).
+	Select("title, id, tags").
+	Where("user_id = ? ", userId).
+	Scan(&result).
+	Error; err != nil {
+		print(err)
+		return nil, err
+	}
+
+	// If user has a search
+	if result.Id != "" {
+		
+		// Get participants
+		if err := repository.database.Model(&model.Friendship{}).
+			Where("search_id = ? ", result.Id).
+			Joins("JOIN users ON users.id = friendships.user_id").
+			Select("users.id, users.first_name, users.last_name").
+			Find(&result.Participants).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return &result, nil
 }
 
 func (repository SearchRepository) GetFriendsSearches(userId string) (*[]contract.FriendSearchDTO, error) {

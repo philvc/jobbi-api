@@ -18,41 +18,6 @@ func Default(usecase usecase.Usecase) SearchController {
 	}
 }
 
-// swagger:operation GET /searches searches GetSearches
-// Get searches. Status is either active or pending
-// Return all searches
-// ---
-//     Parameters:
-//       - name: status
-//         in: query
-//         type: string
-//         required: true
-//         description: test
-//     Produces:
-//       - application/json
-//     Responses:
-//       200:
-//         description: All the searches
-//         schema:
-//           type: array
-//           items:
-//             "$ref": "#/definitions/SearchDTO"
-//       400:
-//         description: Bad Request
-func (controller SearchController) GetSearches(c *gin.Context) {
-
-	sub := c.GetString("sub")
-
-	// Get My Searches - Searches by userId
-	searches, err := controller.usecase.SearchUsecase.GetSearchesByUserSub(sub)
-
-	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	c.IndentedJSON(http.StatusOK, searches)
-}
 
 // swagger:operation GET /searches/me searches GetMySearch
 // Get my search.
@@ -72,16 +37,14 @@ func (controller SearchController) GetMySearch(c *gin.Context) {
 	sub := c.GetString("sub")
 
 	// Get My Searches - Searches by userId
-	searches, err := controller.usecase.SearchUsecase.GetMySearch(sub)
+	search, err := controller.usecase.SearchUsecase.GetMySearch(sub)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	print(searches)
-
-	c.IndentedJSON(http.StatusOK, "get my search endpoint")
+	c.IndentedJSON(http.StatusOK, search)
 
 }
 

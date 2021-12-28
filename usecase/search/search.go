@@ -18,25 +18,8 @@ func Default(repository repository.Repository) SearchUseCase {
 	}
 }
 
-func (usecase SearchUseCase) GetSearchesByUserSub(sub string) (*[]contract.SearchDTO, error) {
-
-	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
-
-	if err != nil {
-		return nil, err
-	}
-
-	// Get user searches
-	searches, err := usecase.repository.SearchRepository.GetSearchesByUserId(user.Id)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return searches, err
-}
-
-func (usecase SearchUseCase) GetMySearch(sub string) (*[]contract.SearchDTO, error) {
+// Get My search
+func (usecase SearchUseCase) GetMySearch(sub string) (*contract.MySearchDTO, error) {
 
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 
@@ -51,9 +34,7 @@ func (usecase SearchUseCase) GetMySearch(sub string) (*[]contract.SearchDTO, err
 		return nil, err
 	}
 
-	print(response)
-
-	return nil, err
+	return response, nil
 }
 
 // Get Friends Searches
