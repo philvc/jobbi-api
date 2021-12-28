@@ -64,9 +64,17 @@ func (controller SearchController) GetMySearch(c *gin.Context) {
 //         description: Bad Request
 func (controller SearchController) GetMySharedSearches(c *gin.Context) {
 
-	// 
+	sub := c.GetString("sub")
 
-	c.IndentedJSON(http.StatusOK, "get shared searches endpoint")
+	// Get Shared searches
+	sharedSearches, err := controller.usecase.SearchUsecase.GetSharedSearches(sub)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, sharedSearches)
 
 }
 

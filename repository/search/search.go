@@ -50,6 +50,25 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 	return &result, nil
 }
 
+func (repository SearchRepository) GetSharedSearches(userId string)(*[]contract.SharedSearchDTO , error){
+	
+	// friendships where user id & joins searches and joins user and scan
+	var results []contract.SharedSearchDTO
+
+	if err := repository.database.
+	Model(&model.Friendship{}).
+	Where("friendships.user_id = ?", userId).
+	Joins("JOIN searches ON searches.id = friendships.search_id").
+	Joins("JOIN users ON users.id = searches.user_id").
+	Select("searches.id, searches.tags, searches.title, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
+	Find(&results).
+	Error; err != nil {
+		return nil, err
+	}
+	
+	return &results, nil
+}
+
 func (repository SearchRepository) GetFriendsSearches(userId string) (*[]contract.FriendSearchDTO, error) {
 
 	// Get user Friendships then fetch search owner

@@ -37,6 +37,23 @@ func (usecase SearchUseCase) GetMySearch(sub string) (*contract.MySearchDTO, err
 	return response, nil
 }
 
+// Get Shared searches
+func (usecase SearchUseCase) GetSharedSearches(sub string)(*[]contract.SharedSearchDTO, error){
+	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get user searches
+	response, err := usecase.repository.SearchRepository.GetSharedSearches(user.Id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
 // Get Friends Searches
 func (usecase SearchUseCase) GetFriendsSearches(sub string) (*[]contract.FriendSearchDTO, error) {
 
