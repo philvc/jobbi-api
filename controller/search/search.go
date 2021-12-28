@@ -18,7 +18,6 @@ func Default(usecase usecase.Usecase) SearchController {
 	}
 }
 
-
 // swagger:operation GET /searches/me searches GetMySearch
 // Get my search.
 // Return my search
@@ -64,6 +63,8 @@ func (controller SearchController) GetMySearch(c *gin.Context) {
 //       400:
 //         description: Bad Request
 func (controller SearchController) GetMySharedSearches(c *gin.Context) {
+
+	// 
 
 	c.IndentedJSON(http.StatusOK, "get shared searches endpoint")
 

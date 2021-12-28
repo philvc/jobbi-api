@@ -41,7 +41,7 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 		if err := repository.database.Model(&model.Friendship{}).
 			Where("search_id = ? ", result.Id).
 			Joins("JOIN users ON users.id = friendships.user_id").
-			Select("users.id, users.first_name, users.last_name").
+			Select("users.id, users.first_name, users.last_name, users.avatar_url").
 			Find(&result.Participants).Error; err != nil {
 			return nil, err
 		}
@@ -79,23 +79,6 @@ func (repository SearchRepository) GetFriendsSearches(userId string) (*[]contrac
 	}
 
 	return nil, nil
-}
-
-func (repository SearchRepository) GetSearchesByUserId(userId string) (*[]contract.SearchDTO, error) {
-	var searches []model.Search
-	var user model.User
-
-	if err := repository.database.Where("id = ?", userId).First(&user).Error; err != nil {
-		return nil, errors.New(err.Error())
-	}
-
-	if err := repository.database.Model(&user).Association("Searches").Find(&searches); err != nil {
-		return nil, err
-	}
-
-	searchDTOs := model.ToSearchDTOs(searches)
-
-	return &searchDTOs, nil
 }
 
 func (repository SearchRepository) GetSearchById(searchId string) (*contract.SearchDTO, error) {

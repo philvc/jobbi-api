@@ -34,11 +34,12 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	// Get my search
 	child.GET("/me", middleware.Authorize(routerGroup.controller.SearchController.GetMySearch))
 
+	// Get my shared searches
+	child.GET("/shared", middleware.Authorize(routerGroup.controller.SearchController.GetMySharedSearches))
+	
 	// Get friends searches
 	child.GET("/friends", middleware.Authorize(routerGroup.controller.SearchController.GetFriendsSearches))
 
-	// Get my shared searches
-	child.GET("/shared", middleware.Authorize(routerGroup.controller.SearchController.GetMySharedSearches))
 
 	// Get my followed searches
 	child.GET("/public", middleware.Authorize(routerGroup.controller.SearchController.GetMyFollowedSearches))
