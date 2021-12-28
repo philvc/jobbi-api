@@ -20,4 +20,8 @@ type FriendshipDTO struct {
 	//
 	// required: false
 	SearchId string `json:"searchId"`
+	// The type
+	//
+	// required: false
+	Type string `json:"type"`
 }

@@ -95,24 +95,20 @@ func (controller SearchController) GetMySharedSearches(c *gin.Context) {
 //         description: Bad Request
 func (controller SearchController) GetMyFollowedSearches(c *gin.Context) {
 
-	c.IndentedJSON(http.StatusOK, "get followed searches endpoint")
-
-}
-
-func (controller SearchController) GetFriendsSearches(c *gin.Context) {
-
 	sub := c.GetString("sub")
 
-	// Get My Searches - Searches by userId
-	searches, err := controller.usecase.SearchUsecase.GetFriendsSearches(sub)
+	// Get Shared searches
+	followedSearches, err := controller.usecase.SearchUsecase.GetFollowedSearches(sub)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, searches)
+	c.IndentedJSON(http.StatusOK, followedSearches)
+
 }
+
 
 // swagger:operation GET /searches/{searchId} searches GetSearchById
 // type id struct

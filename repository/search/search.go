@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	contract "github.com/philvc/jobbi-api/contract"
+	constant "github.com/philvc/jobbi-api/constants"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
 )
@@ -52,13 +53,19 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 
 func (repository SearchRepository) GetSharedSearches(userId string)(*[]contract.SharedSearchDTO , error){
 	
-	// friendships where user id & joins searches and joins user and scan
 	var results []contract.SharedSearchDTO
 
 	if err := repository.database.
 	Model(&model.Friendship{}).
 	Where("friendships.user_id = ?", userId).
+	
+	// Get friendships where type is INVITED
+	Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_INVITED).
+	
+	// GET Searches details
 	Joins("JOIN searches ON searches.id = friendships.search_id").
+	
+	// Get search owner details
 	Joins("JOIN users ON users.id = searches.user_id").
 	Select("searches.id, searches.tags, searches.title, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
 	Find(&results).
@@ -69,35 +76,29 @@ func (repository SearchRepository) GetSharedSearches(userId string)(*[]contract.
 	return &results, nil
 }
 
-func (repository SearchRepository) GetFriendsSearches(userId string) (*[]contract.FriendSearchDTO, error) {
+func (repository SearchRepository) GetFollowedSearches(userId string)(*[]contract.FollowedSearchDTO, error){
 
-	// Get user Friendships then fetch search owner
-	// TODO CONTINUE MODEL & the return statementTHEN MAPPER USECASE
-	var friendsrhips []model.Friendship
-	type searchTitle struct {
-		Title     string
-		FirstName string
-	}
+	var results []contract.FollowedSearchDTO
 
-	var results []searchTitle
-	var searches []model.Search
-
-	if err := repository.database.Model(&model.Search{}).
-		Select("title, users.first_name").
-		Joins("JOIN friendships ON friendships.search_id = searches.id").
-		Joins("JOIN users ON users.id = searches.user_id").
-		Where("friendships.user_id = ?", userId).
-		Take(&searches).
-		Scan(&results).
-		Error; err != nil {
-		print(err)
-	}
-
-	if err := repository.database.Find(&friendsrhips).Error; err != nil {
+	if err := repository.database.
+	Model(&model.Friendship{}).
+	Where("friendships.user_id = ?", userId).
+	
+	// Get friendships where type is INVITED
+	Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_FOLLOWED).
+	
+	// GET Searches details
+	Joins("JOIN searches ON searches.id = friendships.search_id").
+	
+	// Get search owner details
+	Joins("JOIN users ON users.id = searches.user_id").
+	Select("searches.id, searches.tags, searches.title, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
+	Find(&results).
+	Error; err != nil {
 		return nil, err
 	}
-
-	return nil, nil
+	
+	return &results, nil
 }
 
 func (repository SearchRepository) GetSearchById(searchId string) (*contract.SearchDTO, error) {

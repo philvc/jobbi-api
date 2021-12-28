@@ -54,31 +54,23 @@ func (usecase SearchUseCase) GetSharedSearches(sub string)(*[]contract.SharedSea
 	return response, nil
 }
 
-// Get Friends Searches
-func (usecase SearchUseCase) GetFriendsSearches(sub string) (*[]contract.FriendSearchDTO, error) {
-
-	// Get user
+// Get Followed searches
+func (usecase SearchUseCase) GetFollowedSearches(sub string)(*[]contract.FollowedSearchDTO, error){
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 	if err != nil {
 		return nil, err
 	}
 
-	// Get friends searches with friendship user id
-	response, err := usecase.repository.SearchRepository.GetFriendsSearches(user.Id)
+	// Get user searches
+	response, err := usecase.repository.SearchRepository.GetFollowedSearches(user.Id)
+
 	if err != nil {
 		return nil, err
 	}
 
 	return response, nil
-
 }
 
-func (usecase SearchUseCase) GetSearchesByFriendshipId(sub string) (*[]contract.SearchDTO, error) {
-	return nil, nil
-	// user, err := usecase.repository.UserRepository.GetUserBySub(sub)
-
-	// friendship, err := usecase.repository.FriendshipRepository.GetFriendshipsByUserId(user.Id)
-}
 
 func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTO, error) {
 	search, err := usecase.repository.SearchRepository.GetSearchById(searchId)
