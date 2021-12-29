@@ -159,11 +159,7 @@ func (repository SearchRepository) IsPublic(searchId string) bool {
 	var search model.Search
 
 	// Get search by id
-	if err := repository.database.Model(&model.Search{}).Where("id = ?", searchId).First(&search).Error; err != nil {
-		return false
-
-	// Check if search type is private
-	} else if search.Type == constant.SearchTypePrivate {
+	if err := repository.database.Model(&model.Search{}).Where("id = ?", searchId).Where("type = ?", constant.SearchTypePublic).First(&search).Error; err != nil {
 		return false
 	}
 
@@ -178,7 +174,7 @@ func (repository SearchRepository) IsFriend(userId string, searchId string) bool
 	if err := repository.database.Model(&model.Friendship{}).Where("search_id = ?", searchId).Where("user_id = ? ", userId).First(&friendship).Error; err != nil {
 		return false
 
-	} 
+	}
 
 	return true
 }

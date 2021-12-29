@@ -126,7 +126,6 @@ func (usecase SearchUseCase) IsOwner(sub string, searchId string) bool {
 
 func (usecase SearchUseCase) IsPublic(searchId string) bool {
 
-
 	ok := usecase.repository.SearchRepository.IsPublic(searchId)
 
 	return ok
