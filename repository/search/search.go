@@ -102,16 +102,32 @@ func (repository SearchRepository) GetFollowedSearches(userId string) (*[]contra
 }
 
 func (repository SearchRepository) GetSearchById(searchId string) (*contract.SearchDTOById, error) {
-	var search model.Search
+	var result contract.SearchDTOById
 
 	if err := repository.database.
-		Where("id = ?", searchId).
-		First(&search).
+		Model(&model.Search{}).
+		Where("searches.id = ?", searchId).
+		Select("title, searches.id, sector, tags, description, searches.type, users.email, users.id as user_id, users.first_name, users.last_name, users.avatar_url").
+		Joins("JOIN users ON users.id = searches.user_id").
+		Scan(&result).
 		Error; err != nil {
 		return nil, errors.New(constant.ErrorGetSearchById)
 	}
 
-	return nil, nil
+	// If user has a search
+	if result.Id != "" {
+
+		// Get participants
+		if err := repository.database.Model(&model.Friendship{}).
+			Where("search_id = ? ", result.Id).
+			Joins("JOIN users ON users.id = friendships.user_id").
+			Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url").
+			Find(&result.Participants).Error; err != nil {
+			return nil, errors.New(constant.ErrorGetMySearchParticipants)
+		}
+	}
+
+	return &result, nil
 }
 
 func (repository SearchRepository) AddSearch(SearchDTO contract.SearchDTO) (*contract.SearchDTO, error) {

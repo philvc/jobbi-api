@@ -228,8 +228,12 @@ type SearchDTOById struct {
 	Id string `json:"id"`
 	// The title
 	//
-	// required: true
+	// required: false
 	Title string `json:"title"`
+	// The description
+	//
+	// required: false
+	Description string `json:"description"`
 	// The participants
 	//
 	// required: false
