@@ -72,7 +72,10 @@ func (usecase SearchUseCase) GetFollowedSearches(sub string) (*[]contract.Follow
 	return response, nil
 }
 
-func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTO, error) {
+func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTOById, error) {
+
+	// Check access rights: owner or friend or follower or public
+
 	search, err := usecase.repository.SearchRepository.GetSearchById(searchId)
 	return search, err
 }
@@ -106,4 +109,38 @@ func (usecase SearchUseCase) AddSearch(searchDTO contract.SearchDTO) (*contract.
 func (usecase SearchUseCase) ModifySearch(searchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
 	user, err := usecase.repository.SearchRepository.ModifySearch(searchDTO)
 	return user, err
+}
+
+func (usecase SearchUseCase) IsOwner(sub string, searchId string) bool {
+
+	// Get user
+	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return false
+	}
+
+	ok := usecase.repository.SearchRepository.IsSearchOwner(user.Id, searchId)
+
+	return ok
+}
+
+func (usecase SearchUseCase) IsPublic(searchId string) bool {
+
+
+	ok := usecase.repository.SearchRepository.IsPublic(searchId)
+
+	return ok
+}
+
+func (usecase SearchUseCase) IsFriend(sub string, searchId string) bool {
+
+	// Get user
+	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return false
+	}
+
+	ok := usecase.repository.SearchRepository.IsFriend(user.Id, searchId)
+
+	return ok
 }

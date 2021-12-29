@@ -26,7 +26,6 @@ func Default(controller controller.Controller) RouterGroup {
 func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	child := parent.Group(endpoint)
-	child.GET("", middleware.Authorize(routerGroup.controller.UserController.GetUserFriendships))
 
 	childParam := child.Group(parameter)
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.FriendshipController.ModifyFriendship))

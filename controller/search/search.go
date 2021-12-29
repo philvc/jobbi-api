@@ -1,9 +1,11 @@
 package search_controller
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	constant "github.com/philvc/jobbi-api/constants"
 	"github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/usecase"
 )
@@ -126,12 +128,21 @@ func (controller SearchController) GetMyFollowedSearches(c *gin.Context) {
 //       200:
 //         description: Success
 //         schema:
-//            $ref: "#/definitions/SearchDTO"
+//            $ref: "#/definitions/SearchDTOById"
 //       400:
 //         description: Bad Request
 
 func (controller SearchController) GetSearchById(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
+	sub := c.GetString("sub")
+
+	// Check search access rights
+	ok := controller.hasSearchAccess(sub, searchId)
+
+	if !ok {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
+		return
+	}
 
 	search, err := controller.usecase.SearchUsecase.GetSearchById(searchId)
 
@@ -267,4 +278,25 @@ func (controller SearchController) ModifySearch(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusOK, searchDTO)
+}
+
+func (controller SearchController) hasSearchAccess(sub string, searchId string) bool {
+
+	// Check if search is public
+	isPublic := controller.usecase.SearchUsecase.IsPublic(searchId)
+	if !isPublic {
+
+		// Check if user is owner
+		isOwner := controller.usecase.SearchUsecase.IsOwner(sub, searchId)
+		if !isOwner {
+
+			// Check if user is friend or follower
+			isFriend := controller.usecase.SearchUsecase.IsFriend(sub, searchId)
+
+			if !isFriend {
+				return false
+			}
+		}
+	}
+	return true
 }

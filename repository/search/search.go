@@ -42,7 +42,7 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 		if err := repository.database.Model(&model.Friendship{}).
 			Where("search_id = ? ", result.Id).
 			Joins("JOIN users ON users.id = friendships.user_id").
-			Select("users.id, users.first_name, users.last_name, users.avatar_url").
+			Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url").
 			Find(&result.Participants).Error; err != nil {
 			return nil, errors.New(constant.ErrorGetMySearchParticipants)
 		}
@@ -101,16 +101,17 @@ func (repository SearchRepository) GetFollowedSearches(userId string) (*[]contra
 	return &results, nil
 }
 
-func (repository SearchRepository) GetSearchById(searchId string) (*contract.SearchDTO, error) {
+func (repository SearchRepository) GetSearchById(searchId string) (*contract.SearchDTOById, error) {
 	var search model.Search
 
-	if err := repository.database.Where("id = ?", searchId).First(&search).Error; err != nil {
-		return nil, errors.New("no Search")
+	if err := repository.database.
+		Where("id = ?", searchId).
+		First(&search).
+		Error; err != nil {
+		return nil, errors.New(constant.ErrorGetSearchById)
 	}
 
-	searchDTO := model.ToSearchDTO(search)
-
-	return &searchDTO, nil
+	return nil, nil
 }
 
 func (repository SearchRepository) AddSearch(SearchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
@@ -137,10 +138,47 @@ func (repository SearchRepository) ModifySearch(SearchDTO contract.SearchDTO) (*
 
 	if err := repository.database.Model(&search).Where("id = ?", search.ID).Updates(map[string]interface{}{"title": search.Title,
 		"description": search.Description}).Error; err != nil {
-			return nil, errors.New(constant.ErrorModifySearch)
-		}
+		return nil, errors.New(constant.ErrorModifySearch)
+	}
 
 	searchDTO := model.ToSearchDTO(search)
 
 	return &searchDTO, nil
+}
+
+func (repository SearchRepository) IsSearchOwner(userId string, searchId string) bool {
+
+	if err := repository.database.Model(&model.Search{}).Where("id = ?", searchId).Where("user_id = ?", userId).First(&model.Search{}).Error; err != nil {
+		return false
+	}
+
+	return true
+}
+func (repository SearchRepository) IsPublic(searchId string) bool {
+
+	var search model.Search
+
+	// Get search by id
+	if err := repository.database.Model(&model.Search{}).Where("id = ?", searchId).First(&search).Error; err != nil {
+		return false
+
+	// Check if search type is private
+	} else if search.Type == constant.SearchTypePrivate {
+		return false
+	}
+
+	return true
+}
+
+func (repository SearchRepository) IsFriend(userId string, searchId string) bool {
+
+	var friendship model.Friendship
+
+	// Get search by id
+	if err := repository.database.Model(&model.Friendship{}).Where("search_id = ?", searchId).Where("user_id = ? ", userId).First(&friendship).Error; err != nil {
+		return false
+
+	} 
+
+	return true
 }

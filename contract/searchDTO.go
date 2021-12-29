@@ -35,6 +35,7 @@ type SearchDTO struct {
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
 }
+
 // An search
 //
 // swagger:model PostSearchResponseDTO
@@ -202,7 +203,7 @@ type MySearchDTO struct {
 	// The participants
 	//
 	// required: false
-	Participants []UserDTO `json:"participants" gorm:"foreignKey:Id"` 
+	Participants []UserDTO `json:"participants" gorm:"foreignKey:Id"`
 	// The search sector
 	//
 	// required: false
@@ -216,3 +217,92 @@ type MySearchDTO struct {
 	// required: true
 	Type string `json:"type"`
 }
+
+// Search by id
+//
+// swagger:model SearchDTOById
+type SearchDTOById struct {
+	// The id
+	//
+	// required: true
+	Id string `json:"id"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The participants
+	//
+	// required: false
+	Participants []UserDTO `json:"participants" gorm:"foreignKey:Id"`
+	// The search sector
+	//
+	// required: false
+	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// The firstName
+	//
+	// required: false
+	FirstName string `json:"firstName"`
+	// The lastName
+	//
+	// required: false
+	LastName string `json:"lastName"`
+	// The email
+	//
+	// required: false
+	Email string `json:"email"`
+	// Avatar url
+	//
+	// required: false
+	AvatarUrl string `json:"avatarUrl"`
+	// The user id
+	//
+	// required: true
+	UserId string `json:"userId"`
+}
+
+
+
+// An quest participant
+//
+// swagger:model ParticipantDTOForSearchById
+type ParticipantDTOForSearchById struct {
+	// The id
+	//
+	// required: true
+	Id string `json:"id"`
+	// The firstName
+	//
+	// required: false
+	FirstName string `json:"firstName"`
+	// The lastName
+	//
+	// required: false
+	LastName string `json:"lastName"`
+	// The email
+	//
+	// required: false
+	Email string `json:"email"`
+	// The number of posts
+	//
+	// required: false
+	NumberOfPosts int64 `json:"numberOfPosts"`
+	// Avatar url
+	//
+	// required: false
+	AvatarUrl string `json:"avatarUrl"`
+	// type
+	//
+	// required: false
+	Type string `json:"type"`
+}
+
+
+

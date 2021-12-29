@@ -1,5 +1,12 @@
 package constant
 
+// Constants
+const (
+	SearchTypePrivate = "private"
+	SearchTypePublic = "public"
+
+)
+
 // Errors
 
 // Post Search usecase errors
@@ -8,6 +15,7 @@ const (
 	ErrorMissingDescription = "missing_description"
 	ErrorMissingTitle = "missing_title"
 	ErrorMissingType = "missing_type"
+	ErrorMissingAccess = "missing_access"
 )
 
 
@@ -19,4 +27,5 @@ const (
 	ErrorGetFollowedSearches = "repository_search_error_get_followed_searches"
 	ErrorAddSearch = "repository_search_error_add_search"
 	ErrorModifySearch = "repository_search_error_modify_search"
+	ErrorGetSearchById = "repository_search_error_get_search_by_id"
 )
