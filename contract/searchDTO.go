@@ -20,10 +20,10 @@ type SearchDTO struct {
 	//
 	// required: false
 	UserID string `json:"userId"`
-	// The search tags
+	// The search sector
 	//
 	// required: false
-	Tags []string `json:"tags"`
+	Sector string `json:"sector"`
 }
 
 // An shared search
@@ -46,10 +46,6 @@ type SharedSearchDTO struct {
 	//
 	// required: false
 	UserID string `json:"userId"`
-	// The search tags
-	//
-	// required: false
-	Tags []string `json:"tags"`
 	// The firstName
 	//
 	// required: false
@@ -62,6 +58,10 @@ type SharedSearchDTO struct {
 	//
 	// required: false
 	AvatarUrl string `json:"avatarUrl"`
+	// The search sector
+	//
+	// required: false
+	Sector string `json:"sector"`
 }
 
 // An followed search
@@ -84,10 +84,6 @@ type FollowedSearchDTO struct {
 	//
 	// required: false
 	UserID string `json:"userId"`
-	// The search tags
-	//
-	// required: false
-	Tags []string `json:"tags"`
 	// The firstName
 	//
 	// required: false
@@ -100,6 +96,10 @@ type FollowedSearchDTO struct {
 	//
 	// required: false
 	AvatarUrl string `json:"avatarUrl"`
+	// The search sector
+	//
+	// required: false
+	Sector string `json:"sector"`
 }
 
 // My search
@@ -114,12 +114,12 @@ type MySearchDTO struct {
 	//
 	// required: true
 	Title string `json:"title"`
-	// The search tags
-	//
-	// required: false
-	Tags []string `json:"tags"`
 	// The participants
 	//
 	// required: false
-	Participants []UserDTO
+	Participants []UserDTO `json:"participants" gorm:"foreignKey:Id"` 
+	// The search sector
+	//
+	// required: false
+	Sector string `json:"sector"`
 }
