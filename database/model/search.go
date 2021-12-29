@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/lib/pq"
 	"github.com/philvc/jobbi-api/contract"
 )
 
@@ -9,11 +10,12 @@ type Search struct {
 	Description string
 	Title       string
 	UserID      string
-	Sector 		string
-	Friendships []Friendship `gorm:"foreignKey:SearchID"`
-	Offers      []Offer      `gorm:"foreignKey:SearchID"`
-	Companies   []Company    `gorm:"foreignKey:SearchID"`
-	Networks    []Network    `gorm:"foreignKey:SearchID"`
+	Sector      string
+	Tags        pq.StringArray `gorm:"type:text[]"`
+	Friendships []Friendship   `gorm:"foreignKey:SearchID"`
+	Offers      []Offer        `gorm:"foreignKey:SearchID"`
+	Companies   []Company      `gorm:"foreignKey:SearchID"`
+	Networks    []Network      `gorm:"foreignKey:SearchID"`
 }
 
 func ToSearchDTO(search Search) contract.SearchDTO {
@@ -23,6 +25,7 @@ func ToSearchDTO(search Search) contract.SearchDTO {
 		Title:       search.Title,
 		UserID:      search.UserID,
 		Sector:      search.Sector,
+		Tags:        search.Tags,
 	}
 }
 
@@ -35,6 +38,7 @@ func ToSearch(searchDTO contract.SearchDTO) Search {
 		Title:       searchDTO.Title,
 		UserID:      searchDTO.UserID,
 		Sector:      searchDTO.Sector,
+		Tags:        searchDTO.Tags,
 	}
 }
 

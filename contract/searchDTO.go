@@ -1,5 +1,7 @@
 package contract
 
+import "github.com/lib/pq"
+
 // An search
 //
 // swagger:model SearchDTO
@@ -24,6 +26,10 @@ type SearchDTO struct {
 	//
 	// required: false
 	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
 }
 
 // An shared search
@@ -62,6 +68,10 @@ type SharedSearchDTO struct {
 	//
 	// required: false
 	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
 }
 
 // An followed search
@@ -100,6 +110,10 @@ type FollowedSearchDTO struct {
 	//
 	// required: false
 	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
 }
 
 // My search
@@ -122,4 +136,8 @@ type MySearchDTO struct {
 	//
 	// required: false
 	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
 }

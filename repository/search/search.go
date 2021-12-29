@@ -27,7 +27,7 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 	// Get search by user id
 	if err := repository.database.
 	Model(&model.Search{}).
-	Select("title, id, sector").
+	Select("title, id, sector, tags").
 	Where("user_id = ? ", userId).
 	Scan(&result).
 	Error; err != nil {
@@ -67,7 +67,7 @@ func (repository SearchRepository) GetSharedSearches(userId string)(*[]contract.
 	
 	// Get search owner details
 	Joins("JOIN users ON users.id = searches.user_id").
-	Select("searches.id, searches.title, searches.sector, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
+	Select("searches.id, searches.title, searches.sector, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
 	Find(&results).
 	Error; err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func (repository SearchRepository) GetFollowedSearches(userId string)(*[]contrac
 	
 	// Get search owner details
 	Joins("JOIN users ON users.id = searches.user_id").
-	Select("searches.id, searches.sector, searches.title, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
+	Select("searches.id, searches.sector, searches.title, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
 	Find(&results).
 	Error; err != nil {
 		return nil, err
