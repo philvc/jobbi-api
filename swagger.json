@@ -83,7 +83,7 @@
             "name": "search",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/SearchDTO"
+              "$ref": "#/definitions/PostSearchRequestDTO"
             }
           }
         ],
@@ -91,7 +91,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/SearchDTO"
+              "$ref": "#/definitions/PostSearchResponseDTO"
             }
           },
           "400": {
@@ -1111,13 +1111,13 @@
           "type": "string",
           "x-go-name": "LastName"
         },
+        "sector": {
+          "description": "The search sector",
+          "type": "string",
+          "x-go-name": "Sector"
+        },
         "tags": {
-          "description": "The search tags",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "x-go-name": "Tags"
+          "$ref": "#/definitions/StringArray"
         },
         "title": {
           "description": "The title",
@@ -1236,13 +1236,13 @@
           },
           "x-go-name": "Participants"
         },
+        "sector": {
+          "description": "The search sector",
+          "type": "string",
+          "x-go-name": "Sector"
+        },
         "tags": {
-          "description": "The search tags",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "x-go-name": "Tags"
+          "$ref": "#/definitions/StringArray"
         },
         "title": {
           "description": "The title",
@@ -1341,6 +1341,74 @@
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
     },
+    "PostSearchRequestDTO": {
+      "description": "An search",
+      "type": "object",
+      "required": [
+        "description",
+        "title"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "sector": {
+          "description": "The search sector",
+          "type": "string",
+          "x-go-name": "Sector"
+        },
+        "tags": {
+          "$ref": "#/definitions/StringArray"
+        },
+        "title": {
+          "description": "The title",
+          "type": "string",
+          "x-go-name": "Title"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "PostSearchResponseDTO": {
+      "description": "An search",
+      "type": "object",
+      "required": [
+        "description",
+        "title"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "id": {
+          "description": "The id",
+          "type": "string",
+          "x-go-name": "Id"
+        },
+        "sector": {
+          "description": "The search sector",
+          "type": "string",
+          "x-go-name": "Sector"
+        },
+        "tags": {
+          "$ref": "#/definitions/StringArray"
+        },
+        "title": {
+          "description": "The title",
+          "type": "string",
+          "x-go-name": "Title"
+        },
+        "userId": {
+          "description": "UserId",
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
     "SearchDTO": {
       "description": "An search",
       "type": "object",
@@ -1359,13 +1427,13 @@
           "type": "string",
           "x-go-name": "Id"
         },
+        "sector": {
+          "description": "The search sector",
+          "type": "string",
+          "x-go-name": "Sector"
+        },
         "tags": {
-          "description": "The search tags",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "x-go-name": "Tags"
+          "$ref": "#/definitions/StringArray"
         },
         "title": {
           "description": "The title",
@@ -1434,13 +1502,13 @@
           "type": "string",
           "x-go-name": "LastName"
         },
+        "sector": {
+          "description": "The search sector",
+          "type": "string",
+          "x-go-name": "Sector"
+        },
         "tags": {
-          "description": "The search tags",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "x-go-name": "Tags"
+          "$ref": "#/definitions/StringArray"
         },
         "title": {
           "description": "The title",
@@ -1454,6 +1522,14 @@
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "StringArray": {
+      "type": "array",
+      "title": "StringArray represents a one-dimensional array of the PostgreSQL character types.",
+      "items": {
+        "type": "string"
+      },
+      "x-go-package": "github.com/lib/pq"
     },
     "UserDTO": {
       "description": "An user",

@@ -153,7 +153,7 @@ func (controller SearchController) GetSearchById(c *gin.Context) {
 //       - name: search
 //         in: body
 //         schema:
-//            $ref: "#/definitions/SearchDTO"
+//            $ref: "#/definitions/PostSearchRequestDTO"
 //         description: search
 //     Produces:
 //       - application/json
@@ -161,13 +161,13 @@ func (controller SearchController) GetSearchById(c *gin.Context) {
 //       200:
 //         description: Success
 //         schema:
-//            $ref: "#/definitions/SearchDTO"
+//            $ref: "#/definitions/PostSearchResponseDTO"
 //       400:
 //         description: Bad Request
 
 func (controller SearchController) AddSearch(c *gin.Context) {
 
-	var search contract.SearchDTO
+	var search contract.PostSearchRequestDTO
 
 	if err := c.BindJSON(&search); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -181,16 +181,35 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 		return
 	}
 
-	search.UserID = userDTO.Id
+	// map post request dto with usecase dto
+	searchDto := contract.SearchDTO{
+		Id: "",
+		Description: search.Description,
+		Title: search.Title,
+		UserID: userDTO.Id,
+		Tags: search.Tags,
+		Sector: search.Sector,
+	}
 
-	searchDTO, err := controller.usecase.SearchUsecase.AddSearch(search)
+	// Add Search usecase
+	searchDTO, err := controller.usecase.SearchUsecase.AddSearch(searchDto)
+
+	// map post response dto with usecase dto
+	postResponseDto := contract.PostSearchResponseDTO{
+		Id: searchDTO.Id,
+		UserID: searchDTO.UserID,
+		Title: searchDTO.Title,
+		Description: search.Description,
+		Sector: search.Sector,
+		Tags: search.Tags,
+	}
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, searchDTO)
+	c.IndentedJSON(http.StatusOK, postResponseDto)
 }
 
 // swagger:operation PUT /searches/{searchId} searches ModifySearch

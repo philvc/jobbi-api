@@ -31,6 +31,57 @@ type SearchDTO struct {
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
 }
+// An search
+//
+// swagger:model PostSearchResponseDTO
+type PostSearchResponseDTO struct {
+	// The id
+	//
+	// required: false
+	Id string `json:"id"`
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// UserId
+	//
+	// required: false
+	UserID string `json:"userId"`
+	// The search sector
+	//
+	// required: false
+	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+}
+
+// An search
+//
+// swagger:model PostSearchRequestDTO
+type PostSearchRequestDTO struct {
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The search sector
+	//
+	// required: false
+	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+}
 
 // An shared search
 //

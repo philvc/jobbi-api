@@ -38,7 +38,7 @@ func (usecase SearchUseCase) GetMySearch(sub string) (*contract.MySearchDTO, err
 }
 
 // Get Shared searches
-func (usecase SearchUseCase) GetSharedSearches(sub string)(*[]contract.SharedSearchDTO, error){
+func (usecase SearchUseCase) GetSharedSearches(sub string) (*[]contract.SharedSearchDTO, error) {
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (usecase SearchUseCase) GetSharedSearches(sub string)(*[]contract.SharedSea
 }
 
 // Get Followed searches
-func (usecase SearchUseCase) GetFollowedSearches(sub string)(*[]contract.FollowedSearchDTO, error){
+func (usecase SearchUseCase) GetFollowedSearches(sub string) (*[]contract.FollowedSearchDTO, error) {
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 	if err != nil {
 		return nil, err
@@ -71,7 +71,6 @@ func (usecase SearchUseCase) GetFollowedSearches(sub string)(*[]contract.Followe
 	return response, nil
 }
 
-
 func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTO, error) {
 	search, err := usecase.repository.SearchRepository.GetSearchById(searchId)
 	return search, err
@@ -86,7 +85,10 @@ func (usecase SearchUseCase) AddSearch(searchDTO contract.SearchDTO) (*contract.
 	if searchDTO.Description == "" {
 		return nil, errors.New("missing description")
 	}
+
+	// Add search repository
 	search, err := usecase.repository.SearchRepository.AddSearch(searchDTO)
+	
 	return search, err
 }
 

@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	contract "github.com/philvc/jobbi-api/contract"
 	constant "github.com/philvc/jobbi-api/constants"
+	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
 )
@@ -26,11 +26,11 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 
 	// Get search by user id
 	if err := repository.database.
-	Model(&model.Search{}).
-	Select("title, id, sector, tags").
-	Where("user_id = ? ", userId).
-	Scan(&result).
-	Error; err != nil {
+		Model(&model.Search{}).
+		Select("title, id, sector, tags").
+		Where("user_id = ? ", userId).
+		Scan(&result).
+		Error; err != nil {
 		print(err)
 		return nil, err
 	}
@@ -51,53 +51,53 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 	return &result, nil
 }
 
-func (repository SearchRepository) GetSharedSearches(userId string)(*[]contract.SharedSearchDTO , error){
-	
+func (repository SearchRepository) GetSharedSearches(userId string) (*[]contract.SharedSearchDTO, error) {
+
 	var results []contract.SharedSearchDTO
 
 	if err := repository.database.
-	Model(&model.Friendship{}).
-	Where("friendships.user_id = ?", userId).
-	
-	// Get friendships where type is INVITED
-	Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_INVITED).
-	
-	// GET Searches details
-	Joins("JOIN searches ON searches.id = friendships.search_id").
-	
-	// Get search owner details
-	Joins("JOIN users ON users.id = searches.user_id").
-	Select("searches.id, searches.title, searches.sector, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
-	Find(&results).
-	Error; err != nil {
+		Model(&model.Friendship{}).
+		Where("friendships.user_id = ?", userId).
+
+		// Get friendships where type is INVITED
+		Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_INVITED).
+
+		// GET Searches details
+		Joins("JOIN searches ON searches.id = friendships.search_id").
+
+		// Get search owner details
+		Joins("JOIN users ON users.id = searches.user_id").
+		Select("searches.id, searches.title, searches.sector, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
+		Find(&results).
+		Error; err != nil {
 		return nil, err
 	}
-	
+
 	return &results, nil
 }
 
-func (repository SearchRepository) GetFollowedSearches(userId string)(*[]contract.FollowedSearchDTO, error){
+func (repository SearchRepository) GetFollowedSearches(userId string) (*[]contract.FollowedSearchDTO, error) {
 
 	var results []contract.FollowedSearchDTO
 
 	if err := repository.database.
-	Model(&model.Friendship{}).
-	Where("friendships.user_id = ?", userId).
-	
-	// Get friendships where type is INVITED
-	Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_FOLLOWED).
-	
-	// GET Searches details
-	Joins("JOIN searches ON searches.id = friendships.search_id").
-	
-	// Get search owner details
-	Joins("JOIN users ON users.id = searches.user_id").
-	Select("searches.id, searches.sector, searches.title, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
-	Find(&results).
-	Error; err != nil {
+		Model(&model.Friendship{}).
+		Where("friendships.user_id = ?", userId).
+
+		// Get friendships where type is INVITED
+		Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_FOLLOWED).
+
+		// GET Searches details
+		Joins("JOIN searches ON searches.id = friendships.search_id").
+
+		// Get search owner details
+		Joins("JOIN users ON users.id = searches.user_id").
+		Select("searches.id, searches.sector, searches.title, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
+		Find(&results).
+		Error; err != nil {
 		return nil, err
 	}
-	
+
 	return &results, nil
 }
 
@@ -117,6 +117,7 @@ func (repository SearchRepository) AddSearch(SearchDTO contract.SearchDTO) (*con
 
 	search := model.ToSearch(SearchDTO)
 
+	// Add new search uuid
 	id := uuid.New()
 
 	search.ID = id.String()
