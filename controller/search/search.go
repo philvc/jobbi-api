@@ -194,6 +194,11 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 	// Add Search usecase
 	searchDTO, err := controller.usecase.SearchUsecase.AddSearch(searchDto)
 
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
 	// map post response dto with usecase dto
 	postResponseDto := contract.PostSearchResponseDTO{
 		Id: searchDTO.Id,
@@ -204,10 +209,7 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 		Tags: search.Tags,
 	}
 
-	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, err.Error())
-		return
-	}
+	
 
 	c.IndentedJSON(http.StatusOK, postResponseDto)
 }

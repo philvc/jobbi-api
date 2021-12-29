@@ -32,7 +32,7 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 		Scan(&result).
 		Error; err != nil {
 		print(err)
-		return nil, err
+		return nil, errors.New(constant.ErrorGetMySearch)
 	}
 
 	// If user has a search
@@ -44,7 +44,7 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 			Joins("JOIN users ON users.id = friendships.user_id").
 			Select("users.id, users.first_name, users.last_name, users.avatar_url").
 			Find(&result.Participants).Error; err != nil {
-			return nil, err
+			return nil, errors.New(constant.ErrorGetMySearchParticipants)
 		}
 	}
 
@@ -70,7 +70,7 @@ func (repository SearchRepository) GetSharedSearches(userId string) (*[]contract
 		Select("searches.id, searches.title, searches.sector, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
 		Find(&results).
 		Error; err != nil {
-		return nil, err
+		return nil, errors.New(constant.ErrorGetSharedSearches)
 	}
 
 	return &results, nil
@@ -95,7 +95,7 @@ func (repository SearchRepository) GetFollowedSearches(userId string) (*[]contra
 		Select("searches.id, searches.sector, searches.title, searches.tags, searches.description, searches.user_id, users.first_name, users.last_name, users.avatar_url").
 		Find(&results).
 		Error; err != nil {
-		return nil, err
+		return nil, errors.New(constant.ErrorGetFollowedSearches)
 	}
 
 	return &results, nil
@@ -123,7 +123,7 @@ func (repository SearchRepository) AddSearch(SearchDTO contract.SearchDTO) (*con
 	search.ID = id.String()
 
 	if err := repository.database.Create(&search).Error; err != nil {
-		return nil, errors.New("failed to create Search")
+		return nil, errors.New(constant.ErrorAddSearch)
 	}
 
 	searchDTO := model.ToSearchDTO(search)
@@ -135,8 +135,10 @@ func (repository SearchRepository) ModifySearch(SearchDTO contract.SearchDTO) (*
 
 	search := model.ToSearch(SearchDTO)
 
-	repository.database.Model(&search).Where("id = ?", search.ID).Updates(map[string]interface{}{"title": search.Title,
-		"description": search.Description})
+	if err := repository.database.Model(&search).Where("id = ?", search.ID).Updates(map[string]interface{}{"title": search.Title,
+		"description": search.Description}).Error; err != nil {
+			return nil, errors.New(constant.ErrorModifySearch)
+		}
 
 	searchDTO := model.ToSearchDTO(search)
 

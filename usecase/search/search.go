@@ -3,6 +3,7 @@ package search_usecase
 import (
 	"errors"
 
+	constant "github.com/philvc/jobbi-api/constants"
 	"github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/repository"
 )
@@ -79,17 +80,23 @@ func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTO
 func (usecase SearchUseCase) AddSearch(searchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
 
 	if searchDTO.Title == "" {
-		return nil, errors.New("missing title")
+		return nil, errors.New(constant.ErrorMissingTitle)
 	}
 
 	if searchDTO.Description == "" {
-		return nil, errors.New("missing description")
+		return nil, errors.New(constant.ErrorMissingDescription)
+	}
+
+	// Check if user has already an existing search
+	existingSearch, _ := usecase.repository.SearchRepository.GetMySearch(searchDTO.UserID)
+	if existingSearch != nil {
+		return nil, errors.New(constant.ErrorAlreadyExistingSearch)
 	}
 
 	// Add search repository
-	search, err := usecase.repository.SearchRepository.AddSearch(searchDTO)
-	
-	return search, err
+	newSearch, err := usecase.repository.SearchRepository.AddSearch(searchDTO)
+
+	return newSearch, err
 }
 
 func (usecase SearchUseCase) ModifySearch(searchDTO contract.SearchDTO) (*contract.SearchDTO, error) {

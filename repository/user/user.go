@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
+	constant "github.com/philvc/jobbi-api/constants"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
 	"gorm.io/gorm"
@@ -23,7 +24,7 @@ func (repository UserRepository) GetUserBySub(sub string) (*contract.UserDTO, er
 	var user model.User
 
 	if err := repository.database.Model(&model.User{}).Where("external_id = ?", sub).First(&user).Error; err != nil {
-		return nil, errors.New("no user")
+		return nil, errors.New(constant.ErrorGetUserBySub)
 	}
 
 	userDTO := model.ToUserDTO(user)
@@ -52,7 +53,7 @@ func (repository UserRepository) AddUser(userDTO contract.UserDTO) (*contract.Us
 	user.ID = id.String()
 
 	if err := repository.database.Create(&user).Error; err != nil {
-		return nil, errors.New("failed to create user")
+		return nil, errors.New(constant.ErrorCreateUser)
 	}
 
 	userDTO = model.ToUserDTO(user)
@@ -64,8 +65,10 @@ func (repository UserRepository) ModifyUser(userDTO contract.UserDTO) (*contract
 
 	user := model.ToUser(userDTO)
 
-	repository.database.Model(&user).Where("id = ?", user.ID).Updates(map[string]interface{}{"first_name": user.FirstName,
-		"email": user.Email, "last_name": user.LastName})
+	if err := repository.database.Model(&user).Where("id = ?", user.ID).Updates(map[string]interface{}{"first_name": user.FirstName,
+		"email": user.Email, "last_name": user.LastName}).Error; err != nil {
+			return nil, errors.New(constant.ErrorModifyUser)
+		}
 
 	userDTO = model.ToUserDTO(user)
 
