@@ -26,6 +26,10 @@ type SearchDTO struct {
 	//
 	// required: false
 	Sector string `json:"sector"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
 	// The search tags
 	//
 	// required: false
@@ -59,6 +63,10 @@ type PostSearchResponseDTO struct {
 	//
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
 }
 
 // An search
@@ -81,6 +89,10 @@ type PostSearchRequestDTO struct {
 	//
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
 }
 
 // An shared search
@@ -123,6 +135,10 @@ type SharedSearchDTO struct {
 	//
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
 }
 
 // An followed search
@@ -165,6 +181,10 @@ type FollowedSearchDTO struct {
 	//
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
 }
 
 // My search
@@ -191,4 +211,8 @@ type MySearchDTO struct {
 	//
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
 }

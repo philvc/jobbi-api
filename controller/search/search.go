@@ -109,7 +109,6 @@ func (controller SearchController) GetMyFollowedSearches(c *gin.Context) {
 
 }
 
-
 // swagger:operation GET /searches/{searchId} searches GetSearchById
 // type id struct
 // Get search by id.
@@ -183,12 +182,13 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 
 	// map post request dto with usecase dto
 	searchDto := contract.SearchDTO{
-		Id: "",
+		Id:          "",
 		Description: search.Description,
-		Title: search.Title,
-		UserID: userDTO.Id,
-		Tags: search.Tags,
-		Sector: search.Sector,
+		Title:       search.Title,
+		UserID:      userDTO.Id,
+		Tags:        search.Tags,
+		Sector:      search.Sector,
+		Type:        search.Type,
 	}
 
 	// Add Search usecase
@@ -201,15 +201,14 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 
 	// map post response dto with usecase dto
 	postResponseDto := contract.PostSearchResponseDTO{
-		Id: searchDTO.Id,
-		UserID: searchDTO.UserID,
-		Title: searchDTO.Title,
+		Id:          searchDTO.Id,
+		UserID:      searchDTO.UserID,
+		Title:       searchDTO.Title,
 		Description: search.Description,
-		Sector: search.Sector,
-		Tags: search.Tags,
+		Sector:      searchDTO.Sector,
+		Tags:        searchDTO.Tags,
+		Type:        searchDTO.Type,
 	}
-
-	
 
 	c.IndentedJSON(http.StatusOK, postResponseDto)
 }

@@ -11,6 +11,7 @@ type Search struct {
 	Title       string
 	UserID      string
 	Sector      string
+	Type        string
 	Tags        pq.StringArray `gorm:"type:text[]"`
 	Friendships []Friendship   `gorm:"foreignKey:SearchID"`
 	Offers      []Offer        `gorm:"foreignKey:SearchID"`
@@ -26,6 +27,7 @@ func ToSearchDTO(search Search) contract.SearchDTO {
 		UserID:      search.UserID,
 		Sector:      search.Sector,
 		Tags:        search.Tags,
+		Type:        search.Type,
 	}
 }
 
@@ -39,6 +41,7 @@ func ToSearch(searchDTO contract.SearchDTO) Search {
 		UserID:      searchDTO.UserID,
 		Sector:      searchDTO.Sector,
 		Tags:        searchDTO.Tags,
+		Type:        searchDTO.Type,
 	}
 }
 

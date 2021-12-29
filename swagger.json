@@ -1083,7 +1083,8 @@
       "type": "object",
       "required": [
         "description",
-        "title"
+        "title",
+        "type"
       ],
       "properties": {
         "avatarUrl": {
@@ -1123,6 +1124,11 @@
           "description": "The title",
           "type": "string",
           "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
         },
         "userId": {
           "description": "UserId",
@@ -1220,7 +1226,8 @@
       "description": "My search",
       "type": "object",
       "required": [
-        "title"
+        "title",
+        "type"
       ],
       "properties": {
         "id": {
@@ -1248,6 +1255,11 @@
           "description": "The title",
           "type": "string",
           "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
@@ -1346,7 +1358,8 @@
       "type": "object",
       "required": [
         "description",
-        "title"
+        "title",
+        "type"
       ],
       "properties": {
         "description": {
@@ -1366,6 +1379,11 @@
           "description": "The title",
           "type": "string",
           "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
@@ -1375,7 +1393,8 @@
       "type": "object",
       "required": [
         "description",
-        "title"
+        "title",
+        "type"
       ],
       "properties": {
         "description": {
@@ -1400,6 +1419,11 @@
           "description": "The title",
           "type": "string",
           "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
         },
         "userId": {
           "description": "UserId",
@@ -1414,7 +1438,8 @@
       "type": "object",
       "required": [
         "description",
-        "title"
+        "title",
+        "type"
       ],
       "properties": {
         "description": {
@@ -1439,6 +1464,11 @@
           "description": "The title",
           "type": "string",
           "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
         },
         "userId": {
           "description": "UserId",
@@ -1474,7 +1504,8 @@
       "type": "object",
       "required": [
         "description",
-        "title"
+        "title",
+        "type"
       ],
       "properties": {
         "avatarUrl": {
@@ -1514,6 +1545,11 @@
           "description": "The title",
           "type": "string",
           "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
         },
         "userId": {
           "description": "UserId",

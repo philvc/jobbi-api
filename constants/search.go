@@ -7,6 +7,7 @@ const (
 	ErrorAlreadyExistingSearch = "already_existing search"
 	ErrorMissingDescription = "missing_description"
 	ErrorMissingTitle = "missing_title"
+	ErrorMissingType = "missing_type"
 )
 
 
