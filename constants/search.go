@@ -28,4 +28,5 @@ const (
 	ErrorAddSearch = "repository_search_error_add_search"
 	ErrorModifySearch = "repository_search_error_modify_search"
 	ErrorGetSearchById = "repository_search_error_get_search_by_id"
+	ErrorGetPostsBySearchId = "repository_search_error_get_posts_by_search_id"
 )

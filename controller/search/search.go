@@ -189,7 +189,7 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 		return
 	}
 
-	search, err := controller.usecase.SearchUsecase.GetSearchById(searchId)
+	search, err := controller.usecase.SearchUsecase.GetPostsBySearchId(searchId)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())

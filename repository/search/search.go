@@ -130,6 +130,24 @@ func (repository SearchRepository) GetSearchById(searchId string) (*contract.Sea
 	return &result, nil
 }
 
+func (repository SearchRepository) GetPostsBySearchId(searchId string) (*[]contract.PostDTOBySearchId, error) {
+
+	var results []contract.PostDTOBySearchId
+
+	if err := repository.database.
+	Model(&model.Post{}).
+	Where("search_id = ?", searchId).
+	Joins("JOIN users ON users.id = posts.user_id").
+	Select("users.id, posts.id, users.email, users.first_name as user_first_name, users.last_name as user_last_name, title").
+	Find(&results).
+	Error; err != nil {
+		return nil, errors.New(constant.ErrorGetPostsBySearchId)
+	}
+
+	return &results, nil
+
+}
+
 func (repository SearchRepository) AddSearch(SearchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
 
 	search := model.ToSearch(SearchDTO)
