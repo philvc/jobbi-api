@@ -45,6 +45,9 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.SearchController.ModifySearch))
 	childParam.GET("", middleware.Authorize(routerGroup.controller.SearchController.GetSearchById))
 
+	// Get search posts
+	childParam.GET("/posts", middleware.Authorize(routerGroup.controller.SearchController.GetPostsBySearchId))
+
 	offerGroup := search_offer_router.Default(routerGroup.controller)
 	offerGroup.Initialise(childParam)
 

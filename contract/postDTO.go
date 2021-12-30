@@ -34,28 +34,130 @@ type PostDTO struct {
 	//
 	// required: false
 	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
-	// The firstName
+	// The contact firstName
 	//
 	// required: false
-	FirstName string `json:"firstName"`
-	// The lastName
+	ContactFirstName string `json:"contactFirstName"`
+	// The contact lastName
 	//
 	// required: false
-	LastName string `json:"lastName"`
-	// The email
+	ContactLastName string `json:"contactLastName"`
+	// The contact email
 	//
 	// required: false
-	Email string `json:"email"`
-	// The company
+	ContactEmail string `json:"contactEmail"`
+	// The company name
 	//
 	// required: false
-	Company string `json:"company"`
+	CompanyName string `json:"companyName"`
+	// The company email
+	//
+	// required: false
+	CompanyEmail string `json:"companyEmail"`
+	// The company phone number
+	//
+	// required: false
+	CompanyPhoneNumber string `json:"companyPhoneNumber"`
+	// The company address
+	//
+	// required: false
+	CompanyAddress string `json:"companyAddress"`
+	// The company url
+	//
+	// required: false
+	CompanyUrl string `json:"companyUrl"`
 	// url
 	//
 	// required: false
 	Url string `json:"url"`
-	// The phoneNumber
+	// The contact phoneNumber
 	//
 	// required: false
-	PhoneNumber int64 `json:"phoneNumber"`
+	ContactPhoneNumber int64 `json:"contactPhoneNumber"`
+}
+
+// An post
+//
+// swagger:model PostDTOBySearchId
+type PostDTOBySearchId struct {
+	// The id
+	//
+	// required: false
+	Id string `json:"id"`
+	// The description
+	//
+	// required: false
+	Description string `json:"description"`
+	// The title
+	//
+	// required: false
+	Title string `json:"title"`
+	// UserId
+	//
+	// required: true
+	UserID string `json:"userId"`
+	// The search sector
+	//
+	// required: true
+	SearchID string `json:"searchId"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The contact firstName
+	//
+	// required: false
+	ContactFirstName string `json:"contactFirstName"`
+	// The contact lastName
+	//
+	// required: false
+	ContactLastName string `json:"contactLastName"`
+	// The contact email
+	//
+	// required: false
+	ContactEmail string `json:"contactEmail"`
+	// The user firstName
+	//
+	// required: false
+	UserFirstName string `json:"userFirstName"`
+	// The user  lastName
+	//
+	// required: false
+	UserLastName string `json:"userLastName"`
+	// The user email
+	//
+	// required: false
+	UserEmail string `json:"userEmail"`
+	// The company name
+	//
+	// required: false
+	CompanyName string `json:"companyName"`
+	// The company email
+	//
+	// required: false
+	CompanyEmail string `json:"companyEmail"`
+	// The company phone number
+	//
+	// required: false
+	CompanyPhoneNumber string `json:"companyPhoneNumber"`
+	// The company address
+	//
+	// required: false
+	CompanyAddress string `json:"companyAddress"`
+	// The company url
+	//
+	// required: false
+	CompanyUrl string `json:"companyUrl"`
+	// url
+	//
+	// required: false
+	Url string `json:"url"`
+	// The contact phoneNumber
+	//
+	// required: false
+	ContactPhoneNumber int64 `json:"contactPhoneNumber"`
 }
