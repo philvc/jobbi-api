@@ -272,8 +272,6 @@ type SearchDTOById struct {
 	UserId string `json:"userId"`
 }
 
-
-
 // An quest participant
 //
 // swagger:model ParticipantDTOForSearchById
@@ -307,6 +305,3 @@ type ParticipantDTOForSearchById struct {
 	// required: false
 	Type string `json:"type"`
 }
-
-
-

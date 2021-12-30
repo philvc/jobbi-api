@@ -909,6 +909,41 @@
         }
       }
     },
+    "/searches/{searchId}/participants": {
+      "get": {
+        "description": "type id struct\nGet participants by search id.\nReturn participants",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "GetSearchParticipants",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ParticipantDTOForSearchById"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches/{searchId}/posts": {
       "get": {
         "description": "type id struct\nGet posts by search id.\nReturn posts",

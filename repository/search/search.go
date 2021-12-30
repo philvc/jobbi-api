@@ -135,13 +135,51 @@ func (repository SearchRepository) GetPostsBySearchId(searchId string) (*[]contr
 	var results []contract.PostDTOBySearchId
 
 	if err := repository.database.
-	Model(&model.Post{}).
-	Where("search_id = ?", searchId).
-	Joins("JOIN users ON users.id = posts.user_id").
-	Select("users.id, posts.id, users.email, users.first_name as user_first_name, users.last_name as user_last_name, title").
-	Find(&results).
-	Error; err != nil {
+		Model(&model.Post{}).
+		Where("search_id = ?", searchId).
+		Joins("JOIN users ON users.id = posts.user_id").
+		Select("users.id, posts.id, users.email, users.first_name as user_first_name, users.last_name as user_last_name, title").
+		Find(&results).
+		Error; err != nil {
 		return nil, errors.New(constant.ErrorGetPostsBySearchId)
+	}
+
+	return &results, nil
+
+}
+
+func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*[]contract.ParticipantDTOForSearchById, error) {
+
+	var results []contract.ParticipantDTOForSearchById
+
+	var posts []model.Post
+
+	if err := repository.database.
+		Model(&model.Friendship{}).
+		Where("friendships.search_id = ?", searchId).
+		Joins("JOIN users ON users.id = friendships.user_id").
+		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url, friendships.type").
+		Find(&results).
+		Joins("JOIN posts ON posts.user_id = users.id").
+		Select("posts.id, posts.user_id").
+		Find(&posts).
+		Error; err != nil {
+		return nil, errors.New(constant.ErrorGetPostsBySearchId)
+	}
+
+	// Count total of post for each participant
+	if len(results) != 0 {
+		for index, item := range results {
+			var count int64 = 0
+
+			for _, post := range posts {
+				if post.UserID == item.Id {
+					count = +1
+				}
+			}
+
+			results[index].NumberOfPosts = count
+		}
 	}
 
 	return &results, nil

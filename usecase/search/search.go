@@ -41,9 +41,21 @@ func (usecase SearchUseCase) GetMySearch(sub string) (*contract.MySearchDTO, err
 // Get posts by search id
 func (usecase SearchUseCase) GetPostsBySearchId(searchId string) (*[]contract.PostDTOBySearchId, error) {
 
-
 	// Get user searches
 	response, err := usecase.repository.SearchRepository.GetPostsBySearchId(searchId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// Get participants by search id
+func (usecase SearchUseCase) GetParticipantsBySearchId(searchId string) (*[]contract.ParticipantDTOForSearchById, error) {
+
+	// Get user searches
+	response, err := usecase.repository.SearchRepository.GetParticipantsBySearchId(searchId)
 
 	if err != nil {
 		return nil, err

@@ -9,7 +9,7 @@ type Friendship struct {
 	State    uint
 	UserID   string
 	SearchID string
-	Type 	 string
+	Type     string
 }
 
 func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
@@ -18,7 +18,7 @@ func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 		State:    friendship.State,
 		UserId:   friendship.UserID,
 		SearchId: friendship.SearchID,
-		Type: friendship.Type,
+		Type:     friendship.Type,
 	}
 }
 
@@ -30,7 +30,7 @@ func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 		State:    friendshipDTO.State,
 		UserID:   friendshipDTO.UserId,
 		SearchID: friendshipDTO.SearchId,
-		Type: friendshipDTO.Type,
+		Type:     friendshipDTO.Type,
 	}
 }
 

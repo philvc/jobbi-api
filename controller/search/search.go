@@ -189,14 +189,59 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 		return
 	}
 
-	search, err := controller.usecase.SearchUsecase.GetPostsBySearchId(searchId)
+	posts, err := controller.usecase.SearchUsecase.GetPostsBySearchId(searchId)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, search)
+	c.IndentedJSON(http.StatusOK, posts)
+}
+
+// swagger:operation GET /searches/{searchId}/participants searches GetSearchParticipants
+// type id struct
+// Get participants by search id.
+// Return participants
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: array
+//           items:
+//             $ref: "#/definitions/ParticipantDTOForSearchById"
+//       400:
+//         description: Bad Request
+
+func (controller SearchController) GetParticipantsBySearchId(c *gin.Context) {
+	searchId := c.Params.ByName("searchId")
+	sub := c.GetString("sub")
+
+	// Check search access rights
+	ok := controller.hasSearchAccess(sub, searchId)
+
+	if !ok {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
+		return
+	}
+
+	response, err := controller.usecase.SearchUsecase.GetParticipantsBySearchId(searchId)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
 }
 
 // swagger:operation POST /searches searches AddSearch
