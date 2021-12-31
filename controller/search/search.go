@@ -470,6 +470,88 @@ func (controller SearchController) AddPostBySearchId(c *gin.Context){
 	c.IndentedJSON(http.StatusOK, postResponseDTO)
 }
 
+// swagger:operation PUT /searches/{searchId}/posts/{postId} searches AddPostForSearch
+// type id struct
+// Update post.
+// Return post
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: postId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: post
+//         in: body
+//         schema:
+//            $ref: "#/definitions/UpdatePostRequestDTO"
+//         description: post
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/UpdatePostResponseDTO"
+//       400:
+//         description: Bad Request
+func (controller SearchController) UpdatePostById(c *gin.Context){
+
+	// Params
+	sub := c.GetString("sub")
+	postId := c.Params.ByName("postId")
+	searchId := c.Params.ByName("searchId")
+
+	var postRequestDto contract.UpdatePostRequestDTO
+	// Check body matches dto
+	if err := c.BindJSON(&postRequestDto); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody).Error())
+		return
+	}
+
+	// Get user
+	userDto, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return 
+	}
+
+	// Map request dto to usecase dto
+	postDto := contract.PostDTO{
+		Id: postId,
+		Title: postRequestDto.Title,
+		Description: postRequestDto.Description,
+		Type: postRequestDto.Type,
+		Url: postRequestDto.Url,
+		UserID: userDto.Id,
+		SearchID: searchId,
+		Tags: []string{},
+		ContactFirstName: "",
+		ContactLastName: "",
+		ContactEmail: "",
+		CompanyName: "",
+		CompanyEmail: "",
+		CompanyPhoneNumber: 0,
+		CompanyAddress: "",
+		CompanyUrl: "",
+		ContactPhoneNumber: 0,
+	}
+
+
+	postResponseDto, err := controller.usecase.SearchUsecase.UpdatePostById(&postDto)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, postResponseDto)
+}
+
 func (controller SearchController) hasSearchAccess(sub string, searchId string) (bool, *contract.UserDTO) {
 
 	// Check user exist

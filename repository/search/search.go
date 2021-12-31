@@ -243,6 +243,34 @@ func (repository SearchRepository) AddPost(postDto *contract.PostDTO) (*contract
 
 }
 
+func (repository SearchRepository) UpdatePost(postDto *contract.PostDTO) (*contract.UpdatePostResponseDTO, error) {
+
+	post := model.ToPost(*postDto)
+
+	var postResponseDto contract.UpdatePostResponseDTO
+
+	// Update post
+	if err := repository.database.
+		Model(&post).
+		Where("posts.id = ?", post.ID).
+		Updates(map[string]interface{}{"title": post.Title, "description": post.Description, "type": post.Type, "url": post.Url}).
+		Scan(&postResponseDto).
+		Error; err != nil {
+		return nil, errors.New(constant.ErrorUpdatePost)
+	}
+
+	// Get user info
+	if postResponseDto.Id != "" {
+		err := repository.database.Model(&model.User{}).Where("id = ?", postResponseDto.UserID).Select("users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email").Scan(&postResponseDto).Error; 
+		if err != nil {
+			return nil, errors.New(constant.ErrorUpdatePost)
+		}
+	}
+
+	return &postResponseDto, nil
+
+}
+
 func (repository SearchRepository) IsSearchOwner(userId string, searchId string) bool {
 
 	if err := repository.database.Model(&model.Search{}).Where("id = ?", searchId).Where("user_id = ?", userId).First(&model.Search{}).Error; err != nil {
@@ -251,6 +279,16 @@ func (repository SearchRepository) IsSearchOwner(userId string, searchId string)
 
 	return true
 }
+
+func (repository SearchRepository) IsPostOwner(userId string, postId string) bool {
+
+	if err := repository.database.Model(&model.Post{}).Where("id = ?", postId).Where("user_id = ?", userId).First(&model.Post{}).Error; err != nil {
+		return false
+	}
+
+	return true
+}
+
 func (repository SearchRepository) IsPublic(searchId string) bool {
 
 	var search model.Search

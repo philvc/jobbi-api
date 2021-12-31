@@ -1017,6 +1017,53 @@
         }
       }
     },
+    "/searches/{searchId}/posts/{postId}": {
+      "put": {
+        "description": "type id struct\nUpdate post.\nReturn post",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "AddPostForSearch",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "postId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "post",
+            "name": "post",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdatePostRequestDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UpdatePostResponseDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/users": {
       "post": {
         "description": "Return user",
@@ -1668,6 +1715,11 @@
         "type"
       ],
       "properties": {
+        "UpdatedAt": {
+          "description": "Updated at",
+          "type": "string",
+          "format": "date-time"
+        },
         "companyAddress": {
           "description": "The company address",
           "type": "string",
@@ -2145,6 +2197,103 @@
         "type": "string"
       },
       "x-go-package": "github.com/lib/pq"
+    },
+    "UpdatePostRequestDTO": {
+      "description": "An post",
+      "type": "object",
+      "required": [
+        "title",
+        "description",
+        "type"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "title": {
+          "description": "The title",
+          "type": "string",
+          "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
+        },
+        "url": {
+          "description": "url",
+          "type": "string",
+          "x-go-name": "Url"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "UpdatePostResponseDTO": {
+      "description": "An post",
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "description",
+        "type",
+        "searchId",
+        "userId"
+      ],
+      "properties": {
+        "description": {
+          "description": "The description",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "id": {
+          "description": "The id",
+          "type": "string",
+          "x-go-name": "Id"
+        },
+        "searchId": {
+          "description": "The search id",
+          "type": "string",
+          "x-go-name": "SearchID"
+        },
+        "title": {
+          "description": "The title",
+          "type": "string",
+          "x-go-name": "Title"
+        },
+        "type": {
+          "description": "The search type",
+          "type": "string",
+          "x-go-name": "Type"
+        },
+        "url": {
+          "description": "url",
+          "type": "string",
+          "x-go-name": "Url"
+        },
+        "userEmail": {
+          "description": "The user email",
+          "type": "string",
+          "x-go-name": "UserEmail"
+        },
+        "userFirstName": {
+          "description": "The user firstName",
+          "type": "string",
+          "x-go-name": "UserFirstName"
+        },
+        "userId": {
+          "description": "UserId",
+          "type": "string",
+          "x-go-name": "UserID"
+        },
+        "userLastName": {
+          "description": "The user  lastName",
+          "type": "string",
+          "x-go-name": "UserLastName"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
     },
     "UserDTO": {
       "description": "An user",

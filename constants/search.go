@@ -28,6 +28,7 @@ const (
 	ErrorGetFollowedSearches = "repository_search_error_get_followed_searches"
 	ErrorAddSearch = "repository_search_error_add_search"
 	ErrorAddPost = "repository_search_error_add_post"
+	ErrorUpdatePost = "repository_search_error_update_post"
 	ErrorAddPostUserDetails = "repository_search_error_add_post_join_user_details"
 	ErrorModifySearch = "repository_search_error_modify_search"
 	ErrorGetSearchById = "repository_search_error_get_search_by_id"

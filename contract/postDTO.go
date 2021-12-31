@@ -194,8 +194,76 @@ type AddPostRequestDTO struct {
 
 // An post
 //
+// swagger:model UpdatePostRequestDTO
+type UpdatePostRequestDTO struct {
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// url
+	//
+	// required: false
+	Url string `json:"url"`
+}
+
+// An post
+//
 // swagger:model AddPostResponseDTO
 type AddPostResponseDTO struct {
+	// The id
+	//
+	// required: true
+	Id string `json:"id"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// url
+	//
+	// required: false
+	Url string `json:"url"`
+	// The search id
+	//
+	// required: true
+	SearchID string `json:"searchId"`
+	// UserId
+	//
+	// required: true
+	UserID string `json:"userId"`
+	// The user firstName
+	//
+	// required: false
+	UserFirstName string `json:"userFirstName"`
+	// The user  lastName
+	//
+	// required: false
+	UserLastName string `json:"userLastName"`
+	// The user email
+	//
+	// required: false
+	UserEmail string `json:"userEmail"`
+}
+
+// An post
+//
+// swagger:model UpdatePostResponseDTO
+type UpdatePostResponseDTO struct {
 	// The id
 	//
 	// required: true

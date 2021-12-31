@@ -137,13 +137,39 @@ func (usecase SearchUseCase) ModifySearch(searchDTO contract.SearchDTO) (*contra
 	return search, err
 }
 
-func (usecase SearchUseCase) AddPost(postDTO *contract.PostDTO)(*contract.AddPostResponseDTO, error){
+func (usecase SearchUseCase) AddPost(postDTO *contract.PostDTO) (*contract.AddPostResponseDTO, error) {
 
 	postResponseDto, err := usecase.repository.SearchRepository.AddPost(postDTO)
 	if err != nil {
 		return nil, err
-	} 
+	}
 	return postResponseDto, nil
+}
+
+func (usecase SearchUseCase) UpdatePostById(postDTO *contract.PostDTO) (*contract.UpdatePostResponseDTO, error) {
+
+	// Check user is owner of post
+	ok := usecase.IsPostOwner(postDTO.UserID, postDTO.Id)
+
+	if !ok {
+		return nil, errors.New(constant.ErrorMissingAccess)
+	}
+
+	// Update post
+	updatePostResponse, err := usecase.repository.SearchRepository.UpdatePost(postDTO)
+	if err != nil {
+		
+		return nil, err
+	}
+	
+	return updatePostResponse, nil
+}
+
+func (usecase SearchUseCase) IsPostOwner(userId string, postId string) bool {
+
+	ok := usecase.repository.SearchRepository.IsPostOwner(userId, postId)
+
+	return ok
 }
 
 func (usecase SearchUseCase) IsOwner(sub string, searchId string) bool {
@@ -158,7 +184,6 @@ func (usecase SearchUseCase) IsOwner(sub string, searchId string) bool {
 
 	return ok
 }
-
 
 func (usecase SearchUseCase) IsPublic(searchId string) bool {
 
