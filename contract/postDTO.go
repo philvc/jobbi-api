@@ -128,10 +128,6 @@ type PostDTOBySearchId struct {
 	//
 	// required: false
 	UserLastName string `json:"userLastName"`
-	// The user  type
-	//
-	// required: false
-	UserType string `json:"userType"`
 	// The user email
 	//
 	// required: false

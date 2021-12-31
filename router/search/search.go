@@ -45,12 +45,16 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.SearchController.ModifySearch))
 	childParam.GET("", middleware.Authorize(routerGroup.controller.SearchController.GetSearchById))
 
-	// Get search posts
-	childParam.GET("/posts", middleware.Authorize(routerGroup.controller.SearchController.GetPostsBySearchId))
+	/* PARTICIPANTS */
 	
 	// Get search participants
 	childParam.GET("/participants", middleware.Authorize(routerGroup.controller.SearchController.GetParticipantsBySearchId))
-
+	
+	/* POSTS */
+	
+	// Get search posts
+	childParam.GET("/posts", middleware.Authorize(routerGroup.controller.SearchController.GetPostsBySearchId))
+	
 	// Add post for search
 	childParam.POST("/posts", middleware.Authorize(routerGroup.controller.SearchController.AddPostBySearchId))
 

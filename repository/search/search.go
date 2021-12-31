@@ -138,8 +138,7 @@ func (repository SearchRepository) GetPostsBySearchId(searchId string) (*[]contr
 		Model(&model.Post{}).
 		Where("posts.search_id = ?", searchId).
 		Joins("JOIN users ON users.id = posts.user_id").
-		Joins("JOIN friendships ON friendships.user_id = posts.user_id").
-		Select("users.id as user_id, friendships.type as user_type, posts.id, users.email as user_email, users.first_name as user_first_name, posts.search_id, users.last_name as user_last_name, title, description, posts.id as id, posts.type, tags, contact_first_name, contact_last_name, contact_email, company_name, company_address, company_email, company_phone_number, company_url, url, contact_phone_number").
+		Select("users.id as user_id, posts.id, users.email as user_email, users.first_name as user_first_name, posts.search_id, users.last_name as user_last_name, title, description, posts.id as id, posts.type, tags, contact_first_name, contact_last_name, contact_email, company_name, company_address, company_email, company_phone_number, company_url, url, contact_phone_number").
 		Find(&results).
 		Error; err != nil {
 		return nil, errors.New(constant.ErrorGetPostsBySearchId)

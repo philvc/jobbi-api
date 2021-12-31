@@ -1767,11 +1767,6 @@
           "description": "The user  lastName",
           "type": "string",
           "x-go-name": "UserLastName"
-        },
-        "userType": {
-          "description": "The user  type",
-          "type": "string",
-          "x-go-name": "UserType"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"
