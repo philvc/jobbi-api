@@ -1588,7 +1588,8 @@
         },
         "companyPhoneNumber": {
           "description": "The company phone number",
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "x-go-name": "CompanyPhoneNumber"
         },
         "companyUrl": {
@@ -1684,7 +1685,8 @@
         },
         "companyPhoneNumber": {
           "description": "The company phone number",
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "x-go-name": "CompanyPhoneNumber"
         },
         "companyUrl": {
