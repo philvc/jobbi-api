@@ -470,7 +470,7 @@ func (controller SearchController) AddPostBySearchId(c *gin.Context){
 	c.IndentedJSON(http.StatusOK, postResponseDTO)
 }
 
-// swagger:operation PUT /searches/{searchId}/posts/{postId} searches AddPostForSearch
+// swagger:operation PUT /searches/{searchId}/posts/{postId} searches UpdatePostById
 // type id struct
 // Update post.
 // Return post
