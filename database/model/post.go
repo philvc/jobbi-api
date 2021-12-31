@@ -17,7 +17,7 @@ type Post struct {
 	Url                string
 	CompanyName        string
 	CompanyEmail       string
-	CompanyPhoneNumber string
+	CompanyPhoneNumber int64
 	CompanyAddress     string
 	CompanyUrl         string
 	ContactFirstName   string

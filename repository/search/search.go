@@ -219,6 +219,30 @@ func (repository SearchRepository) ModifySearch(SearchDTO contract.SearchDTO) (*
 	return &searchDTO, nil
 }
 
+func (repository SearchRepository) AddPost(postDto *contract.PostDTO) (*contract.AddPostResponseDTO, error) {
+
+	post := model.ToPost(*postDto)
+
+	// Add new post uuid
+	id := uuid.New()
+	post.ID = id.String()
+
+	var postResponseDto contract.AddPostResponseDTO
+
+	// Create post
+	if err := repository.database.
+		Create(&post).
+		Joins("JOIN users ON users.id = ?", post.UserID).
+		Select("users.id as user_id, users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email, posts.id as id, posts.title as title, posts.description as description, posts.type as type, posts.url as url, posts.search_id as search_id").
+		Scan(&postResponseDto).
+		Error; err != nil {
+		return nil, errors.New(constant.ErrorAddPost)
+	}
+
+	return &postResponseDto, nil
+
+}
+
 func (repository SearchRepository) IsSearchOwner(userId string, searchId string) bool {
 
 	if err := repository.database.Model(&model.Search{}).Where("id = ?", searchId).Where("user_id = ?", userId).First(&model.Search{}).Error; err != nil {

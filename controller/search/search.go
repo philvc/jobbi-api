@@ -137,7 +137,7 @@ func (controller SearchController) GetSearchById(c *gin.Context) {
 	sub := c.GetString("sub")
 
 	// Check search access rights
-	ok := controller.hasSearchAccess(sub, searchId)
+	ok, _ := controller.hasSearchAccess(sub, searchId)
 
 	if !ok {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
@@ -182,7 +182,7 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 	sub := c.GetString("sub")
 
 	// Check search access rights
-	ok := controller.hasSearchAccess(sub, searchId)
+	ok, _ := controller.hasSearchAccess(sub, searchId)
 
 	if !ok {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
@@ -227,7 +227,7 @@ func (controller SearchController) GetParticipantsBySearchId(c *gin.Context) {
 	sub := c.GetString("sub")
 
 	// Check search access rights
-	ok := controller.hasSearchAccess(sub, searchId)
+	ok, _ := controller.hasSearchAccess(sub, searchId)
 
 	if !ok {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
@@ -368,13 +368,13 @@ func (controller SearchController) ModifySearch(c *gin.Context) {
 
 	// Map request dto with usecase dto
 	searchDTO := contract.SearchDTO{
-		Id: searchId,
-		UserID: userDTO.Id,
-		Title: requestSearchDTO.Title,
-		Sector: requestSearchDTO.Sector,
-		Type: requestSearchDTO.Type,
+		Id:          searchId,
+		UserID:      userDTO.Id,
+		Title:       requestSearchDTO.Title,
+		Sector:      requestSearchDTO.Sector,
+		Type:        requestSearchDTO.Type,
 		Description: requestSearchDTO.Description,
-		Tags: requestSearchDTO.Tags,
+		Tags:        requestSearchDTO.Tags,
 	}
 
 	search, err := controller.usecase.SearchUsecase.ModifySearch(searchDTO)
@@ -385,19 +385,98 @@ func (controller SearchController) ModifySearch(c *gin.Context) {
 
 	// Map usecase dto with response dto
 	responseSearchDTO := contract.PutSearchResponseDTO{
-		Id: search.Id,
-		UserID: search.UserID,
-		Title: search.Title,
-		Sector: search.Sector,
-		Type: search.Type,
+		Id:          search.Id,
+		UserID:      search.UserID,
+		Title:       search.Title,
+		Sector:      search.Sector,
+		Type:        search.Type,
 		Description: search.Description,
-		Tags: search.Tags,
+		Tags:        search.Tags,
 	}
 
 	c.IndentedJSON(http.StatusOK, responseSearchDTO)
 }
 
-func (controller SearchController) hasSearchAccess(sub string, searchId string) bool {
+// swagger:operation POST /searches/{searchId}/posts searches AddPostForSearch
+// type id struct
+// Create search.
+// Return search
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: post
+//         in: body
+//         schema:
+//            $ref: "#/definitions/AddPostRequestDTO"
+//         description: post
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/AddPostResponseDTO"
+//       400:
+//         description: Bad Request
+func (controller SearchController) AddPostBySearchId(c *gin.Context){
+	sub := c.GetString("sub")
+	searchId := c.Params.ByName("searchId")
+
+	ok, userDto := controller.hasSearchAccess(sub, searchId)
+	if !ok {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
+		return
+	}
+
+	var postRequest contract.AddPostRequestDTO
+
+	// Check body json format
+	if err := c.BindJSON(&postRequest); err !=nil {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody))
+		return
+	}
+
+	// Map request dto with post dto
+	postDto := contract.PostDTO{
+		Id: "",
+		Title: postRequest.Title,
+		Description: postRequest.Description,
+		Type: postRequest.Type,
+		Url: postRequest.Url,
+		UserID: userDto.Id,
+		SearchID: searchId,
+		Tags: []string{},
+		ContactFirstName: "",
+		ContactLastName: "",
+		ContactEmail: "",
+		CompanyName: "",
+		CompanyEmail: "",
+		CompanyPhoneNumber: 0,
+		CompanyAddress: "",
+		CompanyUrl: "",
+		ContactPhoneNumber: 0,
+	}
+
+	postResponseDTO, err := controller.usecase.SearchUsecase.AddPost(&postDto)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, postResponseDTO)
+}
+
+func (controller SearchController) hasSearchAccess(sub string, searchId string) (bool, *contract.UserDTO) {
+
+	// Check user exist
+	userDto, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+	if err != nil {
+		return false, nil
+	}
 
 	// Check if search is public
 	isPublic := controller.usecase.SearchUsecase.IsPublic(searchId)
@@ -411,9 +490,11 @@ func (controller SearchController) hasSearchAccess(sub string, searchId string) 
 			isFriend := controller.usecase.SearchUsecase.IsFriend(sub, searchId)
 
 			if !isFriend {
-				return false
+				return false, nil
 			}
 		}
 	}
-	return true
+	return true, userDto
 }
+
+

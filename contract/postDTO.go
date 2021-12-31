@@ -57,7 +57,7 @@ type PostDTO struct {
 	// The company phone number
 	//
 	// required: false
-	CompanyPhoneNumber string `json:"companyPhoneNumber"`
+	CompanyPhoneNumber int64 `json:"companyPhoneNumber"`
 	// The company address
 	//
 	// required: false
@@ -147,7 +147,7 @@ type PostDTOBySearchId struct {
 	// The company phone number
 	//
 	// required: false
-	CompanyPhoneNumber string `json:"companyPhoneNumber"`
+	CompanyPhoneNumber int64 `json:"companyPhoneNumber"`
 	// The company address
 	//
 	// required: false
@@ -164,4 +164,72 @@ type PostDTOBySearchId struct {
 	//
 	// required: false
 	ContactPhoneNumber int64 `json:"contactPhoneNumber"`
+}
+
+// An post
+//
+// swagger:model AddPostRequestDTO
+type AddPostRequestDTO struct {
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// url
+	//
+	// required: false
+	Url string `json:"url"`
+}
+
+// An post
+//
+// swagger:model AddPostResponseDTO
+type AddPostResponseDTO struct {
+	// The id
+	//
+	// required: true
+	Id string `json:"id"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// url
+	//
+	// required: false
+	Url string `json:"url"`
+	// The search id
+	//
+	// required: true
+	SearchID string `json:"searchId"`
+	// UserId
+	//
+	// required: true
+	UserID string `json:"userId"`
+	// The user firstName
+	//
+	// required: false
+	UserFirstName string `json:"userFirstName"`
+	// The user  lastName
+	//
+	// required: false
+	UserLastName string `json:"userLastName"`
+	// The user email
+	//
+	// required: false
+	UserEmail string `json:"userEmail"`
 }
