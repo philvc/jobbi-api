@@ -96,6 +96,66 @@ type PostSearchRequestDTO struct {
 	Type string `json:"type"`
 }
 
+// An search
+//
+// swagger:model PutSearchRequestDTO
+type PutSearchRequestDTO struct {
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The search sector
+	//
+	// required: true
+	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: true
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+}
+
+// An search
+//
+// swagger:model PutSearchResponseDTO
+type PutSearchResponseDTO struct {
+	// The id
+	//
+	// required: true
+	Id string `json:"id"`
+	// The description
+	//
+	// required: true
+	Description string `json:"description"`
+	// The title
+	//
+	// required: true
+	Title string `json:"title"`
+	// The search sector
+	//
+	// required: true
+	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: true
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// UserId
+	//
+	// required: true
+	UserID string `json:"userId"`
+}
+
 // An shared search
 //
 // swagger:model SharedSearchDTO

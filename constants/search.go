@@ -16,6 +16,7 @@ const (
 	ErrorMissingTitle = "missing_title"
 	ErrorMissingType = "missing_type"
 	ErrorMissingAccess = "missing_access"
+	ErrorWrongBody = "fail_with_wrong_body"
 )
 
 

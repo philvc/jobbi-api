@@ -328,7 +328,7 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 //       - name: search
 //         in: body
 //         schema:
-//            $ref: "#/definitions/SearchDTO"
+//            $ref: "#/definitions/PutSearchRequestDTO"
 //         description: search
 //     Produces:
 //       - application/json
@@ -336,38 +336,65 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 //       200:
 //         description: Success
 //         schema:
-//            $ref: "#/definitions/SearchDTO"
+//            $ref: "#/definitions/PutSearchResponseDTO"
 //       400:
 //         description: Bad Request
 
 func (controller SearchController) ModifySearch(c *gin.Context) {
-	var search contract.SearchDTO
+	var requestSearchDTO contract.PutSearchRequestDTO
 
 	sub := c.GetString("sub")
 	searchId := c.Params.ByName("searchId")
 
+	// Check user exist
 	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	search.Id = searchId
-	search.UserID = userDTO.Id
+	// Check access rights
+	isOwner := controller.usecase.SearchUsecase.IsOwner(sub, searchId)
+	if !isOwner {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
+		return
+	}
 
-	if err := c.BindJSON(&search); err != nil {
+	// Check body matches put search request dto
+	if err := c.BindJSON(&requestSearchDTO); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody))
+		return
+	}
+
+	// Map request dto with usecase dto
+	searchDTO := contract.SearchDTO{
+		Id: searchId,
+		UserID: userDTO.Id,
+		Title: requestSearchDTO.Title,
+		Sector: requestSearchDTO.Sector,
+		Type: requestSearchDTO.Type,
+		Description: requestSearchDTO.Description,
+		Tags: requestSearchDTO.Tags,
+	}
+
+	search, err := controller.usecase.SearchUsecase.ModifySearch(searchDTO)
+	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	searchDTO, error := controller.usecase.SearchUsecase.ModifySearch(search)
-
-	if error != nil {
-		c.IndentedJSON(http.StatusBadRequest, error.Error())
-		return
+	// Map usecase dto with response dto
+	responseSearchDTO := contract.PutSearchResponseDTO{
+		Id: search.Id,
+		UserID: search.UserID,
+		Title: search.Title,
+		Sector: search.Sector,
+		Type: search.Type,
+		Description: search.Description,
+		Tags: search.Tags,
 	}
 
-	c.IndentedJSON(http.StatusOK, searchDTO)
+	c.IndentedJSON(http.StatusOK, responseSearchDTO)
 }
 
 func (controller SearchController) hasSearchAccess(sub string, searchId string) bool {

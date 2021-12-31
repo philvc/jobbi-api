@@ -133,8 +133,8 @@ func (usecase SearchUseCase) AddSearch(searchDTO contract.SearchDTO) (*contract.
 }
 
 func (usecase SearchUseCase) ModifySearch(searchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
-	user, err := usecase.repository.SearchRepository.ModifySearch(searchDTO)
-	return user, err
+	search, err := usecase.repository.SearchRepository.ModifySearch(searchDTO)
+	return search, err
 }
 
 func (usecase SearchUseCase) IsOwner(sub string, searchId string) bool {

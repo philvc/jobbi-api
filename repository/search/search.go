@@ -210,7 +210,7 @@ func (repository SearchRepository) ModifySearch(SearchDTO contract.SearchDTO) (*
 	search := model.ToSearch(SearchDTO)
 
 	if err := repository.database.Model(&search).Where("id = ?", search.ID).Updates(map[string]interface{}{"title": search.Title,
-		"description": search.Description}).Error; err != nil {
+		"description": search.Description, "type": search.Type, "tags": search.Tags, "sector": search.Sector}).Error; err != nil {
 		return nil, errors.New(constant.ErrorModifySearch)
 	}
 
