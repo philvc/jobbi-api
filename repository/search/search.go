@@ -2,6 +2,7 @@ package search_repository
 
 import (
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	constant "github.com/philvc/jobbi-api/constants"
@@ -269,6 +270,15 @@ func (repository SearchRepository) UpdatePost(postDto *contract.PostDTO) (*contr
 
 	return &postResponseDto, nil
 
+}
+
+func (repository SearchRepository) DeletePostById(postId string)(bool, error){
+
+	if err := repository.database.Model(&model.Post{}).Where("posts.id = ?", postId).Update("deleted_at", time.Now().UTC()).Error; err != nil {
+		return false, errors.New(constant.ErrorDeletePostById)
+	}
+
+	return true, nil
 }
 
 func (repository SearchRepository) IsSearchOwner(userId string, searchId string) bool {

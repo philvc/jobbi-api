@@ -60,6 +60,10 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	
 	// Edit post by id
 	childParam.PUT("/posts/:postId", middleware.Authorize(routerGroup.controller.SearchController.UpdatePostById))
+	
+	
+	// Delete post by id
+	childParam.DELETE("/posts/:postId", middleware.Authorize(routerGroup.controller.SearchController.DeletePostById))
 
 	offerGroup := search_offer_router.Default(routerGroup.controller)
 	offerGroup.Initialise(childParam)

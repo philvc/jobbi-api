@@ -158,11 +158,34 @@ func (usecase SearchUseCase) UpdatePostById(postDTO *contract.PostDTO) (*contrac
 	// Update post
 	updatePostResponse, err := usecase.repository.SearchRepository.UpdatePost(postDTO)
 	if err != nil {
-		
+
 		return nil, err
 	}
-	
+
 	return updatePostResponse, nil
+}
+
+func (usecase SearchUseCase) DeletePostById(sub string, searchId string, postId string) (bool, error) {
+
+	// Check user exist
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return false, err
+	}
+
+	// Check user is owner of post
+	ok := usecase.IsPostOwner(userDto.Id, postId)
+	if !ok {
+		return false, errors.New(constant.ErrorMissingAccess)
+	}
+
+	ok, err = usecase.repository.SearchRepository.DeletePostById(postId)
+	if err != nil {
+		return false, err
+	}
+
+	return ok, nil
+
 }
 
 func (usecase SearchUseCase) IsPostOwner(userId string, postId string) bool {

@@ -1062,6 +1062,43 @@
             "description": "Bad Request"
           }
         }
+      },
+      "delete": {
+        "description": "type id struct\nUpdate post.\nReturn post",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "DeletePostById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "postId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       }
     },
     "/users": {

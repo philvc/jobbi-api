@@ -552,6 +552,48 @@ func (controller SearchController) UpdatePostById(c *gin.Context){
 	c.IndentedJSON(http.StatusOK, postResponseDto)
 }
 
+// swagger:operation DELETE /searches/{searchId}/posts/{postId} searches DeletePostById
+// type id struct
+// Update post.
+// Return post
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: postId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            type:  boolean
+//       400:
+//         description: Bad Request
+func (controller SearchController) DeletePostById(c *gin.Context){
+
+	sub := c.GetString("sub")
+	searchId := c.Params.ByName("searchId")
+	postId := c.Params.ByName("postId")
+
+	ok, err := controller.usecase.SearchUsecase.DeletePostById(sub, searchId, postId)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return 
+	}
+
+	c.IndentedJSON(http.StatusOK, ok)
+
+}
+
 func (controller SearchController) hasSearchAccess(sub string, searchId string) (bool, *contract.UserDTO) {
 
 	// Check user exist
