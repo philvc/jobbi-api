@@ -1,6 +1,10 @@
 package contract
 
-import "github.com/lib/pq"
+import (
+	"time"
+
+	"github.com/lib/pq"
+)
 
 // An post
 //
@@ -160,6 +164,10 @@ type PostDTOBySearchId struct {
 	//
 	// required: false
 	ContactPhoneNumber int64 `json:"contactPhoneNumber"`
+	// Updated at
+	//
+	// required: false
+	UpdatedAt time.Time
 }
 
 // An post
