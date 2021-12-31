@@ -8,7 +8,7 @@ import "github.com/lib/pq"
 type SearchDTO struct {
 	// The id
 	//
-	// required: false
+	// required: true
 	Id string `json:"id"`
 	// The description
 	//
@@ -20,7 +20,7 @@ type SearchDTO struct {
 	Title string `json:"title"`
 	// UserId
 	//
-	// required: false
+	// required: true
 	UserID string `json:"userId"`
 	// The search sector
 	//

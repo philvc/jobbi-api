@@ -1809,8 +1809,10 @@
       "description": "An search",
       "type": "object",
       "required": [
+        "id",
         "description",
         "title",
+        "userId",
         "type"
       ],
       "properties": {
