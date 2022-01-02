@@ -37,7 +37,13 @@ func (controller SearchController) GetMySearch(c *gin.Context) {
 
 	sub := c.GetString("sub")
 
-	// Get My Searches - Searches by userId
+	// Check params
+	if sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
+		return
+	}
+
+	// Call usecase
 	search, err := controller.usecase.SearchUsecase.GetMySearch(sub)
 
 	if err != nil {
@@ -66,9 +72,16 @@ func (controller SearchController) GetMySearch(c *gin.Context) {
 //         description: Bad Request
 func (controller SearchController) GetMySharedSearches(c *gin.Context) {
 
+	// Params
 	sub := c.GetString("sub")
 
-	// Get Shared searches
+	// Check params
+	if sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
+		return
+	}
+
+	// Call usecase
 	sharedSearches, err := controller.usecase.SearchUsecase.GetSharedSearches(sub)
 
 	if err != nil {
@@ -97,9 +110,16 @@ func (controller SearchController) GetMySharedSearches(c *gin.Context) {
 //         description: Bad Request
 func (controller SearchController) GetMyFollowedSearches(c *gin.Context) {
 
+	// Params
 	sub := c.GetString("sub")
 
-	// Get Shared searches
+	// Check params
+	if sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
+		return
+	}
+
+	// Call usecase
 	followedSearches, err := controller.usecase.SearchUsecase.GetFollowedSearches(sub)
 
 	if err != nil {
@@ -133,31 +153,25 @@ func (controller SearchController) GetMyFollowedSearches(c *gin.Context) {
 //         description: Bad Request
 
 func (controller SearchController) GetSearchById(c *gin.Context) {
+
+	// Get params
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
 
-	// Check search exist
-	_, err := controller.isSearchExist(searchId)
-	if err != nil {
-		c.IndentedJSON(http.StatusOK, err.Error())
+	// Check params
+	if searchId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
 		return
 	}
 
-	// Check search access rights
-	ok, _ := controller.hasSearchAccess(sub, searchId)
-
-	if !ok {
-		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
-		return
-	}
-
-	search, err := controller.usecase.SearchUsecase.GetSearchById(searchId)
-
+	// Call usecase
+	search, err := controller.usecase.SearchUsecase.GetSearchById(searchId, sub)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
+	// Return response with status 200
 	c.IndentedJSON(http.StatusOK, search)
 }
 
@@ -185,25 +199,19 @@ func (controller SearchController) GetSearchById(c *gin.Context) {
 //         description: Bad Request
 
 func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
+
+	// Params
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
 
-	// Check search exist
-	_, err := controller.isSearchExist(searchId)
-	if err != nil {
-		c.IndentedJSON(http.StatusOK, err.Error())
+	// Check params
+	if searchId == ""  || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
 		return
 	}
 
-	// Check search access rights
-	ok, _ := controller.hasSearchAccess(sub, searchId)
-
-	if !ok {
-		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
-		return
-	}
-
-	posts, err := controller.usecase.SearchUsecase.GetPostsBySearchId(searchId)
+	// Call usecase
+	posts, err := controller.usecase.SearchUsecase.GetPostsBySearchId(sub, searchId)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -237,25 +245,19 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 //         description: Bad Request
 
 func (controller SearchController) GetParticipantsBySearchId(c *gin.Context) {
+
+	// Params
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
 
-	// Check search exist
-	_, err := controller.isSearchExist(searchId)
-	if err != nil {
-		c.IndentedJSON(http.StatusOK, err.Error())
+	// Check params
+	if searchId == ""  || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
 		return
 	}
 
-	// Check search access rights
-	ok, _ := controller.hasSearchAccess(sub, searchId)
-
-	if !ok {
-		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
-		return
-	}
-
-	response, err := controller.usecase.SearchUsecase.GetParticipantsBySearchId(searchId)
+	// Call usecase
+	response, err := controller.usecase.SearchUsecase.GetParticipantsBySearchId(sub, searchId)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -289,13 +291,22 @@ func (controller SearchController) GetParticipantsBySearchId(c *gin.Context) {
 func (controller SearchController) AddSearch(c *gin.Context) {
 
 	var search contract.PostSearchRequestDTO
+	sub := c.GetString("sub")
 
+	// Check params
+	// Check sub param
+	if sub == ""{
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return 
+	}
+
+	// Check body params
 	if err := c.BindJSON(&search); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	sub := c.GetString("sub")
+	// Check user
 	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -313,8 +324,8 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 		Type:        search.Type,
 	}
 
-	// Add Search usecase
-	searchDTO, err := controller.usecase.SearchUsecase.AddSearch(searchDto)
+	// Call usecase
+	searchDTO, err := controller.usecase.SearchUsecase.AddSearch(sub, searchDto)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -364,24 +375,24 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 func (controller SearchController) ModifySearch(c *gin.Context) {
 	var requestSearchDTO contract.PutSearchRequestDTO
 
+	// Params
 	sub := c.GetString("sub")
 	searchId := c.Params.ByName("searchId")
 
-	// Check user exist
+	// Check params
+	if sub == "" || searchId == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return 
+	}
+
+	// Check user
 	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	// Check access rights
-	isOwner := controller.usecase.SearchUsecase.IsOwner(sub, searchId)
-	if !isOwner {
-		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
-		return
-	}
-
-	// Check body matches put search request dto
+	// Check body params
 	if err := c.BindJSON(&requestSearchDTO); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody))
 		return
@@ -398,6 +409,7 @@ func (controller SearchController) ModifySearch(c *gin.Context) {
 		Tags:        requestSearchDTO.Tags,
 	}
 
+	// Call usecase
 	search, err := controller.usecase.SearchUsecase.ModifySearch(searchDTO)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -443,53 +455,51 @@ func (controller SearchController) ModifySearch(c *gin.Context) {
 //            $ref: "#/definitions/AddPostResponseDTO"
 //       400:
 //         description: Bad Request
-func (controller SearchController) AddPostBySearchId(c *gin.Context){
+func (controller SearchController) AddPostBySearchId(c *gin.Context) {
+
+	// Params
 	sub := c.GetString("sub")
 	searchId := c.Params.ByName("searchId")
 
-	// Check search exist
-	_, err := controller.isSearchExist(searchId)
-	if err != nil {
-		c.IndentedJSON(http.StatusOK, err.Error())
-		return
-	}
-
-	// Check user access rights to search
-	ok, userDto := controller.hasSearchAccess(sub, searchId)
-	if !ok {
-		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
-		return
-	}
-
 	var postRequest contract.AddPostRequestDTO
 
-	// Check body json format
-	if err := c.BindJSON(&postRequest); err !=nil {
+	// Check params
+	if sub == "" || searchId == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return 
+	}
+
+	// Check body params
+	if err := c.BindJSON(&postRequest); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody))
 		return
 	}
-
+	
+	// Check user
+	userDto, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+	
 	// Map request dto with post dto
 	postDto := contract.PostDTO{
-		Id: "",
-		Title: postRequest.Title,
-		Description: postRequest.Description,
-		Type: postRequest.Type,
-		Url: postRequest.Url,
-		UserID: userDto.Id,
-		SearchID: searchId,
-		Tags: []string{},
-		ContactFirstName: "",
-		ContactLastName: "",
-		ContactEmail: "",
-		CompanyName: "",
-		CompanyEmail: "",
+		Id:                 "",
+		Title:              postRequest.Title,
+		Description:        postRequest.Description,
+		Type:               postRequest.Type,
+		Url:                postRequest.Url,
+		UserID:             userDto.Id,
+		SearchID:           searchId,
+		Tags:               []string{},
+		ContactFirstName:   "",
+		ContactLastName:    "",
+		ContactEmail:       "",
+		CompanyName:        "",
+		CompanyEmail:       "",
 		CompanyPhoneNumber: 0,
-		CompanyAddress: "",
-		CompanyUrl: "",
+		CompanyAddress:     "",
+		CompanyUrl:         "",
 		ContactPhoneNumber: 0,
 	}
 
+	// Call usecase
 	postResponseDTO, err := controller.usecase.SearchUsecase.AddPost(&postDto)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -529,14 +539,21 @@ func (controller SearchController) AddPostBySearchId(c *gin.Context){
 //            $ref: "#/definitions/UpdatePostResponseDTO"
 //       400:
 //         description: Bad Request
-func (controller SearchController) UpdatePostById(c *gin.Context){
+func (controller SearchController) UpdatePostById(c *gin.Context) {
 
 	// Params
 	sub := c.GetString("sub")
 	postId := c.Params.ByName("postId")
 	searchId := c.Params.ByName("searchId")
-
+	
 	var postRequestDto contract.UpdatePostRequestDTO
+
+	// Check params
+	if sub == "" || searchId == "" || postId == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return 
+	}
+
 	// Check body matches dto
 	if err := c.BindJSON(&postRequestDto); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody).Error())
@@ -547,31 +564,31 @@ func (controller SearchController) UpdatePostById(c *gin.Context){
 	userDto, err := controller.usecase.UserUsecase.GetUserBySub(sub)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
-		return 
+		return
 	}
 
 	// Map request dto to usecase dto
 	postDto := contract.PostDTO{
-		Id: postId,
-		Title: postRequestDto.Title,
-		Description: postRequestDto.Description,
-		Type: postRequestDto.Type,
-		Url: postRequestDto.Url,
-		UserID: userDto.Id,
-		SearchID: searchId,
-		Tags: []string{},
-		ContactFirstName: "",
-		ContactLastName: "",
-		ContactEmail: "",
-		CompanyName: "",
-		CompanyEmail: "",
+		Id:                 postId,
+		Title:              postRequestDto.Title,
+		Description:        postRequestDto.Description,
+		Type:               postRequestDto.Type,
+		Url:                postRequestDto.Url,
+		UserID:             userDto.Id,
+		SearchID:           searchId,
+		Tags:               []string{},
+		ContactFirstName:   "",
+		ContactLastName:    "",
+		ContactEmail:       "",
+		CompanyName:        "",
+		CompanyEmail:       "",
 		CompanyPhoneNumber: 0,
-		CompanyAddress: "",
-		CompanyUrl: "",
+		CompanyAddress:     "",
+		CompanyUrl:         "",
 		ContactPhoneNumber: 0,
 	}
 
-
+	// Call usecase
 	postResponseDto, err := controller.usecase.SearchUsecase.UpdatePostById(&postDto)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
@@ -606,59 +623,27 @@ func (controller SearchController) UpdatePostById(c *gin.Context){
 //            type:  boolean
 //       400:
 //         description: Bad Request
-func (controller SearchController) DeletePostById(c *gin.Context){
+func (controller SearchController) DeletePostById(c *gin.Context) {
 
+	// Params
 	sub := c.GetString("sub")
 	searchId := c.Params.ByName("searchId")
 	postId := c.Params.ByName("postId")
 
+	// Check params
+	if sub == "" || searchId == "" || postId == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return 
+	}
+
+	// Call usecase
 	ok, err := controller.usecase.SearchUsecase.DeletePostById(sub, searchId, postId)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err)
-		return 
+		return
 	}
 
 	c.IndentedJSON(http.StatusOK, ok)
 
 }
-
-func (controller SearchController) isSearchExist(searchId string)(*contract.SearchDTO, error){
-	// Check is search exist
-	searchDto, err := controller.usecase.SearchUsecase.IsSearchExist(searchId)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return searchDto, nil
-}
-
-func (controller SearchController) hasSearchAccess(sub string, searchId string) (bool, *contract.UserDTO) {
-
-	// Check user exist
-	userDto, err := controller.usecase.UserUsecase.GetUserBySub(sub)
-	if err != nil {
-		return false, nil
-	}
-
-	// Check if search is public
-	isPublic := controller.usecase.SearchUsecase.IsPublic(searchId)
-	if !isPublic {
-
-		// Check if user is owner
-		isOwner := controller.usecase.SearchUsecase.IsOwner(sub, searchId)
-		if !isOwner {
-
-			// Check if user is friend or follower
-			isFriend := controller.usecase.SearchUsecase.IsFriend(sub, searchId)
-
-			if !isFriend {
-				return false, nil
-			}
-		}
-	}
-	return true, userDto
-}
-
-

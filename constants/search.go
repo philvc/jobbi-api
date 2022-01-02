@@ -15,8 +15,12 @@ const (
 	ErrorMissingDescription = "missing_description"
 	ErrorMissingTitle = "missing_title"
 	ErrorMissingType = "missing_type"
+	ErrorMissingUserId = "missing_user_id"
+	ErrorMissingSearchId = "missing_search_id"
+	ErrorMissingPostId = "missing_post_id"
 	ErrorMissingAccess = "missing_access"
 	ErrorWrongBody = "fail_with_wrong_body"
+	ErrorWrongParams = "fail_with_wrong_params"
 )
 
 
@@ -24,6 +28,7 @@ const (
 const (
 	ErrorGetMySearch = "repository_search_error_get_my_search"
 	ErrorSearchNotFound = "repository_search_error_exist"
+	ErrorPostNotFound = "repository_search_error_post_not_found"
 	ErrorGetMySearchParticipants = "repository_search_error_get_my_search_participants"
 	ErrorGetSharedSearches = "repository_search_error_get_shared_searches"
 	ErrorGetFollowedSearches = "repository_search_error_get_followed_searches"

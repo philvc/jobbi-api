@@ -22,13 +22,14 @@ func Default(repository repository.Repository) SearchUseCase {
 // Get My search
 func (usecase SearchUseCase) GetMySearch(sub string) (*contract.MySearchDTO, error) {
 
+	// Check user exist
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// Get user searches
+	// Get user search
 	response, err := usecase.repository.SearchRepository.GetMySearch(user.Id)
 
 	if err != nil {
@@ -39,7 +40,27 @@ func (usecase SearchUseCase) GetMySearch(sub string) (*contract.MySearchDTO, err
 }
 
 // Get posts by search id
-func (usecase SearchUseCase) GetPostsBySearchId(searchId string) (*[]contract.PostDTOBySearchId, error) {
+func (usecase SearchUseCase) GetPostsBySearchId(sub string, searchId string) (*[]contract.PostDTOBySearchId, error) {
+
+	// Check user
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	_, err = usecase.IsSearchExist(searchId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search access rights
+	ok, err := usecase.hasSearchAccess(userDto.Id, searchId)
+
+	if !ok || err != nil {
+
+		return nil, err
+	}
 
 	// Get user searches
 	response, err := usecase.repository.SearchRepository.GetPostsBySearchId(searchId)
@@ -52,9 +73,28 @@ func (usecase SearchUseCase) GetPostsBySearchId(searchId string) (*[]contract.Po
 }
 
 // Get participants by search id
-func (usecase SearchUseCase) GetParticipantsBySearchId(searchId string) (*[]contract.ParticipantDTOForSearchById, error) {
+func (usecase SearchUseCase) GetParticipantsBySearchId(sub string, searchId string) (*[]contract.ParticipantDTOForSearchById, error) {
 
-	// Get user searches
+	// Check user
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	_, err = usecase.IsSearchExist(searchId)
+	if err != nil {
+
+		return nil, err
+	}
+
+	// Check search access rights
+	ok, err := usecase.hasSearchAccess(userDto.Id, searchId)
+	if !ok || err != nil {
+		return nil, err
+	}
+
+	// Get search participants
 	response, err := usecase.repository.SearchRepository.GetParticipantsBySearchId(searchId)
 
 	if err != nil {
@@ -66,6 +106,8 @@ func (usecase SearchUseCase) GetParticipantsBySearchId(searchId string) (*[]cont
 
 // Get Shared searches
 func (usecase SearchUseCase) GetSharedSearches(sub string) (*[]contract.SharedSearchDTO, error) {
+
+	// Check user
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 	if err != nil {
 		return nil, err
@@ -83,6 +125,8 @@ func (usecase SearchUseCase) GetSharedSearches(sub string) (*[]contract.SharedSe
 
 // Get Followed searches
 func (usecase SearchUseCase) GetFollowedSearches(sub string) (*[]contract.FollowedSearchDTO, error) {
+
+	// Check user
 	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
 	if err != nil {
 		return nil, err
@@ -98,15 +142,32 @@ func (usecase SearchUseCase) GetFollowedSearches(sub string) (*[]contract.Follow
 	return response, nil
 }
 
-func (usecase SearchUseCase) GetSearchById(searchId string) (*contract.SearchDTOById, error) {
+func (usecase SearchUseCase) GetSearchById(searchId string, sub string) (*contract.SearchDTOById, error) {
 
-	// Check access rights: owner or friend or follower or public
+	// Check user exist
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	_, err = usecase.IsSearchExist(searchId)
+	if err != nil {
+
+		return nil, err
+	}
+
+	// Check access rights: user is owner or friend or follower or search i public
+	_, err = usecase.hasSearchAccess(userDto.Id, searchId)
+	if err != nil {
+		return nil, err
+	}
 
 	search, err := usecase.repository.SearchRepository.GetSearchById(searchId)
 	return search, err
 }
 
-func (usecase SearchUseCase) AddSearch(searchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
+func (usecase SearchUseCase) AddSearch(sub string, searchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
 
 	if searchDTO.Title == "" {
 		return nil, errors.New(constant.ErrorMissingTitle)
@@ -120,38 +181,140 @@ func (usecase SearchUseCase) AddSearch(searchDTO contract.SearchDTO) (*contract.
 		return nil, errors.New(constant.ErrorMissingType)
 	}
 
+	if searchDTO.UserID == "" {
+		return nil, errors.New(constant.ErrorMissingUserId)
+	}
+
+	// Check user exist
+	_, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
 	// Check if user has already an existing search
 	existingSearch, _ := usecase.repository.SearchRepository.GetMySearch(searchDTO.UserID)
 	if existingSearch.Id != "" {
 		return nil, errors.New(constant.ErrorAlreadyExistingSearch)
 	}
 
-	// Add search repository
+	// Call repository
 	newSearch, err := usecase.repository.SearchRepository.AddSearch(searchDTO)
 
 	return newSearch, err
 }
 
 func (usecase SearchUseCase) ModifySearch(searchDTO contract.SearchDTO) (*contract.SearchDTO, error) {
+
+	// Check mandatory fields
+	if searchDTO.Id == "" {
+		return nil, errors.New(constant.ErrorMissingSearchId)
+	}
+
+	if searchDTO.UserID == "" {
+		return nil, errors.New(constant.ErrorMissingUserId)
+	}
+
+	if searchDTO.Type == "" {
+		return nil, errors.New(constant.ErrorMissingType)
+	}
+
+	// Check search exit
+	_, err := usecase.IsSearchExist(searchDTO.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check access rights
+	isOwner := usecase.IsOwner(searchDTO.UserID, searchDTO.Id)
+	if !isOwner {
+		return nil, errors.New(constant.ErrorMissingAccess)
+	}
+
+	// Call repository
 	search, err := usecase.repository.SearchRepository.ModifySearch(searchDTO)
+
 	return search, err
 }
 
 func (usecase SearchUseCase) AddPost(postDTO *contract.PostDTO) (*contract.AddPostResponseDTO, error) {
 
+	// Check mandatory fields
+	if postDTO.SearchID == "" {
+		return nil, errors.New(constant.ErrorMissingSearchId)
+	}
+
+	if postDTO.UserID == "" {
+		return nil, errors.New(constant.ErrorMissingUserId)
+	}
+	if postDTO.Title == "" {
+		return nil, errors.New(constant.ErrorMissingTitle)
+	}
+	if postDTO.Description == "" {
+		return nil, errors.New(constant.ErrorMissingDescription)
+	}
+
+	if postDTO.Type == "" {
+		return nil, errors.New(constant.ErrorMissingType)
+	}
+
+	// Check search exist
+	_, err := usecase.IsSearchExist(postDTO.SearchID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check user access rights to search
+	ok, err := usecase.hasSearchAccess(postDTO.UserID, postDTO.SearchID)
+	if !ok || err != nil {
+
+		return nil, err
+	}
+
+	// Call repository
 	postResponseDto, err := usecase.repository.SearchRepository.AddPost(postDTO)
 	if err != nil {
 		return nil, err
 	}
+
 	return postResponseDto, nil
 }
 
 func (usecase SearchUseCase) UpdatePostById(postDTO *contract.PostDTO) (*contract.UpdatePostResponseDTO, error) {
 
-	// Check user is owner of post
-	ok := usecase.IsPostOwner(postDTO.UserID, postDTO.Id)
+	// Check mandatory fields
+	if postDTO.Id == "" {
+		return nil, errors.New(constant.ErrorMissingPostId)
+	}
+	if postDTO.SearchID == "" {
+		return nil, errors.New(constant.ErrorMissingSearchId)
+	}
 
-	if !ok {
+	if postDTO.UserID == "" {
+		return nil, errors.New(constant.ErrorMissingUserId)
+	}
+	if postDTO.Title == "" {
+		return nil, errors.New(constant.ErrorMissingTitle)
+	}
+
+	if postDTO.Type == "" {
+		return nil, errors.New(constant.ErrorMissingType)
+	}
+
+	// Check search exist
+	_, err := usecase.IsSearchExist(postDTO.SearchID)
+	if err != nil {
+		return nil, err
+	}
+	
+	// Check post exist
+	_, err = usecase.IsPostExist(postDTO.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check user is post owner
+	ok := usecase.IsPostOwner(postDTO.UserID, postDTO.Id)
+	if !ok  {
 		return nil, errors.New(constant.ErrorMissingAccess)
 	}
 
@@ -167,6 +330,24 @@ func (usecase SearchUseCase) UpdatePostById(postDTO *contract.PostDTO) (*contrac
 
 func (usecase SearchUseCase) DeletePostById(sub string, searchId string, postId string) (bool, error) {
 
+	// Check mandatory fields
+	if postId == "" {
+		return false, errors.New(constant.ErrorMissingPostId)
+	}
+	if searchId == "" {
+		return false, errors.New(constant.ErrorMissingSearchId)
+	}
+
+	if sub == "" {
+		return false, errors.New(constant.ErrorMissingUserId)
+	}
+
+	// Check search exist
+	_, err := usecase.IsSearchExist(searchId)
+	if err != nil {
+		return false, err
+	}
+
 	// Check user exist
 	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
 	if err != nil {
@@ -179,6 +360,7 @@ func (usecase SearchUseCase) DeletePostById(sub string, searchId string, postId 
 		return false, errors.New(constant.ErrorMissingAccess)
 	}
 
+	// Call repository
 	ok, err = usecase.repository.SearchRepository.DeletePostById(postId)
 	if err != nil {
 		return false, err
@@ -195,15 +377,9 @@ func (usecase SearchUseCase) IsPostOwner(userId string, postId string) bool {
 	return ok
 }
 
-func (usecase SearchUseCase) IsOwner(sub string, searchId string) bool {
+func (usecase SearchUseCase) IsOwner(userId string, searchId string) bool {
 
-	// Get user
-	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
-	if err != nil {
-		return false
-	}
-
-	ok := usecase.repository.SearchRepository.IsSearchOwner(user.Id, searchId)
+	ok := usecase.repository.SearchRepository.IsSearchOwner(userId, searchId)
 
 	return ok
 }
@@ -215,24 +391,48 @@ func (usecase SearchUseCase) IsPublic(searchId string) bool {
 	return ok
 }
 
-func (usecase SearchUseCase) IsFriend(sub string, searchId string) bool {
+func (usecase SearchUseCase) IsFriend(userId string, searchId string) bool {
 
-	// Get user
-	user, err := usecase.repository.UserRepository.GetUserBySub(sub)
-	if err != nil {
-		return false
-	}
-
-	ok := usecase.repository.SearchRepository.IsFriend(user.Id, searchId)
+	ok := usecase.repository.SearchRepository.IsFriend(userId, searchId)
 
 	return ok
 }
 
-func (usecase SearchUseCase) IsSearchExist(searchId string) (*contract.SearchDTO, error){
-	search, err := usecase.repository.SearchRepository.Exist(searchId)
+func (usecase SearchUseCase) IsSearchExist(searchId string) (*contract.SearchDTO, error) {
+	search, err := usecase.repository.SearchRepository.IsSearchExist(searchId)
 	if err != nil {
 		return nil, err
 	}
 
 	return search, nil
+}
+
+func (usecase SearchUseCase) IsPostExist(postId string) (*contract.PostDTO, error) {
+	post, err := usecase.repository.SearchRepository.IsPostExist(postId)
+	if err != nil {
+		return nil, err
+	}
+
+	return post, nil
+}
+
+func (usecase SearchUseCase) hasSearchAccess(userId string, searchId string) (bool, error) {
+
+	// Check if search is public
+	isPublic := usecase.IsPublic(searchId)
+	if !isPublic {
+
+		// Check if user is owner
+		isOwner := usecase.IsOwner(userId, searchId)
+		if !isOwner {
+
+			// Check if user is friend or follower
+			isFriend := usecase.IsFriend(userId, searchId)
+
+			if !isFriend {
+				return false, errors.New(constant.ErrorMissingAccess)
+			}
+		}
+	}
+	return true, nil
 }

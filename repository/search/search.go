@@ -336,7 +336,7 @@ func (repository SearchRepository) IsFriend(userId string, searchId string) bool
 	return true
 }
 
-func (repository SearchRepository) Exist(searchId string) (*contract.SearchDTO, error) {
+func (repository SearchRepository) IsSearchExist(searchId string) (*contract.SearchDTO, error) {
 
 	var search model.Search
 
@@ -349,4 +349,19 @@ func (repository SearchRepository) Exist(searchId string) (*contract.SearchDTO, 
 	searchDTO := model.ToSearchDTO(search)
 
 	return &searchDTO, nil
+}
+
+func (repository SearchRepository) IsPostExist(postId string) (*contract.PostDTO, error) {
+
+	var post model.Post
+
+	// Get search by id
+	if err := repository.database.Model(&model.Post{}).Where("id = ?", postId).Where("deleted_at IS NULL ").First(&post).Error; err != nil {
+		return nil, errors.New(constant.ErrorPostNotFound)
+
+	}
+
+	postDto := model.ToPostDTO(post)
+
+	return &postDto, nil
 }
