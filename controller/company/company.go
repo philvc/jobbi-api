@@ -131,7 +131,7 @@ func (controller CompanyController) AddCompany(c *gin.Context) {
 		return
 	}
 
-	searchDTO, err := controller.usecase.SearchUsecase.GetSearchById(searchId)
+	searchDTO, err := controller.usecase.SearchUsecase.GetSearchById(searchId, sub)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())

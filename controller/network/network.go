@@ -131,7 +131,7 @@ func (controller NetworkController) AddNetwork(c *gin.Context) {
 		return
 	}
 
-	searchDTO, err := controller.usecase.SearchUsecase.GetSearchById(searchId)
+	searchDTO, err := controller.usecase.SearchUsecase.GetSearchById(searchId, sub)
 	userDTO, err := controller.usecase.UserUsecase.GetUserBySub(sub)
 
 	if err != nil {
