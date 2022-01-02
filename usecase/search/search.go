@@ -227,3 +227,12 @@ func (usecase SearchUseCase) IsFriend(sub string, searchId string) bool {
 
 	return ok
 }
+
+func (usecase SearchUseCase) IsSearchExist(searchId string) (*contract.SearchDTO, error){
+	search, err := usecase.repository.SearchRepository.Exist(searchId)
+	if err != nil {
+		return nil, err
+	}
+
+	return search, nil
+}

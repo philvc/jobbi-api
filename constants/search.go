@@ -23,6 +23,7 @@ const (
 // Repository errors
 const (
 	ErrorGetMySearch = "repository_search_error_get_my_search"
+	ErrorSearchNotFound = "repository_search_error_exist"
 	ErrorGetMySearchParticipants = "repository_search_error_get_my_search_participants"
 	ErrorGetSharedSearches = "repository_search_error_get_shared_searches"
 	ErrorGetFollowedSearches = "repository_search_error_get_followed_searches"

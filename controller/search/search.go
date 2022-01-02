@@ -136,6 +136,13 @@ func (controller SearchController) GetSearchById(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
 
+	// Check search exist
+	_, err := controller.isSearchExist(searchId)
+	if err != nil {
+		c.IndentedJSON(http.StatusOK, err.Error())
+		return
+	}
+
 	// Check search access rights
 	ok, _ := controller.hasSearchAccess(sub, searchId)
 
@@ -181,6 +188,13 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
 
+	// Check search exist
+	_, err := controller.isSearchExist(searchId)
+	if err != nil {
+		c.IndentedJSON(http.StatusOK, err.Error())
+		return
+	}
+
 	// Check search access rights
 	ok, _ := controller.hasSearchAccess(sub, searchId)
 
@@ -225,6 +239,13 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 func (controller SearchController) GetParticipantsBySearchId(c *gin.Context) {
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
+
+	// Check search exist
+	_, err := controller.isSearchExist(searchId)
+	if err != nil {
+		c.IndentedJSON(http.StatusOK, err.Error())
+		return
+	}
 
 	// Check search access rights
 	ok, _ := controller.hasSearchAccess(sub, searchId)
@@ -426,6 +447,14 @@ func (controller SearchController) AddPostBySearchId(c *gin.Context){
 	sub := c.GetString("sub")
 	searchId := c.Params.ByName("searchId")
 
+	// Check search exist
+	_, err := controller.isSearchExist(searchId)
+	if err != nil {
+		c.IndentedJSON(http.StatusOK, err.Error())
+		return
+	}
+
+	// Check user access rights to search
 	ok, userDto := controller.hasSearchAccess(sub, searchId)
 	if !ok {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorMissingAccess).Error())
@@ -592,6 +621,17 @@ func (controller SearchController) DeletePostById(c *gin.Context){
 
 	c.IndentedJSON(http.StatusOK, ok)
 
+}
+
+func (controller SearchController) isSearchExist(searchId string)(*contract.SearchDTO, error){
+	// Check is search exist
+	searchDto, err := controller.usecase.SearchUsecase.IsSearchExist(searchId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return searchDto, nil
 }
 
 func (controller SearchController) hasSearchAccess(sub string, searchId string) (bool, *contract.UserDTO) {
