@@ -30,6 +30,7 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 		Model(&model.Search{}).
 		Select("title, id, sector, tags, type").
 		Where("user_id = ? ", userId).
+		Where("deleted_at IS NULL").
 		Scan(&result).
 		Error; err != nil {
 		print(err)
@@ -42,6 +43,7 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 		// Get participants
 		if err := repository.database.Model(&model.Friendship{}).
 			Where("search_id = ? ", result.Id).
+			Where("friendships.deleted_at IS NULL").
 			Joins("JOIN users ON users.id = friendships.user_id").
 			Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url").
 			Find(&result.Participants).Error; err != nil {
@@ -59,6 +61,7 @@ func (repository SearchRepository) GetSharedSearches(userId string) (*[]contract
 	if err := repository.database.
 		Model(&model.Friendship{}).
 		Where("friendships.user_id = ?", userId).
+		Where("friendships.deleted_at IS NULL").
 
 		// Get friendships where type is INVITED
 		Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_INVITED).
@@ -84,6 +87,7 @@ func (repository SearchRepository) GetFollowedSearches(userId string) (*[]contra
 	if err := repository.database.
 		Model(&model.Friendship{}).
 		Where("friendships.user_id = ?", userId).
+		Where("friendships.deleted_at IS NULL").
 
 		// Get friendships where type is INVITED
 		Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_FOLLOWED).
@@ -108,6 +112,7 @@ func (repository SearchRepository) GetSearchById(searchId string) (*contract.Sea
 	if err := repository.database.
 		Model(&model.Search{}).
 		Where("searches.id = ?", searchId).
+		Where("searches.deleted_at IS NULL").
 		Select("title, searches.id, sector, tags, description, searches.type, users.email, users.id as user_id, users.first_name, users.last_name, users.avatar_url").
 		Joins("JOIN users ON users.id = searches.user_id").
 		Scan(&result).
@@ -119,8 +124,10 @@ func (repository SearchRepository) GetSearchById(searchId string) (*contract.Sea
 	if result.Id != "" {
 
 		// Get participants
-		if err := repository.database.Model(&model.Friendship{}).
+		if err := repository.database.
+			Model(&model.Friendship{}).
 			Where("search_id = ? ", result.Id).
+			Where("friendships.deleted_at IS NULL").
 			Joins("JOIN users ON users.id = friendships.user_id").
 			Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url").
 			Find(&result.Participants).Error; err != nil {
@@ -138,6 +145,7 @@ func (repository SearchRepository) GetPostsBySearchId(searchId string) (*[]contr
 	if err := repository.database.
 		Model(&model.Post{}).
 		Where("posts.search_id = ?", searchId).
+		Where("posts.deleted_at IS NULL").
 		Order("posts.created_at DESC").
 		Joins("JOIN users ON users.id = posts.user_id").
 		Select("users.id as user_id, posts.updated_at, posts.id, users.email as user_email, users.first_name as user_first_name, posts.search_id, users.last_name as user_last_name, title, description, posts.id as id, posts.type, tags, contact_first_name, contact_last_name, contact_email, company_name, company_address, company_email, company_phone_number, company_url, url, contact_phone_number").
@@ -159,6 +167,7 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 	if err := repository.database.
 		Model(&model.Friendship{}).
 		Where("friendships.search_id = ?", searchId).
+		Where("friendships.deleted_at IS NULL").
 		Joins("JOIN users ON users.id = friendships.user_id").
 		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url, friendships.type").
 		Find(&results).
@@ -210,7 +219,7 @@ func (repository SearchRepository) ModifySearch(SearchDTO contract.SearchDTO) (*
 
 	search := model.ToSearch(SearchDTO)
 
-	if err := repository.database.Model(&search).Where("id = ?", search.ID).Updates(map[string]interface{}{"title": search.Title,
+	if err := repository.database.Model(&search).Where("id = ?", search.ID).Where("deleted_at IS NULL").Updates(map[string]interface{}{"title": search.Title,
 		"description": search.Description, "type": search.Type, "tags": search.Tags, "sector": search.Sector}).Error; err != nil {
 		return nil, errors.New(constant.ErrorModifySearch)
 	}
@@ -254,6 +263,7 @@ func (repository SearchRepository) UpdatePost(postDto *contract.PostDTO) (*contr
 	if err := repository.database.
 		Model(&post).
 		Where("posts.id = ?", post.ID).
+		Where("posts.deleted_at IS NULL").
 		Updates(map[string]interface{}{"title": post.Title, "description": post.Description, "type": post.Type, "url": post.Url}).
 		Scan(&postResponseDto).
 		Error; err != nil {
@@ -262,7 +272,7 @@ func (repository SearchRepository) UpdatePost(postDto *contract.PostDTO) (*contr
 
 	// Get user info
 	if postResponseDto.Id != "" {
-		err := repository.database.Model(&model.User{}).Where("id = ?", postResponseDto.UserID).Select("users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email").Scan(&postResponseDto).Error; 
+		err := repository.database.Model(&model.User{}).Where("id = ?", postResponseDto.UserID).Select("users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email").Scan(&postResponseDto).Error
 		if err != nil {
 			return nil, errors.New(constant.ErrorUpdatePost)
 		}
@@ -272,7 +282,7 @@ func (repository SearchRepository) UpdatePost(postDto *contract.PostDTO) (*contr
 
 }
 
-func (repository SearchRepository) DeletePostById(postId string)(bool, error){
+func (repository SearchRepository) DeletePostById(postId string) (bool, error) {
 
 	if err := repository.database.Model(&model.Post{}).Where("posts.id = ?", postId).Update("deleted_at", time.Now().UTC()).Error; err != nil {
 		return false, errors.New(constant.ErrorDeletePostById)
