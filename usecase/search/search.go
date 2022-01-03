@@ -370,6 +370,35 @@ func (usecase SearchUseCase) DeletePostById(sub string, searchId string, postId 
 
 }
 
+func (usecase SearchUseCase) GetSearchByIdForInvitation(sub string, searchId string)(*contract.SearchDTOById, error){
+
+	// Check params
+	if sub == "" || searchId == "" {
+		return nil, errors.New(constant.ErrorGetSearchForInvitationParams)
+	}
+	
+	// Context: get search for invitation fetch search by id without any access checks
+	// Check user exist
+	_, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	_, err = usecase.IsSearchExist(searchId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Call repository
+	search, err := usecase.repository.SearchRepository.GetSearchById(searchId)
+	if err != nil {
+		return nil, err
+	}
+
+	return search, nil
+}
+
 func (usecase SearchUseCase) IsPostOwner(userId string, postId string) bool {
 
 	ok := usecase.repository.SearchRepository.IsPostOwner(userId, postId)

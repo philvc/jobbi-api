@@ -23,6 +23,10 @@ const (
 	ErrorWrongParams = "fail_with_wrong_params"
 )
 
+// Usecase errors
+const (
+	ErrorGetSearchForInvitationParams = "usecase_get_search_for_invitation_missing_params"
+)
 
 // Repository errors
 const (

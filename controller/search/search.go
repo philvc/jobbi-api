@@ -205,7 +205,7 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 	sub := c.GetString("sub")
 
 	// Check params
-	if searchId == ""  || sub == "" {
+	if searchId == "" || sub == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
 		return
 	}
@@ -251,7 +251,7 @@ func (controller SearchController) GetParticipantsBySearchId(c *gin.Context) {
 	sub := c.GetString("sub")
 
 	// Check params
-	if searchId == ""  || sub == "" {
+	if searchId == "" || sub == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
 		return
 	}
@@ -295,9 +295,9 @@ func (controller SearchController) AddSearch(c *gin.Context) {
 
 	// Check params
 	// Check sub param
-	if sub == ""{
+	if sub == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
-		return 
+		return
 	}
 
 	// Check body params
@@ -382,7 +382,7 @@ func (controller SearchController) ModifySearch(c *gin.Context) {
 	// Check params
 	if sub == "" || searchId == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
-		return 
+		return
 	}
 
 	// Check user
@@ -466,7 +466,7 @@ func (controller SearchController) AddPostBySearchId(c *gin.Context) {
 	// Check params
 	if sub == "" || searchId == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
-		return 
+		return
 	}
 
 	// Check body params
@@ -474,10 +474,10 @@ func (controller SearchController) AddPostBySearchId(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody))
 		return
 	}
-	
+
 	// Check user
 	userDto, err := controller.usecase.UserUsecase.GetUserBySub(sub)
-	
+
 	// Map request dto with post dto
 	postDto := contract.PostDTO{
 		Id:                 "",
@@ -545,13 +545,13 @@ func (controller SearchController) UpdatePostById(c *gin.Context) {
 	sub := c.GetString("sub")
 	postId := c.Params.ByName("postId")
 	searchId := c.Params.ByName("searchId")
-	
+
 	var postRequestDto contract.UpdatePostRequestDTO
 
 	// Check params
 	if sub == "" || searchId == "" || postId == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
-		return 
+		return
 	}
 
 	// Check body matches dto
@@ -633,7 +633,7 @@ func (controller SearchController) DeletePostById(c *gin.Context) {
 	// Check params
 	if sub == "" || searchId == "" || postId == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
-		return 
+		return
 	}
 
 	// Call usecase
@@ -645,5 +645,48 @@ func (controller SearchController) DeletePostById(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusOK, ok)
+
+}
+
+// swagger:operation GET /searches/{searchId}/invitations searches GetSearchByIdForInvitation
+// type id struct
+// Get search by id.
+// Return search
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/SearchDTOById"
+//       400:
+//         description: Bad Request
+func (controller SearchController) GetSearchByIdForInvitation(c *gin.Context){
+
+	// Params
+	searchId := c.Params.ByName("searchId")
+	sub := c.GetString("sub")
+
+	// Check params
+	if searchId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// Call usecase
+	search, err := controller.usecase.SearchUsecase.GetSearchByIdForInvitation(sub, searchId) 
+	if err != nil {
+		c.IndentedJSON(http.StatusBadGateway, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, search)
 
 }
