@@ -5,7 +5,6 @@ const (
 	FRIENDSHIP_TYPE_FOLLOWED = "FOLLOWED"
 )
 
-
 // Errors
 const (
 	ErrorGetUserBySub = "missing_user"

@@ -552,6 +552,44 @@
             "description": "Bad Request"
           }
         }
+      },
+      "post": {
+        "description": "type id struct\nUpsert friendship.\nReturn friendship.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "UpsertFriendship",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "post",
+            "name": "post",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpsertFriendshipRequestDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/FriendshipDTO"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       }
     },
     "/searches/{searchId}/networks": {
@@ -1411,57 +1449,6 @@
           "description": "The search type",
           "type": "string",
           "x-go-name": "Type"
-        },
-        "userId": {
-          "description": "UserId",
-          "type": "string",
-          "x-go-name": "UserID"
-        }
-      },
-      "x-go-package": "github.com/philvc/jobbi-api/contract"
-    },
-    "FriendSearchDTO": {
-      "description": "A friend search",
-      "type": "object",
-      "required": [
-        "description",
-        "title"
-      ],
-      "properties": {
-        "description": {
-          "description": "The description",
-          "type": "string",
-          "x-go-name": "Description"
-        },
-        "email": {
-          "description": "The email",
-          "type": "string",
-          "x-go-name": "Email"
-        },
-        "externalId": {
-          "description": "The externalId",
-          "type": "string",
-          "x-go-name": "ExternalId"
-        },
-        "firstName": {
-          "description": "The firstName",
-          "type": "string",
-          "x-go-name": "FirstName"
-        },
-        "id": {
-          "description": "The id",
-          "type": "string",
-          "x-go-name": "Id"
-        },
-        "lastName": {
-          "description": "The lastName",
-          "type": "string",
-          "x-go-name": "LastName"
-        },
-        "title": {
-          "description": "The title",
-          "type": "string",
-          "x-go-name": "Title"
         },
         "userId": {
           "description": "UserId",
@@ -2363,6 +2350,24 @@
           "description": "The user  lastName",
           "type": "string",
           "x-go-name": "UserLastName"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "UpsertFriendshipRequestDTO": {
+      "description": "An friendship",
+      "type": "object",
+      "properties": {
+        "state": {
+          "description": "The state",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "State"
+        },
+        "type": {
+          "description": "The type",
+          "type": "string",
+          "x-go-name": "Type"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"

@@ -690,3 +690,72 @@ func (controller SearchController) GetSearchByIdForInvitation(c *gin.Context){
 	c.IndentedJSON(http.StatusOK, search)
 
 }
+
+// swagger:operation POST /searches/{searchId}/invitations searches UpsertFriendship
+// type id struct
+// Upsert friendship.
+// Return friendship.
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: post
+//         in: body
+//         schema:
+//            $ref: "#/definitions/UpsertFriendshipRequestDTO"
+//         description: post
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/FriendshipDTO"
+//       400:
+//         description: Bad Request
+func (controller SearchController) UpsertFriendship(c *gin.Context){
+	
+	// Params
+	searchId := c.Params.ByName("searchId")
+	sub := c.GetString("sub")
+	var requestDto  contract.UpsertFriendshipRequestDTO
+
+	// Check Params
+	if searchId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	if err := c.BindJSON(&requestDto); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody).Error())
+		return
+	}
+
+	// Get User
+	userDto, err := controller.usecase.UserUsecase.GetUserBySub(sub)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// Map dto
+	friendshipDto := contract.FriendshipDTO{
+		Id: "",
+		Type: requestDto.Type,
+		State: requestDto.State,
+		SearchId: searchId,
+		UserId: userDto.Id,
+	}
+
+	// Call usecase
+	response, err := controller.usecase.SearchUsecase.UpsertFriendship(&friendshipDto)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
+}

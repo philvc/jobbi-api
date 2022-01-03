@@ -2,6 +2,7 @@ package search_usecase
 
 import (
 	"errors"
+	"time"
 
 	constant "github.com/philvc/jobbi-api/constants"
 	"github.com/philvc/jobbi-api/contract"
@@ -305,7 +306,7 @@ func (usecase SearchUseCase) UpdatePostById(postDTO *contract.PostDTO) (*contrac
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Check post exist
 	_, err = usecase.IsPostExist(postDTO.Id)
 	if err != nil {
@@ -314,7 +315,7 @@ func (usecase SearchUseCase) UpdatePostById(postDTO *contract.PostDTO) (*contrac
 
 	// Check user is post owner
 	ok := usecase.IsPostOwner(postDTO.UserID, postDTO.Id)
-	if !ok  {
+	if !ok {
 		return nil, errors.New(constant.ErrorMissingAccess)
 	}
 
@@ -370,13 +371,13 @@ func (usecase SearchUseCase) DeletePostById(sub string, searchId string, postId 
 
 }
 
-func (usecase SearchUseCase) GetSearchByIdForInvitation(sub string, searchId string)(*contract.SearchDTOById, error){
+func (usecase SearchUseCase) GetSearchByIdForInvitation(sub string, searchId string) (*contract.SearchDTOById, error) {
 
 	// Check params
 	if sub == "" || searchId == "" {
 		return nil, errors.New(constant.ErrorGetSearchForInvitationParams)
 	}
-	
+
 	// Context: get search for invitation fetch search by id without any access checks
 	// Check user exist
 	_, err := usecase.repository.UserRepository.GetUserBySub(sub)
@@ -397,6 +398,54 @@ func (usecase SearchUseCase) GetSearchByIdForInvitation(sub string, searchId str
 	}
 
 	return search, nil
+}
+
+func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.FriendshipDTO) (*contract.FriendshipDTO, error) {
+
+	// Check mandatory fields
+	if friendshipDto.SearchId == "" || friendshipDto.UserId == "" || friendshipDto.Type == "" {
+		return nil, errors.New(constant.ErrorUpsertFriendshipParams)
+	}
+
+	// Check user exist
+	_, err := usecase.repository.UserRepository.GetUserById(friendshipDto.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	_, err = usecase.IsSearchExist(friendshipDto.SearchId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check friendship exist
+	friendship, err := usecase.repository.SearchRepository.IsFriendshipExist(friendshipDto.SearchId, friendshipDto.UserId)
+	if err == nil && friendship.Id != "" {
+		return nil, errors.New(constant.ErrorFriendshipAlreadyExist)
+	}
+
+	// Check friendship has been deleted
+	friendship, err = usecase.repository.SearchRepository.IsFriendshipDeleted(friendshipDto.SearchId, friendshipDto.UserId)
+
+	// If it has been deleted, re-activate the friendships
+	if err == nil && friendship.DeletedAt.String() != "" && friendship.Id != "" {
+
+		// Set id to dto
+		friendshipDto.Id = friendship.Id
+
+		// Set delete date
+		friendshipDto.DeletedAt = time.Time{}
+
+	}
+
+	// Call repository
+	friendshipResponseDto, err := usecase.repository.SearchRepository.SaveFriendship(friendshipDto)
+	if err != nil {
+		return nil, err
+	}
+
+	return friendshipResponseDto, nil
 }
 
 func (usecase SearchUseCase) IsPostOwner(userId string, postId string) bool {
