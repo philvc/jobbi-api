@@ -1,25 +1,27 @@
 package model
 
 import (
+
 	"github.com/philvc/jobbi-api/contract"
 )
 
 type Friendship struct {
 	Base
-	State    uint
+	State    int64
 	UserID   string
 	SearchID string
 	Type     string
 }
 
 func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
+
 	return contract.FriendshipDTO{
 		Id:       friendship.Base.ID,
 		State:    friendship.State,
 		UserId:   friendship.UserID,
 		SearchId: friendship.SearchID,
 		Type:     friendship.Type,
-		DeletedAt: *friendship.DeletedAt,
+		DeletedAt: friendship.Base.DeletedAt,
 	}
 }
 
@@ -27,7 +29,7 @@ func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 	return Friendship{
 		Base: Base{
 			ID: friendshipDTO.Id,
-			DeletedAt: &friendshipDTO.DeletedAt,
+			DeletedAt: friendshipDTO.DeletedAt,
 		},
 		State:    friendshipDTO.State,
 		UserID:   friendshipDTO.UserId,

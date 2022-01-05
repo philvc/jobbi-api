@@ -366,17 +366,17 @@ func (repository SearchRepository) IsPostExist(postId string) (*contract.PostDTO
 	return &postDto, nil
 }
 
-func (repository SearchRepository) IsFriendshipExist(searchId string, userId string)(*contract.FriendshipDTO, error){
+func (repository SearchRepository) IsFriendshipExist(searchId string, userId string) (*contract.FriendshipDTO, error) {
 	var friendship model.Friendship
 
 	if err := repository.database.
-	Model(&friendship).
-	Where("search_id = ?", searchId).
-	Where("user_id = ?", userId).
-	Where("deleted_at IS NULL").
-	First(&friendship).
-	Error; err != nil {
-		
+		Model(&friendship).
+		Where("search_id = ?", searchId).
+		Where("user_id = ?", userId).
+		Where("deleted_at IS NULL").
+		First(&friendship).
+		Error; err != nil {
+
 		return nil, errors.New(constant.ErrorFriendshipNotFound)
 	}
 
@@ -385,16 +385,17 @@ func (repository SearchRepository) IsFriendshipExist(searchId string, userId str
 	return &friendshipDto, nil
 }
 
-func (repository SearchRepository) IsFriendshipDeleted(searchId string, userId string)(*contract.FriendshipDTO, error){
+func (repository SearchRepository) IsFriendshipDeleted(searchId string, userId string) (*contract.FriendshipDTO, error) {
 	var friendship model.Friendship
 
 	if err := repository.database.
-	Model(&friendship).
-	Where("search_id = ?", searchId).
-	Where("user_id = ?", userId).
-	First(&friendship).
-	Error; err != nil {
-		
+		Model(&friendship).
+		Where("search_id = ?", searchId).
+		Where("user_id = ?", userId).
+		First(&friendship).
+		Error; err != nil {
+
+		// Friendship doesn't not exist
 		return nil, errors.New(constant.ErrorFriendshipNotFound)
 	}
 
@@ -403,12 +404,20 @@ func (repository SearchRepository) IsFriendshipDeleted(searchId string, userId s
 	return &friendshipDto, nil
 }
 
-func (repository SearchRepository) SaveFriendship(friendshipDto *contract.FriendshipDTO)(*contract.FriendshipDTO, error){
-	
+func (repository SearchRepository) SaveFriendship(friendshipDto *contract.FriendshipDTO) (*contract.FriendshipDTO, error) {
+
 	friendship := model.ToFriendship(*friendshipDto)
 
+	// Create uuid if none
+	if friendship.ID == "" {
+
+		id := uuid.New()
+		friendship.ID = id.String()
+
+	}
+
 	// Save friendship
-	if err := repository.database.Model(&friendship).Save(friendship).Error; err != nil {
+	if err := repository.database.Model(&friendship).Save(&friendship).Error; err != nil {
 		return nil, errors.New(constant.ErrorSaveFriendship)
 	}
 

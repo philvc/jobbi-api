@@ -13,7 +13,7 @@ type FriendshipDTO struct {
 	// The state
 	//
 	// required: false
-	State uint `json:"state"`
+	State int64 `json:"state"`
 	// The userId
 	//
 	// required: false
@@ -39,9 +39,39 @@ type UpsertFriendshipRequestDTO struct {
 	// The state
 	//
 	// required: false
-	State uint `json:"state"`
+	State int64 `json:"state"`
 	// The type
 	//
 	// required: false
 	Type string `json:"type"`
+}
+
+// An friendship
+//
+// swagger:model UpsertFriendshipResponseDTO
+type UpsertFriendshipResponseDTO struct {
+	// The id
+	//
+	// required: false
+	Id string `json:"id"`
+	// The state
+	//
+	// required: false
+	State int64 `json:"state"`
+	// The userId
+	//
+	// required: false
+	UserId string `json:"userId"`
+	// The searchId
+	//
+	// required: false
+	SearchId string `json:"searchId"`
+	// The type
+	//
+	// required: false
+	Type string `json:"type"`
+	// Delete date
+	//
+	// required: false
+	DeletedAt string `json:"deletedAt"`
 }

@@ -668,7 +668,7 @@ func (controller SearchController) DeletePostById(c *gin.Context) {
 //            $ref: "#/definitions/SearchDTOById"
 //       400:
 //         description: Bad Request
-func (controller SearchController) GetSearchByIdForInvitation(c *gin.Context){
+func (controller SearchController) GetSearchByIdForInvitation(c *gin.Context) {
 
 	// Params
 	searchId := c.Params.ByName("searchId")
@@ -681,7 +681,7 @@ func (controller SearchController) GetSearchByIdForInvitation(c *gin.Context){
 	}
 
 	// Call usecase
-	search, err := controller.usecase.SearchUsecase.GetSearchByIdForInvitation(sub, searchId) 
+	search, err := controller.usecase.SearchUsecase.GetSearchByIdForInvitation(sub, searchId)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadGateway, err.Error())
 		return
@@ -713,15 +713,15 @@ func (controller SearchController) GetSearchByIdForInvitation(c *gin.Context){
 //       200:
 //         description: Success
 //         schema:
-//            $ref: "#/definitions/FriendshipDTO"
+//            $ref: "#/definitions/UpsertFriendshipResponseDTO"
 //       400:
 //         description: Bad Request
-func (controller SearchController) UpsertFriendship(c *gin.Context){
-	
+func (controller SearchController) UpsertFriendship(c *gin.Context) {
+
 	// Params
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
-	var requestDto  contract.UpsertFriendshipRequestDTO
+	var requestDto contract.UpsertFriendshipRequestDTO
 
 	// Check Params
 	if searchId == "" || sub == "" {
@@ -741,13 +741,13 @@ func (controller SearchController) UpsertFriendship(c *gin.Context){
 		return
 	}
 
-	// Map dto
+	// Map usecase dto from request dto
 	friendshipDto := contract.FriendshipDTO{
-		Id: "",
-		Type: requestDto.Type,
-		State: requestDto.State,
+		Id:       "",
+		Type:     requestDto.Type,
+		State:    requestDto.State,
 		SearchId: searchId,
-		UserId: userDto.Id,
+		UserId:   userDto.Id,
 	}
 
 	// Call usecase
@@ -757,5 +757,25 @@ func (controller SearchController) UpsertFriendship(c *gin.Context){
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, response)
+	// Format deletedAt attribute
+	var deletedAt string
+	
+	// Replace time default zero value by empty string
+	if response.DeletedAt.IsZero() {
+		deletedAt = ""
+	} else {
+		deletedAt = response.DeletedAt.Format(constant.FRIENDSHIP_DELETE_FORMAT)
+	}
+
+	// map controller response from dto
+	friendshipResponseDto := contract.UpsertFriendshipResponseDTO{
+		Id:        response.Id,
+		Type:      response.Type,
+		State:     response.State,
+		SearchId:  response.SearchId,
+		UserId:    response.UserId,
+		DeletedAt: deletedAt,
+	}
+
+	c.IndentedJSON(http.StatusOK, friendshipResponseDto)
 }

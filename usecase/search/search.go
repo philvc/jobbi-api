@@ -7,6 +7,7 @@ import (
 	constant "github.com/philvc/jobbi-api/constants"
 	"github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/repository"
+	"gorm.io/gorm"
 )
 
 type SearchUseCase struct {
@@ -421,15 +422,20 @@ func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.Friendship
 
 	// Check friendship exist
 	friendship, err := usecase.repository.SearchRepository.IsFriendshipExist(friendshipDto.SearchId, friendshipDto.UserId)
+
+	// If friendship exist return error to avoid duplicate friendships
 	if err == nil && friendship.Id != "" {
 		return nil, errors.New(constant.ErrorFriendshipAlreadyExist)
 	}
 
 	// Check friendship has been deleted
 	friendship, err = usecase.repository.SearchRepository.IsFriendshipDeleted(friendshipDto.SearchId, friendshipDto.UserId)
+	if err != nil && err != gorm.ErrRecordNotFound  {
+		return nil, err
+	}
 
 	// If it has been deleted, re-activate the friendships
-	if err == nil && friendship.DeletedAt.String() != "" && friendship.Id != "" {
+	if friendship.Id != ""  && !friendship.DeletedAt.IsZero()  {
 
 		// Set id to dto
 		friendshipDto.Id = friendship.Id
