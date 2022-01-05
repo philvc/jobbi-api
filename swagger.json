@@ -1462,6 +1462,12 @@
       "description": "An friendship",
       "type": "object",
       "properties": {
+        "deletedAt": {
+          "description": "Delete date",
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "DeletedAt"
+        },
         "id": {
           "description": "The id",
           "type": "string",

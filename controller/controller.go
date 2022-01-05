@@ -2,7 +2,6 @@ package controller
 
 import (
 	company_controller "github.com/philvc/jobbi-api/controller/company"
-	friendship_controller "github.com/philvc/jobbi-api/controller/friendship"
 	network_controller "github.com/philvc/jobbi-api/controller/network"
 	offer_controller "github.com/philvc/jobbi-api/controller/offer"
 	search_controller "github.com/philvc/jobbi-api/controller/search"
@@ -16,7 +15,6 @@ type Controller struct {
 	OfferController      offer_controller.OfferController
 	CompanyController    company_controller.CompanyController
 	NetworkController    network_controller.NetworkController
-	FriendshipController friendship_controller.FriendshipController
 }
 
 func Default(usecase usecase.Usecase) Controller {
@@ -26,6 +24,5 @@ func Default(usecase usecase.Usecase) Controller {
 		OfferController:      offer_controller.Default(usecase),
 		CompanyController:    company_controller.Default(usecase),
 		NetworkController:    network_controller.Default(usecase),
-		FriendshipController: friendship_controller.Default(usecase),
 	}
 }

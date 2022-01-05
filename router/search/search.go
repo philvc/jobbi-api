@@ -5,7 +5,6 @@ import (
 	"github.com/philvc/jobbi-api/controller"
 	"github.com/philvc/jobbi-api/middleware"
 	search_company_router "github.com/philvc/jobbi-api/router/search/company"
-	search_friendship_router "github.com/philvc/jobbi-api/router/search/friendship"
 	search_network_router "github.com/philvc/jobbi-api/router/search/network"
 	search_offer_router "github.com/philvc/jobbi-api/router/search/offer"
 )
@@ -86,7 +85,4 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	networkGroup := search_network_router.Default(routerGroup.controller)
 	networkGroup.Initialise(childParam)
-
-	friendshipGroup := search_friendship_router.Default(routerGroup.controller)
-	friendshipGroup.Initialise(childParam)
 }
