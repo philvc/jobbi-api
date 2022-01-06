@@ -452,3 +452,46 @@ func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.Friendship
 }
 
 
+func(usecase SearchUseCase) DeleteFriendshipById(sub string, searchId string, friendshipId string)(bool, error){
+	// Check params
+	if searchId == "" || friendshipId == "" || sub == "" {
+		return false, errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Check user exist
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return false, err
+	}
+
+	// Check search exist
+	search, err := usecase.IsSearchExist(searchId)
+	if err != nil {
+		return false, err
+	}
+
+	// Check friendship exist
+	friendship, err := usecase.repository.SearchRepository.IsFriendshipExist(search.Id, userDto.Id)
+	if err != nil {
+		return false, err
+	}
+
+	// Check user is friend OR user is search owner
+	if friendship.UserId != userDto.Id {
+
+		// Check user is search owner
+		if search.UserID != userDto.Id {
+			return false, errors.New(constant.ErrorMissingAccess)
+		}
+	}
+
+	// Call repository
+	ok, err := usecase.repository.SearchRepository.DeleteFriendship(friendship.Id)
+	if err != nil {
+		return false, err
+	}
+
+	return ok, nil
+}
+
+

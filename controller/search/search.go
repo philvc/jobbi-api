@@ -779,3 +779,50 @@ func (controller SearchController) UpsertFriendship(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, friendshipResponseDto)
 }
+
+// swagger:operation DELETE /searches/{searchId}/friendships/{friendshipId} searches DeleteFriendshipById
+// type id struct
+// Delete friendship.
+// Return boolean
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: friendshipId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            type:  boolean
+//       400:
+//         description: Bad Request
+func(controller SearchController) DeleteFriendshipById(c *gin.Context){
+	// Params
+	searchId := c.Params.ByName("searchId")
+	friendshipId := c.Params.ByName("friendshipId")
+	sub := c.GetString("sub")
+
+	// Check params
+	if searchId == "" || friendshipId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest ,errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// Call usecase
+	ok, err := controller.usecase.SearchUsecase.DeleteFriendshipById(sub, searchId, friendshipId)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, ok)
+}

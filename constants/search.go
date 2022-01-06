@@ -21,6 +21,7 @@ const (
 	ErrorMissingAccess = "missing_access"
 	ErrorWrongBody = "fail_with_wrong_body"
 	ErrorWrongParams = "fail_with_wrong_params"
+	ErrorWrongParamsUsecase = "fail_with_wrong_params_usecase"
 )
 
 // Usecase errors
@@ -49,4 +50,5 @@ const (
 	ErrorFriendshipNotFound = "repository_search_friendship_not_found"
 	ErrorFriendshipDeletedNotFound = "repository_search_friendship_deleted_not_found"
 	ErrorSaveFriendship = "repository_search_friendship_save_fail"
+	ErrorDeleteFriendship = "repository_search_error_delete_friendship_by_id"
 )

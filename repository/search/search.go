@@ -425,3 +425,13 @@ func (repository SearchRepository) SaveFriendship(friendshipDto *contract.Friend
 
 	return &friendshipDtoResponse, nil
 }
+
+func (repository SearchRepository) DeleteFriendship(friendshipId string) (bool, error) {
+
+	// Delete friendship
+	if err := repository.database.Model(&model.Friendship{}).Where("id = ?", friendshipId).Where("deleted_at IS NULL").Update("deleted_at", time.Now().UTC()).Error; err != nil {
+		return false, errors.New(constant.ErrorDeleteFriendship)
+	}
+
+	return true, nil
+}
