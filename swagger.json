@@ -442,6 +442,45 @@
         }
       }
     },
+    "/searches/{searchId}/friendships/{friendshipId}": {
+      "delete": {
+        "description": "type id struct\nDelete friendship.\nReturn boolean",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "DeleteFriendshipById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "friendshipId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches/{searchId}/invitations": {
       "get": {
         "description": "type id struct\nGet search by id.\nReturn search",
@@ -2302,11 +2341,6 @@
       "description": "An friendship",
       "type": "object",
       "properties": {
-        "deletedAt": {
-          "description": "Delete date",
-          "type": "string",
-          "x-go-name": "DeletedAt"
-        },
         "id": {
           "description": "The id",
           "type": "string",

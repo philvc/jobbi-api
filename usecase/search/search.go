@@ -2,7 +2,6 @@ package search_usecase
 
 import (
 	"errors"
-	"time"
 
 	constant "github.com/philvc/jobbi-api/constants"
 	"github.com/philvc/jobbi-api/contract"
@@ -432,13 +431,10 @@ func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.Friendship
 
 
 	// If it has been deleted, re-activate the friendships
-	if friendship != nil && friendship.Id != ""   && !friendship.DeletedAt.IsZero() {
+	if friendship != nil && friendship.Id != "" {
 
 		// Set id to dto
 		friendshipDto.Id = friendship.Id
-
-		// Set delete date
-		friendshipDto.DeletedAt = time.Time{}
 
 	}
 

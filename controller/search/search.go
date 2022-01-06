@@ -757,16 +757,6 @@ func (controller SearchController) UpsertFriendship(c *gin.Context) {
 		return
 	}
 
-	// Format deletedAt attribute
-	var deletedAt string
-	
-	// Replace time default zero value by empty string
-	if response.DeletedAt.IsZero() {
-		deletedAt = ""
-	} else {
-		deletedAt = response.DeletedAt.Format(constant.FRIENDSHIP_DELETE_FORMAT)
-	}
-
 	// map controller response from dto
 	friendshipResponseDto := contract.UpsertFriendshipResponseDTO{
 		Id:        response.Id,
@@ -774,7 +764,6 @@ func (controller SearchController) UpsertFriendship(c *gin.Context) {
 		State:     response.State,
 		SearchId:  response.SearchId,
 		UserId:    response.UserId,
-		DeletedAt: deletedAt,
 	}
 
 	c.IndentedJSON(http.StatusOK, friendshipResponseDto)

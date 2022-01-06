@@ -70,8 +70,4 @@ type UpsertFriendshipResponseDTO struct {
 	//
 	// required: false
 	Type string `json:"type"`
-	// Delete date
-	//
-	// required: false
-	DeletedAt string `json:"deletedAt"`
 }
