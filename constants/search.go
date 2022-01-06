@@ -47,5 +47,6 @@ const (
 	ErrorGetPostsBySearchId = "repository_search_error_get_posts_by_search_id"
 	ErrorDeletePostById = "repository_search_error_delete_post_by_id"
 	ErrorFriendshipNotFound = "repository_search_friendship_not_found"
+	ErrorFriendshipDeletedNotFound = "repository_search_friendship_deleted_not_found"
 	ErrorSaveFriendship = "repository_search_friendship_save_fail"
 )

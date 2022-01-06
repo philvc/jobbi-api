@@ -21,7 +21,6 @@ func ToFriendshipDTO(friendship Friendship) contract.FriendshipDTO {
 		UserId:   friendship.UserID,
 		SearchId: friendship.SearchID,
 		Type:     friendship.Type,
-		DeletedAt: friendship.Base.DeletedAt,
 	}
 }
 
@@ -29,7 +28,6 @@ func ToFriendship(friendshipDTO contract.FriendshipDTO) Friendship {
 	return Friendship{
 		Base: Base{
 			ID: friendshipDTO.Id,
-			DeletedAt: friendshipDTO.DeletedAt,
 		},
 		State:    friendshipDTO.State,
 		UserID:   friendshipDTO.UserId,

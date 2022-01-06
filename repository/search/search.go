@@ -396,7 +396,7 @@ func (repository SearchRepository) IsFriendshipDeleted(searchId string, userId s
 		Error; err != nil {
 
 		// Friendship doesn't not exist
-		return nil, errors.New(constant.ErrorFriendshipNotFound)
+		return nil, errors.New(constant.ErrorFriendshipDeletedNotFound)
 	}
 
 	friendshipDto := model.ToFriendshipDTO(friendship)
