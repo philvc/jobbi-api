@@ -14,7 +14,7 @@ func (usecase SearchUseCase) IsPostOwner(userId string, postId string) bool {
 	return ok
 }
 
-func (usecase SearchUseCase) IsOwner(userId string, searchId string) bool {
+func (usecase SearchUseCase) IsSearchOwner(userId string, searchId string) bool {
 
 	ok := usecase.repository.SearchRepository.IsSearchOwner(userId, searchId)
 
@@ -60,8 +60,8 @@ func (usecase SearchUseCase) hasSearchAccess(userId string, searchId string) (bo
 	if !isPublic {
 
 		// Check if user is owner
-		isOwner := usecase.IsOwner(userId, searchId)
-		if !isOwner {
+		IsSearchOwner := usecase.IsSearchOwner(userId, searchId)
+		if !IsSearchOwner {
 
 			// Check if user is friend or follower
 			isFriend := usecase.IsFriend(userId, searchId)

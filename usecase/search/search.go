@@ -225,8 +225,8 @@ func (usecase SearchUseCase) ModifySearch(searchDTO contract.SearchDTO) (*contra
 	}
 
 	// Check access rights
-	isOwner := usecase.IsOwner(searchDTO.UserID, searchDTO.Id)
-	if !isOwner {
+	IsSearchOwner := usecase.IsSearchOwner(searchDTO.UserID, searchDTO.Id)
+	if !IsSearchOwner {
 		return nil, errors.New(constant.ErrorMissingAccess)
 	}
 
@@ -418,6 +418,12 @@ func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.Friendship
 		return nil, err
 	}
 
+	// Check user is not owner of search
+	ok := usecase.IsSearchOwner(friendshipDto.UserId, friendshipDto.SearchId)
+	if ok {
+		return nil, errors.New(constant.ErrorIsSearchOwner)
+	}
+
 	// Check friendship exist
 	friendship, err := usecase.repository.SearchRepository.IsFriendshipExist(friendshipDto.SearchId, friendshipDto.UserId)
 
@@ -428,7 +434,6 @@ func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.Friendship
 
 	// Check friendship has been deleted
 	friendship, _ = usecase.repository.SearchRepository.IsFriendshipDeleted(friendshipDto.SearchId, friendshipDto.UserId)
-
 
 	// If it has been deleted, re-activate the friendships
 	if friendship != nil && friendship.Id != "" {
@@ -447,8 +452,7 @@ func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.Friendship
 	return friendshipResponseDto, nil
 }
 
-
-func(usecase SearchUseCase) DeleteFriendshipById(sub string, searchId string, friendshipId string)(bool, error){
+func (usecase SearchUseCase) DeleteFriendshipById(sub string, searchId string, friendshipId string) (bool, error) {
 	// Check params
 	if searchId == "" || friendshipId == "" || sub == "" {
 		return false, errors.New(constant.ErrorWrongParamsUsecase)
@@ -489,5 +493,3 @@ func(usecase SearchUseCase) DeleteFriendshipById(sub string, searchId string, fr
 
 	return ok, nil
 }
-
-

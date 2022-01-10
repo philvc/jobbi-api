@@ -29,6 +29,7 @@ const (
 	ErrorGetSearchForInvitationParams = "usecase_get_search_for_invitation_missing_params"
 	ErrorUpsertFriendshipParams = "usecase_upsert_friendship_params"
 	ErrorFriendshipAlreadyExist = "usecase_friendship_already_exist"
+	ErrorIsSearchOwner = "usecase_friendship_user_is_search_owner"
 )
 
 // Repository errors
@@ -51,4 +52,5 @@ const (
 	ErrorFriendshipDeletedNotFound = "repository_search_friendship_deleted_not_found"
 	ErrorSaveFriendship = "repository_search_friendship_save_fail"
 	ErrorDeleteFriendship = "repository_search_error_delete_friendship_by_id"
+
 )
