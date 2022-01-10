@@ -171,7 +171,7 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 		Where("friendships.search_id = ?", searchId).
 		Where("friendships.deleted_at IS NULL").
 		Joins("JOIN users ON users.id = friendships.user_id").
-		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url, friendships.type").
+		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url, friendships.type, friendships.id as friendship_id").
 		Find(&results).
 		Joins("JOIN posts ON posts.user_id = users.id").
 		Select("posts.id, posts.user_id").

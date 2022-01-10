@@ -1609,6 +1609,11 @@
           "type": "string",
           "x-go-name": "FirstName"
         },
+        "friendshipId": {
+          "description": "The friendship id",
+          "type": "string",
+          "x-go-name": "FriendshipId"
+        },
         "id": {
           "description": "The id",
           "type": "string",

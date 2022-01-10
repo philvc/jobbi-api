@@ -463,30 +463,29 @@ func (usecase SearchUseCase) DeleteFriendshipById(sub string, searchId string, f
 	if err != nil {
 		return false, err
 	}
-
+	
 	// Check search exist
 	search, err := usecase.IsSearchExist(searchId)
 	if err != nil {
 		return false, err
 	}
 
-	// Check friendship exist
-	friendship, err := usecase.repository.SearchRepository.IsFriendshipExist(search.Id, userDto.Id)
-	if err != nil {
-		return false, err
-	}
 
-	// Check user is friend OR user is search owner
-	if friendship.UserId != userDto.Id {
+	// Check if user owner of search
+	ok := usecase.IsSearchOwner(userDto.Id, searchId)
+	
+	// If not owner check if user is friend
+	if !ok {
 
-		// Check user is search owner
-		if search.UserID != userDto.Id {
-			return false, errors.New(constant.ErrorMissingAccess)
-		}
+		// Check is user is friend
+		_, err := usecase.repository.SearchRepository.IsFriendshipExist(search.Id, userDto.Id)
+		if err != nil {
+			return false, err
+		} 
 	}
 
 	// Call repository
-	ok, err := usecase.repository.SearchRepository.DeleteFriendship(friendship.Id)
+	ok, err = usecase.repository.SearchRepository.DeleteFriendship(friendshipId)
 	if err != nil {
 		return false, err
 	}
