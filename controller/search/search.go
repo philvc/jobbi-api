@@ -759,11 +759,11 @@ func (controller SearchController) UpsertFriendship(c *gin.Context) {
 
 	// map controller response from dto
 	friendshipResponseDto := contract.UpsertFriendshipResponseDTO{
-		Id:        response.Id,
-		Type:      response.Type,
-		State:     response.State,
-		SearchId:  response.SearchId,
-		UserId:    response.UserId,
+		Id:       response.Id,
+		Type:     response.Type,
+		State:    response.State,
+		SearchId: response.SearchId,
+		UserId:   response.UserId,
 	}
 
 	c.IndentedJSON(http.StatusOK, friendshipResponseDto)
@@ -794,7 +794,7 @@ func (controller SearchController) UpsertFriendship(c *gin.Context) {
 //            type:  boolean
 //       400:
 //         description: Bad Request
-func(controller SearchController) DeleteFriendshipById(c *gin.Context){
+func (controller SearchController) DeleteFriendshipById(c *gin.Context) {
 	// Params
 	searchId := c.Params.ByName("searchId")
 	friendshipId := c.Params.ByName("friendshipId")
@@ -802,7 +802,7 @@ func(controller SearchController) DeleteFriendshipById(c *gin.Context){
 
 	// Check params
 	if searchId == "" || friendshipId == "" || sub == "" {
-		c.IndentedJSON(http.StatusBadRequest ,errors.New(constant.ErrorWrongParams).Error())
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
 		return
 	}
 
@@ -814,4 +814,45 @@ func(controller SearchController) DeleteFriendshipById(c *gin.Context){
 	}
 
 	c.IndentedJSON(http.StatusOK, ok)
+}
+
+// swagger:operation POST /searches/{searchId}/followers searches PostFollower
+// type id struct
+// Post follower.
+// Return follower.
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/FollowerDTO"
+//       400:
+//         description: Bad Request
+func (controller SearchController) PostFollower(c *gin.Context) {
+	// Params
+	searchId := c.Params.ByName("searchId")
+	sub := c.GetString("sub")
+
+	// Check Params
+	if searchId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// Call usecase
+	follower, err := controller.usecase.SearchUsecase.PostFollower(sub, searchId)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+	}
+
+	c.IndentedJSON(http.StatusOK, follower)
+
 }

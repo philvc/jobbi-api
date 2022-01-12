@@ -78,6 +78,10 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	childParam.POST("/invitations", middleware.Authorize(routerGroup.controller.SearchController.UpsertFriendship))
 	childParam.DELETE("/friendships/:friendshipId", middleware.Authorize(routerGroup.controller.SearchController.DeleteFriendshipById))
 
+
+	/* FOLLOWERS */
+	childParam.POST("/followers", middleware.Authorize(routerGroup.controller.SearchController.PostFollower))
+
 	offerGroup := search_offer_router.Default(routerGroup.controller)
 	offerGroup.Initialise(childParam)
 

@@ -435,3 +435,38 @@ func (repository SearchRepository) DeleteFriendship(friendshipId string) (bool, 
 
 	return true, nil
 }
+
+func (repository SearchRepository) PostFollower(followerDto contract.FollowerDTO)(*contract.FollowerDTO, error){
+
+	// Format model
+	follower := model.ToFollower(followerDto)
+
+	// Add new search uuid
+	id := uuid.New()
+
+	follower.ID = id.String()
+		
+	// Post follower 
+	if err := repository.database.Create(&follower).Error; err != nil {
+		return nil, errors.New(constant.ErrorCreateFollwer)
+	}
+
+	followerDTO := model.ToFollowerDto(follower)
+
+	return &followerDTO, nil
+}
+
+func (repository SearchRepository) IsFollowerExist(searchId string, userId string)(*contract.FollowerDTO, error){
+
+	var follower model.Follower
+
+	err := repository.database.Model(model.Follower{}).Where("search_id = ?", searchId).Where("user_id = ?", userId).First(&follower).Error
+	if err != nil {
+		return nil, err
+	}
+
+	followerDto := model.ToFollowerDto(follower)
+
+	return &followerDto, nil
+
+}

@@ -1,8 +1,8 @@
 package contract
 
-// An friendship
+// A follower
 //
-// swagger:model FriendshipDTO
+// swagger:model FollowerDTO
 type FollowerDTO struct {
 	// The id
 	//

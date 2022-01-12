@@ -478,7 +478,7 @@ func (usecase SearchUseCase) DeleteFriendshipById(sub string, searchId string, f
 	if !ok {
 
 		// Check is user is friend
-		_, err := usecase.repository.SearchRepository.IsFriendshipExist(search.Id, userDto.Id)
+		_, err := usecase.IsFriendshipExist(search.Id, userDto.Id)
 		if err != nil {
 			return false, err
 		} 
@@ -491,4 +491,64 @@ func (usecase SearchUseCase) DeleteFriendshipById(sub string, searchId string, f
 	}
 
 	return ok, nil
+}
+
+func (usecase SearchUseCase) PostFollower(sub string, searchId string) (*contract.FollowerDTO, error){
+
+	// Check Params
+	if searchId == "" || sub == "" {
+		return nil, errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Check user exist
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	search, err := usecase.IsSearchExist(searchId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search is public
+	if search.Type == constant.SearchTypePrivate {
+		return nil, errors.New(constant.ErrorMissingAccess)
+	}
+
+	// Check requester is not search owner
+	ok := usecase.IsSearchOwner(userDto.Id, searchId)
+
+	// If search owner return error
+	if ok {
+		return nil, errors.New(constant.ErrorFollowerNotAllowedOwner)
+	}
+
+	// Check if follower exist
+	follower, _ := usecase.IsFollowerExist(searchId, userDto.Id)
+	if follower != nil && follower.Id != ""{
+		return nil, errors.New(constant.ErrorFollowerAlreadyExist)
+	}
+
+	// Check if friendship exist
+	friendship, _ := usecase.IsFriendshipExist(searchId, userDto.Id)
+	if friendship != nil && friendship.Id != ""{
+		return nil, errors.New(constant.ErrorFollowerNotAllowedFriendship)
+	}
+
+	// Build follower dto
+	postData := contract.FollowerDTO{
+		Id: "",
+		SearchId: searchId,
+		UserId: userDto.Id,
+	}
+
+	// Call repo
+	followerDto, err := usecase.repository.SearchRepository.PostFollower(postData)
+	if err != nil {
+		return nil, err
+	}
+
+	return followerDto, nil
 }
