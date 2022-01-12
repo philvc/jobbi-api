@@ -460,7 +460,7 @@ func (repository SearchRepository) IsFollowerExist(searchId string, userId strin
 
 	var follower model.Follower
 
-	err := repository.database.Model(model.Follower{}).Where("search_id = ?", searchId).Where("user_id = ?", userId).First(&follower).Error
+	err := repository.database.Model(model.Follower{}).Where("search_id = ?", searchId).Where("deleted_at IS NULL").Where("user_id = ?", userId).First(&follower).Error
 	if err != nil {
 		return nil, err
 	}
@@ -469,4 +469,26 @@ func (repository SearchRepository) IsFollowerExist(searchId string, userId strin
 
 	return &followerDto, nil
 
+}
+
+func(repository SearchRepository) GetFollowerById(followerId string)(*contract.FollowerDTO, error){
+
+	var follower model.Follower
+
+	if err := repository.database.Model(&follower).Where("id = ?", followerId).Where("deleted_at IS NULL").First(&follower).Error; err != nil {
+		return nil, errors.New(constant.ErrorFollowerNotFound)
+	}
+
+	followerDto := model.ToFollowerDto(follower)
+
+	return &followerDto, nil
+}
+
+func(repository SearchRepository) DeleteFollowerById(followerId string)(bool, error){
+
+	if err := repository.database.Model(&model.Follower{}).Where("id = ?", followerId).Update("deleted_at", time.Now().UTC()).Error; err != nil {
+		return false, errors.New(constant.ErrorDeleteFollower)
+	}
+
+	return true, nil
 }

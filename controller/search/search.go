@@ -857,3 +857,50 @@ func (controller SearchController) PostFollower(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, follower)
 
 }
+
+// swagger:operation DELETE /searches/{searchId}/followers/{followerId} searches DeleteFollower
+// type id struct
+// Delete follower.
+// Return boolean
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: followerId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            type:  boolean
+//       400:
+//         description: Bad Request
+func (controller SearchController) DeleteFollower(c *gin.Context){
+	// Params
+	searchId := c.Params.ByName("searchId")
+	followerId := c.Params.ByName("followerId")
+	sub := c.GetString("sub")
+
+	// Check Params
+	if searchId == "" || followerId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// Call usecase
+	ok, err := controller.usecase.SearchUsecase.DeleteFollowerById(sub, searchId, followerId)
+	if !ok {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	
+	c.IndentedJSON(http.StatusOK, ok)
+}

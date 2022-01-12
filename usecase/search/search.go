@@ -552,3 +552,47 @@ func (usecase SearchUseCase) PostFollower(sub string, searchId string) (*contrac
 
 	return followerDto, nil
 }
+
+func(usecase SearchUseCase) DeleteFollowerById(sub string, searchId string, followerId string) (bool, error){
+
+	// Check params
+	if sub == "" || searchId == "" || followerId == "" {
+		return false, errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Check requester exist
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return false, err
+	}
+
+	// Check search exist
+	_, err = usecase.IsSearchExist(searchId)
+	if err != nil {
+		return false, nil
+	}
+
+	// Check follower exist
+	follower, err := usecase.IsFollowerExistById(followerId)
+	if err != nil {
+		return false, err
+	}
+
+	// Check requesterId is search owner or follower 
+	if follower.UserId != userDto.Id {
+
+		ok := usecase.IsSearchOwner(userDto.Id, searchId)
+		if !ok {
+			return false, errors.New(constant.ErrorMissingAccess)
+		}
+	}
+
+
+	// Call repo
+	ok, err := usecase.repository.SearchRepository.DeleteFollowerById(followerId)
+	if err != nil {
+		return false, err
+	}
+
+	return ok, nil
+}

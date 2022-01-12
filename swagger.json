@@ -474,6 +474,45 @@
         }
       }
     },
+    "/searches/{searchId}/followers/{followerId}": {
+      "delete": {
+        "description": "type id struct\nDelete follower.\nReturn boolean",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "DeleteFollower",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "followerId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches/{searchId}/friendships/{friendshipId}": {
       "delete": {
         "description": "type id struct\nDelete friendship.\nReturn boolean",

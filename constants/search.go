@@ -56,5 +56,6 @@ const (
 	ErrorSaveFriendship = "repository_search_friendship_save_fail"
 	ErrorDeleteFriendship = "repository_search_error_delete_friendship_by_id"
 	ErrorCreateFollwer = "repository_search_error_add_follower"
-
+	ErrorFollowerNotFound = "repository_search_follower_by_id_not_found"
+	ErrorDeleteFollower = "repository_search_error_delete_follower_by_id"
 )

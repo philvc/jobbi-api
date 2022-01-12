@@ -81,6 +81,7 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	/* FOLLOWERS */
 	childParam.POST("/followers", middleware.Authorize(routerGroup.controller.SearchController.PostFollower))
+	childParam.DELETE("/followers/:followerId", middleware.Authorize(routerGroup.controller.SearchController.DeleteFollower))
 
 	offerGroup := search_offer_router.Default(routerGroup.controller)
 	offerGroup.Initialise(childParam)

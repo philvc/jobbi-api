@@ -74,7 +74,7 @@ func (usecase SearchUseCase) hasSearchAccess(userId string, searchId string) (bo
 	return true, nil
 }
 
-func (usecase SearchUseCase) IsFollowerExist(searchId string, userId string) (*contract.FollowerDTO, error){
+func (usecase SearchUseCase) IsFollowerExist(searchId string, userId string) (*contract.FollowerDTO, error) {
 	follower, err := usecase.repository.SearchRepository.IsFollowerExist(searchId, userId)
 	if err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func (usecase SearchUseCase) IsFollowerExist(searchId string, userId string) (*c
 	return follower, nil
 }
 
-func (usecase SearchUseCase) IsFriendshipExist(searchId string, userId string) (*contract.FriendshipDTO, error){
+func (usecase SearchUseCase) IsFriendshipExist(searchId string, userId string) (*contract.FriendshipDTO, error) {
 	friendship, err := usecase.repository.SearchRepository.IsFriendshipExist(searchId, userId)
 	if err != nil {
 		return nil, err
@@ -92,4 +92,12 @@ func (usecase SearchUseCase) IsFriendshipExist(searchId string, userId string) (
 	return friendship, nil
 }
 
+func (usecase SearchUseCase) IsFollowerExistById(followerId string) (*contract.FollowerDTO, error) {
+	// Call repo
+	follower, err := usecase.repository.SearchRepository.GetFollowerById(followerId)
+	if err != nil {
+		return nil, err
+	}
 
+	return follower, nil
+}
