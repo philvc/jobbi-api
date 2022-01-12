@@ -1,7 +1,6 @@
 package model
 
 import (
-
 	"github.com/philvc/jobbi-api/contract"
 )
 

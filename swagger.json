@@ -1454,6 +1454,7 @@
           "x-go-name": "UserId"
         }
       },
+      "x-go-name": "FollowerDTO",
       "x-go-package": "github.com/philvc/jobbi-api/contract"
     },
     "MySearchDTO": {
