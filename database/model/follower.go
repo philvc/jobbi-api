@@ -6,14 +6,12 @@ type Follower struct {
 	Base
 	UserID   string
 	SearchID string
-	Type     string
 }
-
 
 func ToFollowerDto(follower Follower) contract.FollowerDTO {
 	return contract.FollowerDTO{
-		Id: follower.ID,
-		UserId: follower.UserID,
+		Id:       follower.ID,
+		UserId:   follower.UserID,
 		SearchId: follower.SearchID,
 	}
 }
@@ -24,7 +22,7 @@ func ToFollower(followerDto contract.FollowerDTO) Follower {
 			ID: followerDto.Id,
 		},
 		SearchID: followerDto.SearchId,
-		UserID: followerDto.UserId,
+		UserID:   followerDto.UserId,
 	}
 }
 
@@ -47,4 +45,3 @@ func ToFollowers(followerDtos []contract.FollowerDTO) []Follower {
 
 	return Followers
 }
-

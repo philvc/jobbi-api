@@ -193,7 +193,7 @@ func (usecase SearchUseCase) AddSearch(sub string, searchDTO contract.SearchDTO)
 
 	// Check if user has already an existing search
 	existingSearch, _ := usecase.repository.SearchRepository.GetMySearch(searchDTO.UserID)
-	if existingSearch.Id != "" {
+	if existingSearch != nil && existingSearch.Id != "" {
 		return nil, errors.New(constant.ErrorAlreadyExistingSearch)
 	}
 

@@ -851,6 +851,7 @@ func (controller SearchController) PostFollower(c *gin.Context) {
 	follower, err := controller.usecase.SearchUsecase.PostFollower(sub, searchId)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
 	}
 
 	c.IndentedJSON(http.StatusOK, follower)

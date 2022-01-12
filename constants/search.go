@@ -31,7 +31,7 @@ const (
 	ErrorFriendshipAlreadyExist = "usecase_friendship_already_exist"
 	ErrorFollowerAlreadyExist = "usecase_follower_already_exist"
 	ErrorIsSearchOwner = "usecase_friendship_user_is_search_owner"
-	ErrorFollowerNotAllowedOwner = "usecase_friendship_follower_not_allowed_owner"
+	ErrorFollowerNotAllowedOwner = "usecase_follower_not_allowed_owner"
 	ErrorFollowerNotAllowedFriendship = "usecase_friendship_post_not_allowed_friendship"
 )
 
