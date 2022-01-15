@@ -163,17 +163,18 @@ func (repository SearchRepository) GetPostsBySearchId(searchId string) (*[]contr
 func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*[]contract.ParticipantDTOForSearchById, error) {
 
 	var results []contract.ParticipantDTOForSearchById
-
 	var posts []model.Post
-
+	
+	// Get Friends
+	var friends []contract.ParticipantDTOForSearchById
 	if err := repository.database.
 		Model(&model.Friendship{}).
 		Where("friendships.search_id = ?", searchId).
 		Where("friendships.deleted_at IS NULL").
 		Joins("JOIN users ON users.id = friendships.user_id").
 		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url, friendships.type, friendships.id as friendship_id").
-		Find(&results).
-		Joins("JOIN posts ON posts.user_id = users.id").
+		Find(&friends).
+		Joins("JOIN posts ON posts.user_id = users.id AND posts.search_id = ?", searchId).
 		Select("posts.id, posts.user_id").
 		Find(&posts).
 		Error; err != nil {
@@ -181,8 +182,8 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 	}
 
 	// Count total of post for each participant
-	if len(results) != 0 {
-		for index, item := range results {
+	if len(friends) != 0 {
+		for index, item := range friends {
 			var count int64 = 0
 
 			for _, post := range posts {
@@ -191,9 +192,42 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 				}
 			}
 
-			results[index].NumberOfPosts = count
+			friends[index].NumberOfPosts = count
 		}
 	}
+
+	// Get Followers
+	var followers []contract.ParticipantDTOForSearchById
+	if err := repository.database.
+		Model(&model.Follower{}).
+		Where("followers.search_id = ?", searchId).
+		Where("followers.deleted_at IS NULL").
+		Joins("JOIN users ON users.id = followers.user_id").
+		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url, followers.id as follower_id").
+		Find(&followers).
+		Joins("JOIN posts ON posts.user_id = users.id AND posts.search_id = ?", searchId).
+		Select("posts.id, posts.user_id").
+		Find(&posts).
+		Error; err != nil {
+		return nil, errors.New(constant.ErrorGetPostsBySearchId)
+	}
+
+	// Count total of post for each participant
+	if len(followers) != 0 {
+		for index, item := range friends {
+			var count int64 = 0
+
+			for _, post := range posts {
+				if post.UserID == item.Id {
+					count = +1
+				}
+			}
+
+			followers[index].NumberOfPosts = count
+		}
+	}
+
+	results = append(friends, followers...)
 
 	return &results, nil
 
@@ -436,7 +470,7 @@ func (repository SearchRepository) DeleteFriendship(friendshipId string) (bool, 
 	return true, nil
 }
 
-func (repository SearchRepository) PostFollower(followerDto contract.FollowerDTO)(*contract.FollowerDTO, error){
+func (repository SearchRepository) PostFollower(followerDto contract.FollowerDTO) (*contract.FollowerDTO, error) {
 
 	// Format model
 	follower := model.ToFollower(followerDto)
@@ -445,8 +479,8 @@ func (repository SearchRepository) PostFollower(followerDto contract.FollowerDTO
 	id := uuid.New()
 
 	follower.ID = id.String()
-		
-	// Post follower 
+
+	// Post follower
 	if err := repository.database.Create(&follower).Error; err != nil {
 		return nil, errors.New(constant.ErrorCreateFollwer)
 	}
@@ -456,7 +490,7 @@ func (repository SearchRepository) PostFollower(followerDto contract.FollowerDTO
 	return &followerDTO, nil
 }
 
-func (repository SearchRepository) IsFollowerExist(searchId string, userId string)(*contract.FollowerDTO, error){
+func (repository SearchRepository) IsFollowerExist(searchId string, userId string) (*contract.FollowerDTO, error) {
 
 	var follower model.Follower
 
@@ -471,7 +505,7 @@ func (repository SearchRepository) IsFollowerExist(searchId string, userId strin
 
 }
 
-func(repository SearchRepository) GetFollowerById(followerId string)(*contract.FollowerDTO, error){
+func (repository SearchRepository) GetFollowerById(followerId string) (*contract.FollowerDTO, error) {
 
 	var follower model.Follower
 
@@ -484,7 +518,7 @@ func(repository SearchRepository) GetFollowerById(followerId string)(*contract.F
 	return &followerDto, nil
 }
 
-func(repository SearchRepository) DeleteFollowerById(followerId string)(bool, error){
+func (repository SearchRepository) DeleteFollowerById(followerId string) (bool, error) {
 
 	if err := repository.database.Model(&model.Follower{}).Where("id = ?", followerId).Update("deleted_at", time.Now().UTC()).Error; err != nil {
 		return false, errors.New(constant.ErrorDeleteFollower)

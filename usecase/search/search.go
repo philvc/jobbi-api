@@ -524,8 +524,6 @@ func (usecase SearchUseCase) PostFollower(sub string, searchId string) (*contrac
 
 	// Check requester is not search owner
 	ok := usecase.IsSearchOwner(userDto.Id, searchId)
-
-	// If search owner return error
 	if ok {
 		return nil, errors.New(constant.ErrorFollowerNotAllowedOwner)
 	}

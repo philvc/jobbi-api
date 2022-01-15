@@ -38,46 +38,44 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	// Get my followed searches
 	child.GET("/public", middleware.Authorize(routerGroup.controller.SearchController.GetMyFollowedSearches))
-	
+
 	// Post search
 	child.POST("", middleware.Authorize(routerGroup.controller.SearchController.AddSearch))
-	
+
 	// With searchId
 	childParam := child.Group(parameter)
-	
-	// Update search 
+
+	// Update search
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.SearchController.ModifySearch))
-	
+
 	// Get search by id
 	childParam.GET("", middleware.Authorize(routerGroup.controller.SearchController.GetSearchById))
-	
+
 	// Get search for an invitation
 	childParam.GET("/invitations", middleware.Authorize(routerGroup.controller.SearchController.GetSearchByIdForInvitation))
-	
+
 	/* PARTICIPANTS */
-	
+
 	// Get search participants
 	childParam.GET("/participants", middleware.Authorize(routerGroup.controller.SearchController.GetParticipantsBySearchId))
-	
+
 	/* POSTS */
-	
+
 	// Get search posts
 	childParam.GET("/posts", middleware.Authorize(routerGroup.controller.SearchController.GetPostsBySearchId))
-	
+
 	// Add post for search
 	childParam.POST("/posts", middleware.Authorize(routerGroup.controller.SearchController.AddPostBySearchId))
-	
+
 	// Edit post by id
 	childParam.PUT("/posts/:postId", middleware.Authorize(routerGroup.controller.SearchController.UpdatePostById))
-	
-	
+
 	// Delete post by id
 	childParam.DELETE("/posts/:postId", middleware.Authorize(routerGroup.controller.SearchController.DeletePostById))
 
 	/* FRIENDSHIPS */
 	childParam.POST("/invitations", middleware.Authorize(routerGroup.controller.SearchController.UpsertFriendship))
 	childParam.DELETE("/friendships/:friendshipId", middleware.Authorize(routerGroup.controller.SearchController.DeleteFriendshipById))
-
 
 	/* FOLLOWERS */
 	childParam.POST("/followers", middleware.Authorize(routerGroup.controller.SearchController.PostFollower))

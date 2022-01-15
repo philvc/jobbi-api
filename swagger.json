@@ -1014,7 +1014,7 @@
     },
     "/searches/{searchId}/participants": {
       "get": {
-        "description": "type id struct\nGet participants by search id.\nReturn participants",
+        "description": "type id struct\nGet participants (friends \u0026 followers) by search id.\nReturn participants",
         "produces": [
           "application/json"
         ],
@@ -1701,6 +1701,11 @@
           "description": "The firstName",
           "type": "string",
           "x-go-name": "FirstName"
+        },
+        "followerId": {
+          "description": "The followerId",
+          "type": "string",
+          "x-go-name": "FollowerId"
         },
         "friendshipId": {
           "description": "The friendship id",

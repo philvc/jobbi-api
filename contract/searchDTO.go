@@ -368,4 +368,8 @@ type ParticipantDTOForSearchById struct {
 	//
 	//  required: false
 	FriendshipId string `json:"friendshipId"`
+	// The followerId
+	//
+	//  required: false
+	FollowerId string `json:"followerId"`
 }

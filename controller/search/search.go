@@ -223,7 +223,7 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 
 // swagger:operation GET /searches/{searchId}/participants searches GetSearchParticipants
 // type id struct
-// Get participants by search id.
+// Get participants (friends & followers) by search id.
 // Return participants
 // ---
 //     Parameters:
