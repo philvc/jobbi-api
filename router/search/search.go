@@ -38,6 +38,9 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 
 	// Get my followed searches
 	child.GET("/public", middleware.Authorize(routerGroup.controller.SearchController.GetMyFollowedSearches))
+	
+	// Get public 
+	child.GET("/explore", middleware.Authorize(routerGroup.controller.SearchController.GetPublicSearches))
 
 	// Post search
 	child.POST("", middleware.Authorize(routerGroup.controller.SearchController.AddSearch))

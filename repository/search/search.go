@@ -134,7 +134,7 @@ func (repository SearchRepository) GetSearchById(searchId string) (*contract.Sea
 	return &result, nil
 }
 
-func(repository SearchRepository)GetFriendsBySearchId(searchId string)(*[]contract.UserDTO, error){
+func (repository SearchRepository) GetFriendsBySearchId(searchId string) (*[]contract.UserDTO, error) {
 
 	var friends []model.User
 	if err := repository.database.Model(model.Friendship{}).Where("friendships.search_id = ? AND friendships.deleted_at IS NULL", searchId).Joins("JOIN users ON users.id = friendships.user_id").Select("users.id as id, users.first_name, users.last_name, users.email, users.avatar_url").Find(&friends).Error; err != nil {
@@ -170,7 +170,7 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 
 	var results []contract.ParticipantDTOForSearchById
 	var posts []model.Post
-	
+
 	// Get Friends
 	var friends []contract.ParticipantDTOForSearchById
 	if err := repository.database.
@@ -434,9 +434,9 @@ func (repository SearchRepository) IsFriendshipDeleted(searchId string, userId s
 		Where("user_id = ?", userId).
 		First(&friendship).
 		Error; err != nil {
-
-		// Friendship doesn't not exist
-		return nil, errors.New(constant.ErrorFriendshipDeletedNotFound)
+			if err != gorm.ErrRecordNotFound {
+				return nil, errors.New(constant.ErrorGetDeletedFriendship)
+			}
 	}
 
 	friendshipDto := model.ToFriendshipDTO(friendship)
@@ -476,19 +476,24 @@ func (repository SearchRepository) DeleteFriendship(friendshipId string) (bool, 
 	return true, nil
 }
 
-func (repository SearchRepository) PostFollower(followerDto contract.FollowerDTO) (*contract.FollowerDTO, error) {
+func (repository SearchRepository) SaveFollower(followerDto contract.FollowerDTO) (*contract.FollowerDTO, error) {
 
 	// Format model
 	follower := model.ToFollower(followerDto)
 
-	// Add new search uuid
-	id := uuid.New()
+	// Create follower id
+	if followerDto.Id == ""{
 
-	follower.ID = id.String()
+		// Add new search uuid
+		id := uuid.New()
+	
+		follower.ID = id.String()
+	}
+
 
 	// Post follower
-	if err := repository.database.Create(&follower).Error; err != nil {
-		return nil, errors.New(constant.ErrorCreateFollwer)
+	if err := repository.database.Save(&follower).Error; err != nil {
+		return nil, errors.New(constant.ErrorSaveFollower)
 	}
 
 	followerDTO := model.ToFollowerDto(follower)
@@ -531,4 +536,46 @@ func (repository SearchRepository) DeleteFollowerById(followerId string) (bool, 
 	}
 
 	return true, nil
+}
+
+func (repository SearchRepository) GetPublicSearches(userId string) (*[]contract.PublicSearchDTO, error) {
+
+	var results []contract.PublicSearchDTO
+
+	if err := repository.database.
+		Model(model.Search{}).
+		Where("searches.type = ?", constant.SearchTypePublic).
+		Joins("JOIN users ON users.id = searches.user_id").
+		Joins("LEFT JOIN friendships ON friendships.search_id = searches.id AND friendships.deleted_at IS NULL AND friendships.user_id = ?", userId).
+		Joins("LEFT JOIN followers ON followers.search_id = searches.id AND followers.deleted_at IS NULL AND followers.user_id = ?", userId).
+		Select("friendships.id as friendship_id, followers.id as follower_id, users.id as user_id, users.first_name, users.last_name, users.email, users.avatar_url, searches.title, searches.id as id, searches.description, searches.tags, searches.sector, searches.type").
+		Find(&results).
+		Error; err != nil {
+		return nil, errors.New(constant.ErrorGetPublicSearches)
+	}
+
+	// les searches avec leur user, joins friendships where users id et searches id followerid as follower id
+
+	return &results, nil
+
+}
+
+func (repository SearchRepository) IsFollowerDeleted(searchId string, userId string) (*contract.FollowerDTO, error) {
+	var follower model.Follower
+
+	if err := repository.database.
+		Model(&follower).
+		Where("search_id = ?", searchId).
+		Where("user_id = ?", userId).
+		First(&follower).
+		Error; err != nil {
+			if err != gorm.ErrRecordNotFound {
+				
+				return nil, errors.New(constant.ErrorGetDeletedFollower)
+			}
+	}
+
+	followerDto := model.ToFollowerDto(follower)
+
+	return &followerDto, nil
 }

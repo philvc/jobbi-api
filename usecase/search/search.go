@@ -307,7 +307,7 @@ func (usecase SearchUseCase) AddPost(postDTO *contract.PostDTO) (*contract.AddPo
 		if err != nil {
 			_, err := usecase.IsFollowerExist(postDTO.SearchID, postDTO.UserID)
 			if err != nil {
-				return nil, err
+				return nil, errors.New(constant.ErrorMissingAccess)
 			}
 		}
 
@@ -482,7 +482,10 @@ func (usecase SearchUseCase) UpsertFriendship(friendshipDto *contract.Friendship
 	}
 
 	// Check friendship has been deleted
-	friendship, _ = usecase.repository.SearchRepository.IsFriendshipDeleted(friendshipDto.SearchId, friendshipDto.UserId)
+	friendship, err = usecase.repository.SearchRepository.IsFriendshipDeleted(friendshipDto.SearchId, friendshipDto.UserId)
+	if err != nil {
+		return nil, err
+	}
 
 	// If it has been deleted, re-activate the friendships
 	if friendship != nil && friendship.Id != "" {
@@ -590,8 +593,22 @@ func (usecase SearchUseCase) PostFollower(sub string, searchId string) (*contrac
 		UserId:   userDto.Id,
 	}
 
+		// Check friendship has been deleted
+		follower, err = usecase.repository.SearchRepository.IsFollowerDeleted(postData.SearchId, postData.UserId)
+		if err != nil {
+			return nil, err
+		}
+
+		// If it has been deleted, re-activate the friendships
+		if follower != nil && follower.Id != "" {
+	
+			// Set id to dto
+			postData.Id = follower.Id
+	
+		}
+
 	// Call repo
-	followerDto, err := usecase.repository.SearchRepository.PostFollower(postData)
+	followerDto, err := usecase.repository.SearchRepository.SaveFollower(postData)
 	if err != nil {
 		return nil, err
 	}
@@ -640,4 +657,20 @@ func (usecase SearchUseCase) DeleteFollowerById(sub string, searchId string, fol
 	}
 
 	return ok, nil
+}
+
+func (usecase SearchUseCase) GetPublicSearches(sub string) (*[]contract.PublicSearchDTO, error) {
+	// Check user
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, errors.New(constant.ErrorMissingAccess)
+	}
+
+	// Call repository
+	searches, err := usecase.repository.SearchRepository.GetPublicSearches(userDto.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return searches, nil
 }

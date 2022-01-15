@@ -243,14 +243,14 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 //             $ref: "#/definitions/UserDTO"
 //       400:
 //         description: Bad Request
-func(controller *SearchController) GetSearchFriends(c *gin.Context){
-	
+func (controller *SearchController) GetSearchFriends(c *gin.Context) {
+
 	// Params
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
 
 	// Verify Params
-	if searchId == "" || sub == ""{
+	if searchId == "" || sub == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
 		return
 	}
@@ -927,7 +927,7 @@ func (controller SearchController) PostFollower(c *gin.Context) {
 //            type:  boolean
 //       400:
 //         description: Bad Request
-func (controller SearchController) DeleteFollower(c *gin.Context){
+func (controller SearchController) DeleteFollower(c *gin.Context) {
 	// Params
 	searchId := c.Params.ByName("searchId")
 	followerId := c.Params.ByName("followerId")
@@ -945,6 +945,44 @@ func (controller SearchController) DeleteFollower(c *gin.Context){
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	
+
 	c.IndentedJSON(http.StatusOK, ok)
+}
+
+// swagger:operation GET /searches/explore searches GetPublicSearches
+// type id struct
+// Get public searches
+// Return searches
+// ---
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: array
+//           items:
+//             $ref: "#/definitions/PublicSearchDto"
+//       400:
+//         description: Bad Request
+func (controller SearchController) GetPublicSearches(c *gin.Context) {
+
+	// Params
+	sub := c.GetString("sub")
+
+	// Check params
+	if sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// call usecase
+	searches, err := controller.usecase.SearchUsecase.GetPublicSearches(sub)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, searches)
+
 }

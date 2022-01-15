@@ -56,8 +56,11 @@ const (
 	ErrorFriendshipDeletedNotFound = "repository_search_friendship_deleted_not_found"
 	ErrorSaveFriendship = "repository_search_friendship_save_fail"
 	ErrorDeleteFriendship = "repository_search_error_delete_friendship_by_id"
-	ErrorCreateFollwer = "repository_search_error_add_follower"
+	ErrorSaveFollower = "save_follower_fail"
 	ErrorFollowerNotFound = "repository_search_follower_by_id_not_found"
 	ErrorDeleteFollower = "repository_search_error_delete_follower_by_id"
 	ErrorGetFriendsBySearchId = "get_friends_by_search_id_failed"
+	ErrorGetPublicSearches = "get_public_searches_failed"
+	ErrorGetDeletedFriendship= "get_deleted_friendship_fail"
+	ErrorGetDeletedFollower= "get_deleted_follower_fail"
 )

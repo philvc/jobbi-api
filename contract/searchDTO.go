@@ -373,3 +373,61 @@ type ParticipantDTOForSearchById struct {
 	//  required: false
 	FollowerId string `json:"followerId"`
 }
+
+// Search by id
+//
+// swagger:model PublicSearchDto
+type PublicSearchDTO struct {
+	// The id
+	//
+	// required: true
+	Id string `json:"id"`
+	// The title
+	//
+	// required: false
+	Title string `json:"title"`
+	// The description
+	//
+	// required: false
+	Description string `json:"description"`
+	// The search sector
+	//
+	// required: false
+	Sector string `json:"sector"`
+	// The search tags
+	//
+	// required: false
+	Tags pq.StringArray `gorm:"type:text[]" json:"tags"`
+	// The search type
+	//
+	// required: true
+	Type string `json:"type"`
+	// The firstName
+	//
+	// required: false
+	FirstName string `json:"firstName"`
+	// The lastName
+	//
+	// required: false
+	LastName string `json:"lastName"`
+	// The email
+	//
+	// required: false
+	Email string `json:"email"`
+	// Avatar url
+	//
+	// required: false
+	AvatarUrl string `json:"avatarUrl"`
+	// The user id
+	//
+	// required: true
+	UserId string `json:"userId"`
+	// followerId
+	//
+	// required: false
+	FollowerId string `json:"followerId"`
+	// friendshipId
+	//
+	// required: false
+	FriendshipId string `json:"friendshipId"`
+}
