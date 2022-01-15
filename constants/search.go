@@ -59,4 +59,5 @@ const (
 	ErrorCreateFollwer = "repository_search_error_add_follower"
 	ErrorFollowerNotFound = "repository_search_follower_by_id_not_found"
 	ErrorDeleteFollower = "repository_search_error_delete_follower_by_id"
+	ErrorGetFriendsBySearchId = "get_friends_by_search_id_failed"
 )

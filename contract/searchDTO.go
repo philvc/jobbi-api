@@ -260,10 +260,10 @@ type MySearchDTO struct {
 	//
 	// required: true
 	Title string `json:"title"`
-	// The participants
+	// The friends
 	//
 	// required: false
-	Participants []UserDTO `json:"participants" gorm:"foreignKey:Id"`
+	Friends []UserDTO `json:"friends" gorm:"foreignKey:Id"`
 	// The search sector
 	//
 	// required: false
@@ -297,7 +297,7 @@ type SearchDTOById struct {
 	// The participants
 	//
 	// required: false
-	Participants []UserDTO `json:"participants" gorm:"foreignKey:Id"`
+	Friends []UserDTO `json:"friends" gorm:"foreignKey:Id"`
 	// The search sector
 	//
 	// required: false

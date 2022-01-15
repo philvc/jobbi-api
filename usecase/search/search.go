@@ -72,6 +72,42 @@ func (usecase SearchUseCase) GetPostsBySearchId(sub string, searchId string) (*[
 	return response, nil
 }
 
+// Get friends by search id
+func (usecase *SearchUseCase) GetFriendsBySearchId(sub string, searchId string) (*[]contract.UserDTO, error) {
+
+	// Verify params
+	if sub == "" || searchId == "" {
+		return nil, errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Check user
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Search exist
+	_, err = usecase.IsSearchExist(searchId)
+	if err != nil {
+
+		return nil, err
+	}
+
+	// Check search access rights
+	ok, err := usecase.hasSearchAccess(userDto.Id, searchId)
+	if !ok || err != nil {
+		return nil, err
+	}
+
+	// Call repository
+	friends, err := usecase.repository.SearchRepository.GetFriendsBySearchId(searchId)
+	if err != nil {
+		return nil, err
+	}
+	return friends, nil
+
+}
+
 // Get participants by search id
 func (usecase SearchUseCase) GetParticipantsBySearchId(sub string, searchId string) (*[]contract.ParticipantDTOForSearchById, error) {
 

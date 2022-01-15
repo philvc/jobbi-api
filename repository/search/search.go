@@ -42,13 +42,13 @@ func (repository SearchRepository) GetMySearch(userId string) (*contract.MySearc
 		return nil, nil
 	}
 
-	// Get participants
+	// Get friends
 	if err := repository.database.Model(&model.Friendship{}).
 		Where("search_id = ? ", result.Id).
 		Where("friendships.deleted_at IS NULL").
 		Joins("JOIN users ON users.id = friendships.user_id").
 		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url").
-		Find(&result.Participants).Error; err != nil {
+		Find(&result.Friends).Error; err != nil {
 		return nil, errors.New(constant.ErrorGetMySearchParticipants)
 	}
 
@@ -63,9 +63,6 @@ func (repository SearchRepository) GetSharedSearches(userId string) (*[]contract
 		Model(&model.Friendship{}).
 		Where("friendships.user_id = ?", userId).
 		Where("friendships.deleted_at IS NULL").
-
-		// Get friendships where type is INVITED
-		Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_INVITED).
 
 		// GET Searches details
 		Joins("JOIN searches ON searches.id = friendships.search_id").
@@ -86,15 +83,12 @@ func (repository SearchRepository) GetFollowedSearches(userId string) (*[]contra
 	var results []contract.FollowedSearchDTO
 
 	if err := repository.database.
-		Model(&model.Friendship{}).
-		Where("friendships.user_id = ?", userId).
-		Where("friendships.deleted_at IS NULL").
-
-		// Get friendships where type is INVITED
-		Where("friendships.type = ?", constant.FRIENDSHIP_TYPE_FOLLOWED).
+		Model(&model.Follower{}).
+		Where("followers.user_id = ?", userId).
+		Where("followers.deleted_at IS NULL").
 
 		// GET Searches details
-		Joins("JOIN searches ON searches.id = friendships.search_id").
+		Joins("JOIN searches ON searches.id = followers.search_id").
 
 		// Get search owner details
 		Joins("JOIN users ON users.id = searches.user_id").
@@ -126,18 +120,30 @@ func (repository SearchRepository) GetSearchById(searchId string) (*contract.Sea
 		return nil, nil
 	}
 
-	// Get participants
+	// Get friends
 	if err := repository.database.
 		Model(&model.Friendship{}).
 		Where("search_id = ? ", result.Id).
 		Where("friendships.deleted_at IS NULL").
 		Joins("JOIN users ON users.id = friendships.user_id").
 		Select("users.id, users.first_name, users.last_name, users.email, users.avatar_url").
-		Find(&result.Participants).Error; err != nil {
+		Find(&result.Friends).Error; err != nil {
 		return nil, errors.New(constant.ErrorGetMySearchParticipants)
 	}
 
 	return &result, nil
+}
+
+func(repository SearchRepository)GetFriendsBySearchId(searchId string)(*[]contract.UserDTO, error){
+
+	var friends []model.User
+	if err := repository.database.Model(model.Friendship{}).Where("friendships.search_id = ? AND friendships.deleted_at IS NULL", searchId).Joins("JOIN users ON users.id = friendships.user_id").Select("users.id as id, users.first_name, users.last_name, users.email, users.avatar_url").Find(&friends).Error; err != nil {
+		return nil, errors.New(constant.ErrorGetFriendsBySearchId)
+	}
+
+	friendDtos := model.ToUserDTOs(friends)
+
+	return &friendDtos, nil
 }
 
 func (repository SearchRepository) GetPostsBySearchId(searchId string) (*[]contract.PostDTOBySearchId, error) {

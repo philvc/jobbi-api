@@ -54,6 +54,9 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	// Get search for an invitation
 	childParam.GET("/invitations", middleware.Authorize(routerGroup.controller.SearchController.GetSearchByIdForInvitation))
 
+	/* FRIENDS */
+	childParam.GET("/friends", middleware.Authorize(routerGroup.controller.SearchController.GetSearchFriends))
+
 	/* PARTICIPANTS */
 
 	// Get search participants

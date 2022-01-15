@@ -63,7 +63,7 @@ func (usecase SearchUseCase) hasSearchAccess(userId string, searchId string) (bo
 		IsSearchOwner := usecase.IsSearchOwner(userId, searchId)
 		if !IsSearchOwner {
 
-			// Check if user is friend or follower
+			// Check if user is friend
 			isFriend := usecase.IsFriend(userId, searchId)
 
 			if !isFriend {

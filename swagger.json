@@ -513,6 +513,41 @@
         }
       }
     },
+    "/searches/{searchId}/friends": {
+      "get": {
+        "description": "type id struct\nGet friends by search id.\nReturn friends",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "GetSearchFriends",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches/{searchId}/friendships/{friendshipId}": {
       "delete": {
         "description": "type id struct\nDelete friendship.\nReturn boolean",
@@ -1557,18 +1592,18 @@
         "type"
       ],
       "properties": {
-        "id": {
-          "description": "The id",
-          "type": "string",
-          "x-go-name": "Id"
-        },
-        "participants": {
-          "description": "The participants",
+        "friends": {
+          "description": "The friends",
           "type": "array",
           "items": {
             "$ref": "#/definitions/UserDTO"
           },
-          "x-go-name": "Participants"
+          "x-go-name": "Friends"
+        },
+        "id": {
+          "description": "The id",
+          "type": "string",
+          "x-go-name": "Id"
         },
         "sector": {
           "description": "The search sector",
@@ -2192,6 +2227,14 @@
           "type": "string",
           "x-go-name": "FirstName"
         },
+        "friends": {
+          "description": "The participants",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserDTO"
+          },
+          "x-go-name": "Friends"
+        },
         "id": {
           "description": "The id",
           "type": "string",
@@ -2201,14 +2244,6 @@
           "description": "The lastName",
           "type": "string",
           "x-go-name": "LastName"
-        },
-        "participants": {
-          "description": "The participants",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/UserDTO"
-          },
-          "x-go-name": "Participants"
         },
         "sector": {
           "description": "The search sector",
