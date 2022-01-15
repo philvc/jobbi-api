@@ -545,6 +545,7 @@ func (repository SearchRepository) GetPublicSearches(userId string) (*[]contract
 	if err := repository.database.
 		Model(model.Search{}).
 		Where("searches.type = ?", constant.SearchTypePublic).
+		Not("searches.user_id = ?", userId).
 		Joins("JOIN users ON users.id = searches.user_id").
 		Joins("LEFT JOIN friendships ON friendships.search_id = searches.id AND friendships.deleted_at IS NULL AND friendships.user_id = ?", userId).
 		Joins("LEFT JOIN followers ON followers.search_id = searches.id AND followers.deleted_at IS NULL AND followers.user_id = ?", userId).
