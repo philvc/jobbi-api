@@ -299,11 +299,18 @@ func (usecase SearchUseCase) AddPost(postDTO *contract.PostDTO) (*contract.AddPo
 		return nil, err
 	}
 
-	// Check user access rights to search
-	ok, err := usecase.hasSearchAccess(postDTO.UserID, postDTO.SearchID)
-	if !ok || err != nil {
+	// Check user is search owner OR friend OR follower
+	ok := usecase.IsSearchOwner(postDTO.UserID, postDTO.SearchID)
+	if !ok {
 
-		return nil, err
+		_, err := usecase.IsFriendshipExist(postDTO.SearchID, postDTO.UserID)
+		if err != nil {
+			_, err := usecase.IsFollowerExist(postDTO.SearchID, postDTO.UserID)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 	}
 
 	// Call repository
