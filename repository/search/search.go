@@ -194,7 +194,7 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 
 			for _, post := range posts {
 				if post.UserID == item.Id {
-					count = +1
+					count = count +1
 				}
 			}
 
@@ -220,12 +220,12 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 
 	// Count total of post for each participant
 	if len(followers) != 0 {
-		for index, item := range friends {
+		for index, item := range followers {
 			var count int64 = 0
 
 			for _, post := range posts {
 				if post.UserID == item.Id {
-					count = +1
+					count = count +1
 				}
 			}
 
@@ -434,9 +434,9 @@ func (repository SearchRepository) IsFriendshipDeleted(searchId string, userId s
 		Where("user_id = ?", userId).
 		First(&friendship).
 		Error; err != nil {
-			if err != gorm.ErrRecordNotFound {
-				return nil, errors.New(constant.ErrorGetDeletedFriendship)
-			}
+		if err != gorm.ErrRecordNotFound {
+			return nil, errors.New(constant.ErrorGetDeletedFriendship)
+		}
 	}
 
 	friendshipDto := model.ToFriendshipDTO(friendship)
@@ -482,14 +482,13 @@ func (repository SearchRepository) SaveFollower(followerDto contract.FollowerDTO
 	follower := model.ToFollower(followerDto)
 
 	// Create follower id
-	if followerDto.Id == ""{
+	if followerDto.Id == "" {
 
 		// Add new search uuid
 		id := uuid.New()
-	
+
 		follower.ID = id.String()
 	}
-
 
 	// Post follower
 	if err := repository.database.Save(&follower).Error; err != nil {
@@ -568,10 +567,10 @@ func (repository SearchRepository) IsFollowerDeleted(searchId string, userId str
 		Where("user_id = ?", userId).
 		First(&follower).
 		Error; err != nil {
-			if err != gorm.ErrRecordNotFound {
-				
-				return nil, errors.New(constant.ErrorGetDeletedFollower)
-			}
+		if err != gorm.ErrRecordNotFound {
+
+			return nil, errors.New(constant.ErrorGetDeletedFollower)
+		}
 	}
 
 	followerDto := model.ToFollowerDto(follower)
