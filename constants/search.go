@@ -4,7 +4,13 @@ package constant
 const (
 	SearchTypePrivate = "private"
 	SearchTypePublic = "public"
+)
 
+const (
+	RequesterRoleOwner = "owner"
+	RequesterRoleFriend = "friend"
+	RequesterRoleFollower = "follower"
+	RequesterRoleVisitor = "visitor"
 )
 
 // Errors
@@ -22,6 +28,7 @@ const (
 	ErrorWrongBody = "fail_with_wrong_body"
 	ErrorWrongParams = "fail_with_wrong_params"
 	ErrorWrongParamsUsecase = "fail_with_wrong_params_usecase"
+	ErrorGetRequesterRole = "get_requester_role_fail"
 )
 
 // Usecase errors

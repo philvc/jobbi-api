@@ -674,3 +674,53 @@ func (usecase SearchUseCase) GetPublicSearches(sub string) (*[]contract.PublicSe
 
 	return searches, nil
 }
+
+func (usecase SearchUseCase)GetSearchRole(sub string, searchId string)(string, error){
+
+	// Check params
+	if sub == "" || searchId == "" {
+		return "", errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Check user exist
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return "", err
+	}
+
+	// Check search exist
+	search, err := usecase.IsSearchExist(searchId)
+	if err != nil {
+		return "", err
+	}
+
+	// Check requester role
+	var requesterRole string
+	
+	// Check requester is search owner
+	if ok := usecase.IsSearchOwner(userDto.Id, search.Id); ok {
+		requesterRole = constant.RequesterRoleOwner
+	}
+	
+	// Check requester is search follower
+	if follower, _ := usecase.IsFollowerExist(searchId, userDto.Id); follower != nil && follower.Id != "" {
+		requesterRole = constant.RequesterRoleFollower
+	}
+
+	// Check requester is search friend
+	if friend, _ := usecase.IsFriendshipExist(search.Id, userDto.Id); friend != nil && friend.Id != ""{
+		requesterRole = constant.RequesterRoleFriend
+	}
+
+	// Set role to visitor if search is public & requester role unknown
+	if requesterRole == "" && search.Type == constant.SearchTypePublic {
+		requesterRole = constant.RequesterRoleVisitor
+	}
+
+	// If requester role still undefined it means that he shoudn't be able to see the search
+	if requesterRole == ""{
+		return "", errors.New(constant.ErrorGetRequesterRole)
+	}
+
+	return requesterRole, nil
+}

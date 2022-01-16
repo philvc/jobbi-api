@@ -555,8 +555,6 @@ func (repository SearchRepository) GetPublicSearches(userId string) (*[]contract
 		return nil, errors.New(constant.ErrorGetPublicSearches)
 	}
 
-	// les searches avec leur user, joins friendships where users id et searches id followerid as follower id
-
 	return &results, nil
 
 }

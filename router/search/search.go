@@ -41,13 +41,17 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	
 	// Get public 
 	child.GET("/explore", middleware.Authorize(routerGroup.controller.SearchController.GetPublicSearches))
-
+	
+	
 	// Post search
 	child.POST("", middleware.Authorize(routerGroup.controller.SearchController.AddSearch))
-
+	
 	// With searchId
 	childParam := child.Group(parameter)
-
+	
+	// Get requester role for search 
+	childParam.GET("/role", middleware.Authorize(routerGroup.controller.SearchController.GetSearchRole))
+	
 	// Update search
 	childParam.PUT("", middleware.Authorize(routerGroup.controller.SearchController.ModifySearch))
 

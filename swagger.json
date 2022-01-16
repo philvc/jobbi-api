@@ -1265,6 +1265,44 @@
         }
       }
     },
+    "/searches/{searchId}/role": {
+      "get": {
+        "description": "type id struct\nGet role by search id.\nReturn search",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "searches"
+        ],
+        "operationId": "GetSearchRole",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "owner",
+                "friend",
+                "follower",
+                "visitor"
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/users": {
       "post": {
         "description": "Return user",

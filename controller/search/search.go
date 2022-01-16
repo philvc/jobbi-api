@@ -986,3 +986,45 @@ func (controller SearchController) GetPublicSearches(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, searches)
 
 }
+
+// swagger:operation GET /searches/{searchId}/role searches GetSearchRole
+// type id struct
+// Get role by search id.
+// Return search
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            type: string
+//            enum: [owner, friend, follower, visitor]
+//       400:
+//         description: Bad Request
+func(controller SearchController)GetSearchRole(c *gin.Context){
+	// Params
+	searchId := c.Params.ByName("searchId")
+	sub := c.GetString("sub")
+	
+	// Check params
+	if searchId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// Call usecase
+	role, err := controller.usecase.SearchUsecase.GetSearchRole(sub, searchId)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return 
+	}
+
+	c.IndentedJSON(http.StatusOK, role)
+}
