@@ -8,6 +8,7 @@ import (
 	constant "github.com/philvc/jobbi-api/constants"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
+	"github.com/philvc/jobbi-api/repository"
 	"gorm.io/gorm"
 )
 
@@ -406,6 +407,21 @@ func (repository SearchRepository) IsPostExist(postId string) (*contract.PostDTO
 	return &postDto, nil
 }
 
+func (repository SearchRepository) IsPostExistForSearch(postId string, searchId string) (*contract.PostDTO, error) {
+
+	var post model.Post
+
+	// Get search by id
+	if err := repository.database.Model(&model.Post{}).Where("id = ?", postId).Where("deleted_at IS NULL ").Where("search_id = ?", searchId).First(&post).Error; err != nil {
+		return nil, errors.New(constant.ErrorPostNotFound)
+
+	}
+
+	postDto := model.ToPostDTO(post)
+
+	return &postDto, nil
+}
+
 func (repository SearchRepository) IsFriendshipExist(searchId string, userId string) (*contract.FriendshipDTO, error) {
 	var friendship model.Friendship
 
@@ -576,4 +592,8 @@ func (repository SearchRepository) IsFollowerDeleted(searchId string, userId str
 	followerDto := model.ToFollowerDto(follower)
 
 	return &followerDto, nil
+}
+
+func (repository SearchRepository) CreateCommentForPost(request *contract.CommentDTO)( *contract.CommentForPostDto ,error){
+	
 }

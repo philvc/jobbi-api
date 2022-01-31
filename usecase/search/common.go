@@ -53,6 +53,15 @@ func (usecase SearchUseCase) IsPostExist(postId string) (*contract.PostDTO, erro
 	return post, nil
 }
 
+func (usecase SearchUseCase) IsPostExistForSearch(postId string, searchId string) (*contract.PostDTO, error) {
+	post, err := usecase.repository.SearchRepository.IsPostExistForSearch(postId, searchId)
+	if err != nil {
+		return nil, err
+	}
+
+	return post, nil
+}
+
 func (usecase SearchUseCase) hasSearchAccess(userId string, searchId string) (bool, error) {
 
 	// Check if search is public

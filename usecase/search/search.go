@@ -593,19 +593,19 @@ func (usecase SearchUseCase) PostFollower(sub string, searchId string) (*contrac
 		UserId:   userDto.Id,
 	}
 
-		// Check friendship has been deleted
-		follower, err = usecase.repository.SearchRepository.IsFollowerDeleted(postData.SearchId, postData.UserId)
-		if err != nil {
-			return nil, err
-		}
+	// Check friendship has been deleted
+	follower, err = usecase.repository.SearchRepository.IsFollowerDeleted(postData.SearchId, postData.UserId)
+	if err != nil {
+		return nil, err
+	}
 
-		// If it has been deleted, re-activate the friendships
-		if follower != nil && follower.Id != "" {
-	
-			// Set id to dto
-			postData.Id = follower.Id
-	
-		}
+	// If it has been deleted, re-activate the friendships
+	if follower != nil && follower.Id != "" {
+
+		// Set id to dto
+		postData.Id = follower.Id
+
+	}
 
 	// Call repo
 	followerDto, err := usecase.repository.SearchRepository.SaveFollower(postData)
@@ -675,7 +675,7 @@ func (usecase SearchUseCase) GetPublicSearches(sub string) (*[]contract.PublicSe
 	return searches, nil
 }
 
-func (usecase SearchUseCase)GetSearchRole(sub string, searchId string)(string, error){
+func (usecase SearchUseCase) GetSearchRole(sub string, searchId string) (string, error) {
 
 	// Check params
 	if sub == "" || searchId == "" {
@@ -696,19 +696,19 @@ func (usecase SearchUseCase)GetSearchRole(sub string, searchId string)(string, e
 
 	// Check requester role
 	var requesterRole string
-	
+
 	// Check requester is search owner
 	if ok := usecase.IsSearchOwner(userDto.Id, search.Id); ok {
 		requesterRole = constant.RequesterRoleOwner
 	}
-	
+
 	// Check requester is search follower
 	if follower, _ := usecase.IsFollowerExist(searchId, userDto.Id); follower != nil && follower.Id != "" {
 		requesterRole = constant.RequesterRoleFollower
 	}
 
 	// Check requester is search friend
-	if friend, _ := usecase.IsFriendshipExist(search.Id, userDto.Id); friend != nil && friend.Id != ""{
+	if friend, _ := usecase.IsFriendshipExist(search.Id, userDto.Id); friend != nil && friend.Id != "" {
 		requesterRole = constant.RequesterRoleFriend
 	}
 
@@ -718,9 +718,44 @@ func (usecase SearchUseCase)GetSearchRole(sub string, searchId string)(string, e
 	}
 
 	// If requester role still undefined it means that he shoudn't be able to see the search
-	if requesterRole == ""{
+	if requesterRole == "" {
 		return "", errors.New(constant.ErrorGetRequesterRole)
 	}
 
 	return requesterRole, nil
+}
+
+func (usecase SearchUseCase) CreateCommentForPost(sub string, request *contract.CommentDTO) (*contract.CommentCreateDto, error) {
+
+	// Check params
+	if sub == "" || request == nil || request.Content == "" || request.SearchId == "" || request.PostId == "" {
+		return nil, errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Get user
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check Access: is search public or private ? isOwner ? isFriend ?
+	ok, err := usecase.hasSearchAccess(userDto.Id, request.SearchId)
+	if err != nil || !ok {
+		return nil, err
+	}
+
+	// Check post exist
+	_, err = usecase.IsPostExistForSearch(request.PostId, request.SearchId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Build repository dto
+	request.UserId = userDto.Id
+
+	// Call repository
+
+
+	return nil, nil
+
 }

@@ -1265,6 +1265,194 @@
         }
       }
     },
+    "/searches/{searchId}/posts/{postId}/comments": {
+      "get": {
+        "description": "type id struct\nGet comments for post\nReturn comments",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "comments"
+        ],
+        "operationId": "GetCommentsForPost",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "postId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CommentForPostDto"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "description": "type id struct\nAdd comment for post\nReturn comment",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "comments"
+        ],
+        "operationId": "CreateCommentForPost",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "postId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "post",
+            "name": "post",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CommentCreateRequestDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CommentCreateDto"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/searches/{searchId}/posts/{postId}/comments/{commentId}": {
+      "put": {
+        "description": "type id struct\nUpdate comment for post\nReturn comment",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "comments"
+        ],
+        "operationId": "UpdateCommentById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "postId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "commentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "post",
+            "name": "post",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CommentUpdateRequestDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CommentUpdateDto"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "description": "type id struct\nDelete comment by id\nReturn boolean",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "comments"
+        ],
+        "operationId": "DeteCommentById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "postId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "commentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "post"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/searches/{searchId}/role": {
       "get": {
         "description": "type id struct\nGet role by search id.\nReturn search",
@@ -1466,6 +1654,175 @@
           "type": "integer",
           "format": "uint64",
           "x-go-name": "Type"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "CommentCreateDto": {
+      "description": "A comment",
+      "type": "object",
+      "required": [
+        "id",
+        "content",
+        "userId",
+        "searchId",
+        "postId",
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "content": {
+          "description": "The content",
+          "type": "string",
+          "x-go-name": "Content"
+        },
+        "firstName": {
+          "description": "The search id",
+          "type": "string",
+          "x-go-name": "FirstName"
+        },
+        "id": {
+          "description": "The id",
+          "type": "string",
+          "x-go-name": "Id"
+        },
+        "lastName": {
+          "description": "The post id",
+          "type": "string",
+          "x-go-name": "LastName"
+        },
+        "postId": {
+          "description": "The post id",
+          "type": "string",
+          "x-go-name": "PostID"
+        },
+        "searchId": {
+          "description": "The search id",
+          "type": "string",
+          "x-go-name": "SearchID"
+        },
+        "userId": {
+          "description": "UserId",
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "CommentCreateRequestDto": {
+      "description": "A comment",
+      "type": "object",
+      "required": [
+        "content"
+      ],
+      "properties": {
+        "content": {
+          "description": "The content",
+          "type": "string",
+          "x-go-name": "Content"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "CommentForPostDto": {
+      "description": "A comment",
+      "type": "object",
+      "required": [
+        "id",
+        "content",
+        "userId",
+        "searchId",
+        "postId",
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "content": {
+          "description": "The content",
+          "type": "string",
+          "x-go-name": "Content"
+        },
+        "firstName": {
+          "description": "The search id",
+          "type": "string",
+          "x-go-name": "FirstName"
+        },
+        "id": {
+          "description": "The id",
+          "type": "string",
+          "x-go-name": "Id"
+        },
+        "lastName": {
+          "description": "The post id",
+          "type": "string",
+          "x-go-name": "LastName"
+        },
+        "postId": {
+          "description": "The post id",
+          "type": "string",
+          "x-go-name": "PostID"
+        },
+        "searchId": {
+          "description": "The search id",
+          "type": "string",
+          "x-go-name": "SearchID"
+        },
+        "userId": {
+          "description": "UserId",
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "CommentUpdateDto": {
+      "description": "A comment",
+      "type": "object",
+      "required": [
+        "userId",
+        "searchId",
+        "postId"
+      ],
+      "properties": {
+        "content": {
+          "description": "The content",
+          "type": "string",
+          "x-go-name": "Content"
+        },
+        "id": {
+          "description": "The id",
+          "type": "string",
+          "x-go-name": "Id"
+        },
+        "postId": {
+          "description": "The post id",
+          "type": "string",
+          "x-go-name": "PostID"
+        },
+        "searchId": {
+          "description": "The search id",
+          "type": "string",
+          "x-go-name": "SearchID"
+        },
+        "userId": {
+          "description": "UserId",
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "github.com/philvc/jobbi-api/contract"
+    },
+    "CommentUpdateRequestDto": {
+      "description": "A comment",
+      "type": "object",
+      "required": [
+        "content"
+      ],
+      "properties": {
+        "content": {
+          "description": "The content",
+          "type": "string",
+          "x-go-name": "Content"
         }
       },
       "x-go-package": "github.com/philvc/jobbi-api/contract"

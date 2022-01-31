@@ -1008,11 +1008,11 @@ func (controller SearchController) GetPublicSearches(c *gin.Context) {
 //            enum: [owner, friend, follower, visitor]
 //       400:
 //         description: Bad Request
-func(controller SearchController)GetSearchRole(c *gin.Context){
+func (controller SearchController) GetSearchRole(c *gin.Context) {
 	// Params
 	searchId := c.Params.ByName("searchId")
 	sub := c.GetString("sub")
-	
+
 	// Check params
 	if searchId == "" || sub == "" {
 		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
@@ -1023,8 +1023,178 @@ func(controller SearchController)GetSearchRole(c *gin.Context){
 	role, err := controller.usecase.SearchUsecase.GetSearchRole(sub, searchId)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err.Error())
-		return 
+		return
 	}
 
 	c.IndentedJSON(http.StatusOK, role)
+}
+
+// swagger:operation GET /searches/{searchId}/posts/{postId}/comments comments GetCommentsForPost
+// type id struct
+// Get comments for post
+// Return comments
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: postId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//           type: array
+//           items:
+//             $ref: "#/definitions/CommentForPostDto"
+//       400:
+//         description: Bad Request
+func (controller SearchController) GetCommentsForPost(c *gin.Context) {
+
+}
+
+// swagger:operation PUT /searches/{searchId}/posts/{postId}/comments/{commentId} comments UpdateCommentById
+// type id struct
+// Update comment for post
+// Return comment
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: postId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: commentId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: post
+//         in: body
+//         schema:
+//            $ref: "#/definitions/CommentUpdateRequestDto"
+//         description: post
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//             $ref: "#/definitions/CommentUpdateDto"
+//       400:
+//         description: Bad Request
+func (controller SearchController) UpdateCommentById(c *gin.Context) {
+
+}
+
+// swagger:operation POST /searches/{searchId}/posts/{postId}/comments comments CreateCommentForPost
+// type id struct
+// Add comment for post
+// Return comment
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: postId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: post
+//         in: body
+//         schema:
+//            $ref: "#/definitions/CommentCreateRequestDto"
+//         description: post
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//             $ref: "#/definitions/CommentCreateDto"
+//       400:
+//         description: Bad Request
+func (controller SearchController) CreateCommentForPost(c *gin.Context) {
+
+	// Params
+	searchId := c.Params.ByName("searchId")
+	postId := c.Params.ByName("postId")
+	sub := c.GetString("sub")
+	var requestDto contract.CommentDTO
+
+	// Check params
+	if searchId == "" || postId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	if err := c.BindJSON(&requestDto); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody).Error())
+		return
+	}
+
+	// Build usecase dto
+	requestDto.PostId = postId
+	requestDto.SearchId = searchId
+
+	// Call usecase
+	response, err := controller.usecase.SearchUsecase.CreateCommentForPost(sub, &requestDto)
+	if err != nil {
+
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
+
+}
+
+// swagger:operation DELETE /searches/{searchId}/posts/{postId}/comments/{commentId} comments DeteCommentById
+// type id struct
+// Delete comment by id
+// Return boolean
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: postId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: commentId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: post
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            type:  boolean
+//       400:
+//         description: Bad Request
+func (controller SearchController) DeleteCommentById(c *gin.Context) {
+
 }
