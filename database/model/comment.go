@@ -21,3 +21,12 @@ func ToComment(dto *contract.CommentDTO) Comment {
 		PostID:   dto.PostId,
 	}
 }
+
+func ToCommentDto(comment *Comment) *contract.CommentDTO {
+	return &contract.CommentDTO{
+		Id: comment.ID,
+		UserId: comment.UserID,
+		SearchId: comment.SearchID,
+		Content: comment.Content,
+	}
+}

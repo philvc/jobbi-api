@@ -754,7 +754,7 @@ func (usecase SearchUseCase) CreateCommentForPost(sub string, request *contract.
 	_, err = usecase.IsPostExistForSearch(request.PostId, request.SearchId)
 	if err != nil {
 		return nil, err
-	}	
+	}
 
 	// Build repository dto
 	request.UserId = userDto.Id
@@ -768,4 +768,32 @@ func (usecase SearchUseCase) CreateCommentForPost(sub string, request *contract.
 
 	return commentCreateDto, nil
 
+}
+
+func (usecase SearchUseCase) UpdateCommentForPost(sub string, request *contract.CommentDTO) (*contract.CommentDTO, error) {
+
+	// Check params
+	if sub == "" || request == nil || request.Content == "" || request.SearchId == "" || request.PostId == "" || request.Id == "" {
+		return nil, errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Get user
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check user is comment owner
+	ok, err := usecase.IsCommentOwner(userDto.Id, request.Id)
+	if err != nil || !ok {
+		return nil, err
+	}
+
+	// Call repo
+	response, err := usecase.repository.SearchRepository.UpdateCommentForPost(request)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }

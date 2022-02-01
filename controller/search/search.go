@@ -1096,6 +1096,39 @@ func (controller SearchController) GetCommentsForPost(c *gin.Context) {
 //       400:
 //         description: Bad Request
 func (controller SearchController) UpdateCommentById(c *gin.Context) {
+	// Params
+	searchId := c.Params.ByName("searchId")
+	postId := c.Params.ByName("postId")
+	commentId := c.Params.ByName("commentId")
+	sub := c.GetString("sub")
+	var requestDto contract.CommentUpdateRequestDto
+
+	// Check params
+	if searchId == "" || postId == "" || sub == "" || commentId == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	if err := c.BindJSON(&requestDto); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongBody).Error())
+		return
+	}
+
+	// Create request dto
+	commentDto := contract.CommentDTO{
+		SearchId: searchId,
+		PostId:   postId,
+		Content:  requestDto.Content,
+		Id:       commentId,
+	}
+	// Call usecase
+	response, err := controller.usecase.SearchUsecase.UpdateCommentForPost(sub, &commentDto)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
 
 }
 

@@ -111,3 +111,11 @@ func (usecase SearchUseCase) IsFollowerExistById(followerId string) (*contract.F
 	return follower, nil
 }
 
+func (usecase SearchUseCase) IsCommentOwner(userId string, commentId string) (bool, error) {
+	ok, err := usecase.repository.SearchRepository.IsCommentOwner(userId, commentId)
+	if err != nil || !ok {
+		return false, err
+	}
+
+	return true, nil
+}

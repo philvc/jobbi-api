@@ -86,9 +86,11 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	/* COMMENTS */
 	// Get comments for post
 	childParam.GET("/posts/:postId/comments", middleware.Authorize(routerGroup.controller.SearchController.GetCommentsForPost))
+
+	// Get comment by id
 	
 	// Put comment by id
-	childParam.GET("/posts/:postId/comments/:commentId", middleware.Authorize(routerGroup.controller.SearchController.UpdateCommentById))
+	childParam.PUT("/posts/:postId/comments/:commentId", middleware.Authorize(routerGroup.controller.SearchController.UpdateCommentById))
 	
 	// Post comment
 	childParam.POST("/posts/:postId/comments", middleware.Authorize(routerGroup.controller.SearchController.CreateCommentForPost))
