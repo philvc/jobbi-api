@@ -1248,6 +1248,26 @@ func (controller SearchController) CreateCommentForPost(c *gin.Context) {
 //            type:  boolean
 //       400:
 //         description: Bad Request
-func (controller SearchController) DeleteCommentById(c *gin.Context) {
+func (controller SearchController) DeleteCommentForPostById(c *gin.Context) {
+
+	// Params
+	commentId := c.Params.ByName("commentId")
+	postId := c.Params.ByName("postId")
+	searchId := c.Params.ByName("searchId")
+	sub := c.GetString("sub")
+
+	if commentId == "" || postId == "" || searchId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// Call repo
+	ok, err := controller.usecase.SearchUsecase.DeleteCommentForPost(sub, searchId, postId, commentId)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, ok)
 
 }

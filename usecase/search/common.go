@@ -119,3 +119,12 @@ func (usecase SearchUseCase) IsCommentOwner(userId string, commentId string) (bo
 
 	return true, nil
 }
+
+func (usecase SearchUseCase) IsCommentExist(commentId string) (bool, error) {
+	ok, err := usecase.repository.SearchRepository.IsCommentExist(commentId)
+	if err != nil || !ok {
+		return false, err
+	}
+
+	return true, nil
+}

@@ -96,7 +96,7 @@ func (routerGroup RouterGroup) Initialise(parent *gin.RouterGroup) {
 	childParam.POST("/posts/:postId/comments", middleware.Authorize(routerGroup.controller.SearchController.CreateCommentForPost))
 	
 	// Delete comment
-	childParam.DELETE("/posts/:postId/comments/:commentId", middleware.Authorize(routerGroup.controller.SearchController.DeleteCommentById))
+	childParam.DELETE("/posts/:postId/comments/:commentId", middleware.Authorize(routerGroup.controller.SearchController.DeleteCommentForPostById))
 
 	/* FRIENDSHIPS */
 	childParam.POST("/invitations", middleware.Authorize(routerGroup.controller.SearchController.UpsertFriendship))

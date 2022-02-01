@@ -662,3 +662,22 @@ func (repository SearchRepository) GetAllCommentsForPost(postId string) (*[]cont
 
 	return &responseDto, nil
 }
+
+func (repository SearchRepository) DeleteCommentForPost(commentId string)(bool, error){
+	
+	if err := repository.database.Table("comments").Where("id = ? AND deleted_at IS NULL", commentId).Update("deleted_at", time.Now().UTC()).Error; err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (repository SearchRepository) IsCommentExist(commentId string) (bool, error) {
+
+	var comment model.Comment
+	if err := repository.database.Table("comments").Where("comments.id = ? AND deleted_at IS NULL", commentId).First(&comment).Error; err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
