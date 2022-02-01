@@ -783,6 +783,12 @@ func (usecase SearchUseCase) UpdateCommentForPost(sub string, request *contract.
 		return nil, err
 	}
 
+	// // Check post exist
+	// _, err = usecase.IsPostExist(request.PostId)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
 	// Check user is comment owner
 	ok, err := usecase.IsCommentOwner(userDto.Id, request.Id)
 	if err != nil || !ok {
@@ -791,6 +797,40 @@ func (usecase SearchUseCase) UpdateCommentForPost(sub string, request *contract.
 
 	// Call repo
 	response, err := usecase.repository.SearchRepository.UpdateCommentForPost(request)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (usecase SearchUseCase) GetAllCommentsForPost(sub string, searchId string, postId string) (*[]contract.CommentForPostDto, error) {
+
+	// Check params
+	if sub == "" || searchId == "" || postId == "" {
+		return nil, errors.New(constant.ErrorWrongParamsUsecase)
+	}
+
+	// Check user
+	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	_, err = usecase.IsSearchExist(searchId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check search exist
+	ok, err := usecase.hasSearchAccess(userDto.Id, searchId)
+	if err != nil || !ok {
+		return nil, err
+	}
+
+	// Call repo
+	response, err := usecase.repository.SearchRepository.GetAllCommentsForPost(postId)
 	if err != nil {
 		return nil, err
 	}

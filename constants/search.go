@@ -72,4 +72,5 @@ const (
 	ErrorGetDeletedFollower= "get_deleted_follower_fail"
 	ErrorCreateCommentForPost = "create_comment_for_post_fail"
 	ErrorUpdateCommentForPost = "update_comment_for_post_fail"
+	ErrorGetAllCommentsForPost = "get_all_comment_for_post_fail"
 )

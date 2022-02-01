@@ -1058,6 +1058,26 @@ func (controller SearchController) GetSearchRole(c *gin.Context) {
 //         description: Bad Request
 func (controller SearchController) GetCommentsForPost(c *gin.Context) {
 
+	// Params
+	searchId := c.Params.ByName("searchId")
+	postId := c.Params.ByName("postId")
+	sub := c.GetString("sub")
+
+	// Check params
+	if searchId == "" || postId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams).Error())
+		return
+	}
+
+	// Call usecase
+	response, err := controller.usecase.SearchUsecase.GetAllCommentsForPost(sub, searchId, postId)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusAccepted, response)
+
 }
 
 // swagger:operation PUT /searches/{searchId}/posts/{postId}/comments/{commentId} comments UpdateCommentById

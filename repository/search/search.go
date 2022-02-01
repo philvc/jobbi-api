@@ -629,7 +629,7 @@ func (repository SearchRepository) UpdateCommentForPost(request *contract.Commen
 	var commentDto contract.CommentDTO
 
 	// Query
-	if err := repository.database.Model(model.Comment{}).Where("id = ?", request.Id).Update("content", request.Content).Scan(&commentDto).Error; err != nil {
+	if err := repository.database.Model(model.Comment{}).Where("id = ? AND comments.post_id = ?", request.Id, request.PostId).Update("content", request.Content).First(&commentDto).Error; err != nil {
 		return nil, errors.New(constant.ErrorUpdateCommentForPost)
 	}
 
@@ -644,4 +644,21 @@ func (repository SearchRepository) IsCommentOwner(userId string, commentId strin
 		return false, err
 	}
 	return true, nil
+}
+
+func (repository SearchRepository) GetAllCommentsForPost(postId string) (*[]contract.CommentForPostDto, error) {
+
+	var responseDto []contract.CommentForPostDto
+
+	if err := repository.database.
+		Table("comments").
+		Where("comments.deleted_at IS NULL AND comments.post_id = ?", postId).
+		Joins("JOIN users on users.id = comments.user_id").
+		Select("users.last_name as last_name, users.first_name as first_name, comments.user_id as user_id, comments.search_id as search_id, comments.post_id as post_id, comments.id as id, comments.content as content").
+		Find(&responseDto).
+		Error; err != nil {
+		return nil, errors.New(constant.ErrorGetAllCommentsForPost)
+	}
+
+	return &responseDto, nil
 }
