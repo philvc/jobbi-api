@@ -36,8 +36,8 @@ type CommentForPostDto struct {
 
 // A comment
 //
-// swagger:model CommentCreateDto
-type CommentCreateDto struct {
+// swagger:model CreateCommentResponseDto
+type CreateCommentResponseDto struct {
 	// The id
 	//
 	// required: true

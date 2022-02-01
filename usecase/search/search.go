@@ -725,7 +725,7 @@ func (usecase SearchUseCase) GetSearchRole(sub string, searchId string) (string,
 	return requesterRole, nil
 }
 
-func (usecase SearchUseCase) CreateCommentForPost(sub string, request *contract.CommentDTO) (*contract.CommentCreateDto, error) {
+func (usecase SearchUseCase) CreateCommentForPost(sub string, request *contract.CommentDTO) (*contract.CreateCommentResponseDto, error) {
 
 	// Check params
 	if sub == "" || request == nil || request.Content == "" || request.SearchId == "" || request.PostId == "" {
@@ -734,6 +734,12 @@ func (usecase SearchUseCase) CreateCommentForPost(sub string, request *contract.
 
 	// Get user
 	userDto, err := usecase.repository.UserRepository.GetUserBySub(sub)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check Search exist
+	searchDTO, err := usecase.IsSearchExist(request.SearchId)
 	if err != nil {
 		return nil, err
 	}
@@ -748,14 +754,18 @@ func (usecase SearchUseCase) CreateCommentForPost(sub string, request *contract.
 	_, err = usecase.IsPostExistForSearch(request.PostId, request.SearchId)
 	if err != nil {
 		return nil, err
-	}
+	}	
 
 	// Build repository dto
 	request.UserId = userDto.Id
+	request.SearchId = searchDTO.Id
 
 	// Call repository
+	commentCreateDto, err := usecase.repository.SearchRepository.CreateCommentForPost(request)
+	if err != nil {
+		return nil, err
+	}
 
-
-	return nil, nil
+	return commentCreateDto, nil
 
 }

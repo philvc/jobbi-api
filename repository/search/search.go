@@ -8,7 +8,6 @@ import (
 	constant "github.com/philvc/jobbi-api/constants"
 	contract "github.com/philvc/jobbi-api/contract"
 	"github.com/philvc/jobbi-api/database/model"
-	"github.com/philvc/jobbi-api/repository"
 	"gorm.io/gorm"
 )
 
@@ -195,7 +194,7 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 
 			for _, post := range posts {
 				if post.UserID == item.Id {
-					count = count +1
+					count = count + 1
 				}
 			}
 
@@ -226,7 +225,7 @@ func (repository SearchRepository) GetParticipantsBySearchId(searchId string) (*
 
 			for _, post := range posts {
 				if post.UserID == item.Id {
-					count = count +1
+					count = count + 1
 				}
 			}
 
@@ -594,6 +593,32 @@ func (repository SearchRepository) IsFollowerDeleted(searchId string, userId str
 	return &followerDto, nil
 }
 
-func (repository SearchRepository) CreateCommentForPost(request *contract.CommentDTO)( *contract.CommentForPostDto ,error){
-	
+func (repository SearchRepository) CreateCommentForPost(request *contract.CommentDTO) (*contract.CreateCommentResponseDto, error) {
+
+	// Initialise response dto
+	var commentResponseDto contract.CreateCommentResponseDto
+
+	// Create model
+	comment := model.ToComment(request)
+
+	// Create id
+	id := uuid.New()
+	comment.ID = id.String()
+
+	// Query
+	if err := repository.database.
+		Model(comment).
+		Create(&comment).
+		Select("comments.id as id, comments.content as content, comments.user_id as user_id, comments.post_id, comments.search_id as search_id").
+		Take(&commentResponseDto).
+		Table("users").
+		Where("users.id = ?", request.UserId).
+		Select("users.last_name as last_name, users.first_name as first_name").
+		First(&commentResponseDto).Error; err != nil {
+		return nil, errors.New(constant.ErrorCreateCommentForPost)
+	}
+
+	// To response dto
+
+	return &commentResponseDto, nil
 }

@@ -1126,7 +1126,7 @@ func (controller SearchController) UpdateCommentById(c *gin.Context) {
 //       200:
 //         description: Success
 //         schema:
-//             $ref: "#/definitions/CommentCreateDto"
+//             $ref: "#/definitions/CreateCommentResponseDto"
 //       400:
 //         description: Bad Request
 func (controller SearchController) CreateCommentForPost(c *gin.Context) {

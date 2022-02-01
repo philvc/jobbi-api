@@ -70,4 +70,5 @@ const (
 	ErrorGetPublicSearches = "get_public_searches_failed"
 	ErrorGetDeletedFriendship= "get_deleted_friendship_fail"
 	ErrorGetDeletedFollower= "get_deleted_follower_fail"
+	ErrorCreateCommentForPost = "create_comment_for_post_fail"
 )

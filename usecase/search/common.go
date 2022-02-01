@@ -110,3 +110,4 @@ func (usecase SearchUseCase) IsFollowerExistById(followerId string) (*contract.F
 
 	return follower, nil
 }
+

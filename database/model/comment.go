@@ -10,6 +10,14 @@ type Comment struct {
 	Content  string
 }
 
-func ToComment(*contract.CommentDTO){
-	
+func ToComment(dto *contract.CommentDTO) Comment {
+	return Comment{
+		Base: Base{
+			ID: dto.Id,
+		},
+		UserID:   dto.UserId,
+		SearchID: dto.SearchId,
+		Content:  dto.Content,
+		PostID:   dto.PostId,
+	}
 }
