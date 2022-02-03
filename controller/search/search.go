@@ -221,6 +221,54 @@ func (controller SearchController) GetPostsBySearchId(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, posts)
 }
 
+// swagger:operation GET /searches/{searchId}/posts/{postId} posts GetPostById
+// type id struct
+// Get post by  id.
+// Return post
+// ---
+//     Parameters:
+//       - name: searchId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//       - name: postId
+//         in: path
+//         type: string
+//         required: true
+//         description: test
+//     Produces:
+//       - application/json
+//     Responses:
+//       200:
+//         description: Success
+//         schema:
+//            $ref: "#/definitions/PostDTOBySearchId"
+//       400:
+//         description: Bad Request
+func (controller SearchController) GetPostById(c *gin.Context) {
+
+	// Params
+	postId := c.Params.ByName("postId")
+	sub := c.GetString("sub")
+
+	// Check params
+	if postId == "" || sub == "" {
+		c.IndentedJSON(http.StatusBadRequest, errors.New(constant.ErrorWrongParams))
+		return
+	}
+
+	// Call usecase
+	post, err := controller.usecase.SearchUsecase.GetPostById(sub, postId)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, post)
+
+}
+
 // swagger:operation GET /searches/{searchId}/friends searches GetSearchFriends
 // type id struct
 // Get friends by search id.

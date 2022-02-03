@@ -1182,6 +1182,43 @@
       }
     },
     "/searches/{searchId}/posts/{postId}": {
+      "get": {
+        "description": "type id struct\nGet post by  id.\nReturn post",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "posts"
+        ],
+        "operationId": "GetPostById",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "test",
+            "name": "searchId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "test",
+            "name": "postId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PostDTOBySearchId"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
       "put": {
         "description": "type id struct\nUpdate post.\nReturn post",
         "produces": [
