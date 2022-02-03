@@ -1238,7 +1238,6 @@ func (controller SearchController) CreateCommentForPost(c *gin.Context) {
 //         type: string
 //         required: true
 //         description: test
-//       - name: post
 //     Produces:
 //       - application/json
 //     Responses:

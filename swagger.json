@@ -1435,9 +1435,6 @@
             "name": "commentId",
             "in": "path",
             "required": true
-          },
-          {
-            "name": "post"
           }
         ],
         "responses": {
